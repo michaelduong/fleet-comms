@@ -1,0 +1,8 @@
+// Signing defaults for a fresh clone: "Sign to Run Locally", no Apple team needed.
+// To sign with your own team, or to keep an existing install's identity, copy
+// Local.xcconfig.example to Local.xcconfig (gitignored) and set the values there.
+FLEET_COMMS_BUNDLE_ID = io.github.michaelduong.fleetcomms
+DEVELOPMENT_TEAM =
+CODE_SIGN_STYLE = Automatic
+CODE_SIGN_IDENTITY = -
+#include? "Local.xcconfig"

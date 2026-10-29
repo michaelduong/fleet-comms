@@ -1,0 +1,17 @@
+.DS_Store
+build/
+DerivedData/
+dist/
+*.xcuserstate
+xcuserdata/
+.swiftpm/
+Config/Local.xcconfig
+.build/
+*.xcresult/
+*.xcarchive/
+.env
+.env.*
+!.env.example
+*.p8
+*.p12
+*.mobileprovision

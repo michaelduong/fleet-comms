@@ -1,0 +1,5 @@
+// Build settings shared by the app and test targets. Edit the two files below, not this one.
+#include "Version.xcconfig"
+#include "Signing.xcconfig"
+
+#include "Sparkle.xcconfig"

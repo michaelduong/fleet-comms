@@ -1,0 +1,4 @@
+// Release hold: enable only after the repository is public and Developer ID signing is ready.
+FLEET_COMMS_UPDATES_ENABLED = NO
+// Public verification key only. Never put the private EdDSA key in this repository.
+FLEET_COMMS_SPARKLE_PUBLIC_KEY = REPLACE_WITH_SPARKLE_PUBLIC_ED25519_KEY

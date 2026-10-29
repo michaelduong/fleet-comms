@@ -1,0 +1,6 @@
+// Copy to Config/Local.xcconfig (gitignored) and fill in your own values.
+// DEVELOPMENT_TEAM: your Apple Developer team id (Xcode › Settings › Accounts).
+// FLEET_COMMS_BUNDLE_ID: change it if you do not want to share the default identifier.
+DEVELOPMENT_TEAM = ABCDE12345
+CODE_SIGN_IDENTITY = Apple Development
+FLEET_COMMS_BUNDLE_ID = com.example.fleet-comms

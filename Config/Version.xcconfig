@@ -1,0 +1,3 @@
+// The one place the app version lives. scripts/bump-version.sh bumps it; Info.plist reads it.
+MARKETING_VERSION = 0.9.0
+CURRENT_PROJECT_VERSION = 10

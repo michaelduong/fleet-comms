@@ -1,0 +1,85 @@
+name: NotchVoice
+options:
+  deploymentTarget:
+    macOS: "27.0"
+  createIntermediateGroups: true
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: 2.10.1
+  FluidAudio:
+    url: https://github.com/FluidInference/FluidAudio.git
+    exactVersion: 0.17.7
+  OnnxRuntime:
+    url: https://github.com/microsoft/onnxruntime-swift-package-manager.git
+    exactVersion: 1.24.2
+# Signing, bundle id and version live in Config/*.xcconfig so a clone builds without edits here.
+configFiles:
+  Debug: Config/App.xcconfig
+  Release: Config/App.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "27.0"
+    ARCHS: arm64
+targets:
+  NotchVoice:
+    productName: Fleet Comms
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/NotchVoice
+    dependencies:
+      - package: Sparkle
+      - package: FluidAudio
+      - package: OnnxRuntime
+        product: onnxruntime
+    info:
+      path: Sources/NotchVoice/Info.plist
+      properties:
+        CFBundleDisplayName: Fleet Comms
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        SUFeedURL: https://github.com/michaelduong/fleet-comms/releases/latest/download/appcast.xml
+        SUPublicEDKey: $(FLEET_COMMS_SPARKLE_PUBLIC_KEY)
+        FleetCommsUpdatesEnabled: $(FLEET_COMMS_UPDATES_ENABLED)
+        SUEnableSystemProfiling: false
+        SUVerifyUpdateBeforeExtraction: true
+        LSUIElement: true
+        LSApplicationCategoryType: public.app-category.productivity
+        NSMicrophoneUsageDescription: Fleet Comms listens after you press the hotkey and, when enabled, briefly after spoken replies, to turn your speech into a note for Firstmate.
+    entitlements:
+      path: Sources/NotchVoice/NotchVoice.entitlements
+      properties:
+        com.apple.security.device.audio-input: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(FLEET_COMMS_BUNDLE_ID)
+        PRODUCT_NAME: Fleet Comms
+        PRODUCT_MODULE_NAME: NotchVoice
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ENABLE_HARDENED_RUNTIME: YES
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_STRICT_CONCURRENCY: complete
+  NotchVoiceTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/NotchVoiceTests
+    dependencies:
+      - target: NotchVoice
+    settings:
+      base:
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/Fleet Comms.app/Contents/MacOS/Fleet Comms
+        PRODUCT_BUNDLE_IDENTIFIER: $(FLEET_COMMS_BUNDLE_ID).tests
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  NotchVoice:
+    build:
+      targets:
+        NotchVoice: all
+        NotchVoiceTests: [test]
+    test:
+      targets:
+        - NotchVoiceTests
