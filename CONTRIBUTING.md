@@ -175,12 +175,10 @@ uses `SPUStandardUpdaterController`. When enabled, Sparkle owns the scheduler an
 prompt on the second launch; automatic checks are opt-in. We deliberately do not set
 `SUEnableAutomaticChecks` or force a preference at runtime. Anonymous system profiling is disabled.
 
-Updates remain disabled until public distribution and signing are configured.
-`Config/Sparkle.xcconfig` currently has `FLEET_COMMS_UPDATES_ENABLED = NO` and a clearly marked
-`SUPublicEDKey` placeholder. Both explicit activation and a valid 32-byte public key are required.
-Until then the controller is created without starting; the button uses Sparkle's standard error UI to
-explain the hold. No feed request, background check, download or install is started. The old anonymous
-GitHub version-comparison path has been removed.
+`Config/Sparkle.xcconfig` enables updates and contains the public EdDSA verification key for signed
+releases. Both explicit activation and a valid 32-byte public key are required to start the updater.
+Sparkle checks the public feed and verifies update signatures. The old anonymous GitHub version-comparison
+path has been removed. Users of 0.9.0 must install 0.9.1 manually once to receive future Sparkle updates.
 
 ### One-time setup by the project owner
 
@@ -244,6 +242,6 @@ would break that stable feed URL. Never mutate an already-published zip after si
 
 Current branch validation can cover the local build, ordinary tests, configuration/refusal tests, and
 About/error screenshots under a separate `com.fleetcomms.proof.*` bundle ID. Developer ID proof signing can be checked locally when authorized;
-notarization, appcast signing and live installation await the go-public setup. No EdDSA key is generated
-as part of implementation or proof. Personal-only app waiver: largest/accessibility text-size checks
+notarization, appcast signing and live installation are validated during the separate release process.
+No EdDSA key is generated as part of implementation or proof. Personal-only app waiver: largest/accessibility text-size checks
 are skipped; the changed UI is inspected in light and dark.

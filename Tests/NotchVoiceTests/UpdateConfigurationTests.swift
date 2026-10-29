@@ -19,7 +19,10 @@ struct UpdateConfigurationTests {
     @Test func placeholderAndMissingConfigurationNeverStart() {
         #expect(!UpdateConfiguration(info: [:]).isReady)
         #expect(!UpdateConfiguration(info: info(key: "REPLACE_WITH_SPARKLE_PUBLIC_ED25519_KEY")).isReady)
-        #expect(!UpdateConfiguration().isReady)
+    }
+
+    @Test func bundledConfigurationIsReadyForPublicUpdates() {
+        #expect(UpdateConfiguration().isReady)
     }
 
     @Test func activationRequiresKeyAndExpectedHTTPSFeed() {
