@@ -1,4 +1,4 @@
-// Release hold: enable only after the repository is public and Developer ID signing is ready.
-FLEET_COMMS_UPDATES_ENABLED = NO
+// Enabled for public releases signed with Developer ID and notarized by Apple.
+FLEET_COMMS_UPDATES_ENABLED = YES
 // Public verification key only. Never put the private EdDSA key in this repository.
-FLEET_COMMS_SPARKLE_PUBLIC_KEY = REPLACE_WITH_SPARKLE_PUBLIC_ED25519_KEY
+FLEET_COMMS_SPARKLE_PUBLIC_KEY = Da0L7+QxB5kBtGaWdqb5edaj6dAIl8+ohxMSktvq8T4=

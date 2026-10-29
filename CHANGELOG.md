@@ -6,6 +6,16 @@ merged pull requests; no releases were published for them.
 
 ## [Unreleased]
 
+## [0.9.1] - 2026-10-29
+
+### Changed
+- Releases are Developer ID signed and notarized by Apple.
+- Automatic updates via Sparkle are enabled, with opt-in background checks.
+- The README screenshot shows the Firstmate label.
+
+### Upgrade notes
+- Users of 0.9.0 must install 0.9.1 manually once to receive future Sparkle updates.
+
 ## [0.9.0] - 2026-10-29
 
 ### Added

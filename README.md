@@ -125,7 +125,7 @@ the hotkey opens a call; the hotkey or Esc hangs up. [More usage details →](do
 | Realtime | Voice lane, provider opt-in, voices, outreach voice, hang-up windows |
 | Models | Model sources, licenses, downloads, removal, disk use |
 | Advanced | Inbox script override, event log, WAV input, onboarding |
-| About | Version, license, Sparkle update check (disabled until configured) |
+| About | Version, license, Sparkle update check |
 
 Models live under `~/Library/Application Support/NotchVoice/Models`, a folder name kept so earlier downloads
 are still found. Settings use the app’s bundle ID (`io.github.michaelduong.fleetcomms` by default); earlier
@@ -176,8 +176,9 @@ See the [user guide](docs/guide.md#privacy) for storage locations and lane behav
 Versions follow [semantic versioning](https://semver.org) and live in `Config/Version.xcconfig`; what changed
 is in [CHANGELOG.md](CHANGELOG.md). `scripts/release.sh` builds a Release archive, signs it with Developer ID,
 notarizes and staples it, packages a zip and a dmg, signs a Sparkle appcast, and prepares a **draft** GitHub
-release. Sparkle updates remain disabled until the repository is public and signing is configured. See
-[CONTRIBUTING.md](CONTRIBUTING.md) for activation requirements, one-time key setup and read-only dry run.
+release. Public releases are Developer ID signed and notarized. Sparkle updates are enabled, with opt-in
+background checks. Users of 0.9.0 must install 0.9.1 manually once to receive future updates. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for signing requirements, one-time key setup and read-only dry run.
 
 ## Contributing
 
