@@ -9,6 +9,7 @@ import SwiftUI
 struct VoiceSettingsView: View {
     @Bindable var settings: AppSettings
     @State private var preview = KokoroVoicePreview()
+    @State private var radioPreview = KokoroVoicePreview()
 
     var body: some View {
         Form {
@@ -54,6 +55,7 @@ struct VoiceSettingsView: View {
                 }
                 .pickerStyle(.segmented)
                 .accessibilityIdentifier("settings.voice.speed")
+                radioSettings
                 Toggle("Read the whole reply", isOn: $settings.readWholeReply)
                     .accessibilityIdentifier("settings.voice.readWholeReply")
                 SettingsNote(
@@ -73,8 +75,54 @@ struct VoiceSettingsView: View {
         }
         .formStyle(.grouped)
         .accessibilityIdentifier("settings.voice")
-        .onChange(of: settings.voiceID) { preview.stop() }
-        .onDisappear { preview.stop() }
+        .onChange(of: settings.voiceID) {
+            preview.stop()
+            radioPreview.stop()
+        }
+        .onDisappear {
+            preview.stop()
+            radioPreview.stop()
+        }
+        .onChange(of: settings.radio.enabled) {
+            if !settings.radio.enabled {
+                radioPreview.stop()
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var radioSettings: some View {
+        Toggle("Radio transmission sounds", isOn: $settings.radio.enabled)
+            .accessibilityIdentifier("settings.voice.radio.enabled")
+        Picker("Radio style", selection: $settings.radio.style) {
+            ForEach(RadioStyle.allCases) { Text($0.title).tag($0) }
+        }
+        .disabled(!settings.radio.enabled)
+        .accessibilityIdentifier("settings.voice.radio.style")
+        HStack {
+            Slider(value: $settings.radio.staticLevel, in: 0 ... 100, step: 5) {
+                Text("Background static")
+            }
+            .accessibilityIdentifier("settings.voice.radio.staticLevel")
+            Text("\(Int(settings.radio.staticLevel))%")
+                .monospacedDigit()
+            Button(radioPreview.isPlaying ? "Stop radio preview" : "Preview radio") {
+                preview.stop()
+                radioPreview.toggle(voiceID: settings.voiceID, radio: true) { settings.speechSpeed }
+            }
+            .accessibilityIdentifier("settings.voice.radioPreview")
+        }
+        .disabled(!settings.radio.enabled)
+        SettingsNote(
+            text: "Static level changes only the background sound. At 0%, the voice still sounds like a radio.",
+            identifier: "settings.voice.radioNote"
+        )
+        if let activity = radioPreview.activity {
+            ProgressView(activity).accessibilityIdentifier("settings.voice.radioPreviewProgress")
+        }
+        if let error = radioPreview.errorMessage {
+            SettingsNote(text: error, identifier: "settings.voice.radioPreviewError")
+        }
     }
 
     private var voicePicker: some View {
@@ -84,6 +132,7 @@ struct VoiceSettingsView: View {
             }
             .accessibilityIdentifier("settings.voice.voice")
             Button {
+                radioPreview.stop()
                 preview.toggle(voiceID: settings.voiceID) { settings.speechSpeed }
             } label: {
                 Label(
@@ -122,7 +171,7 @@ final class KokoroVoicePreview {
     @ObservationIgnored private var task: Task<Void, Never>?
     @ObservationIgnored private var generation = 0
 
-    func toggle(voiceID: String, speed: @escaping () -> SpeechSpeed) {
+    func toggle(voiceID: String, radio: Bool = false, speed: @escaping () -> SpeechSpeed) {
         let wasPlaying = isPlaying
         stop()
         guard !wasPlaying else { return }
@@ -130,6 +179,7 @@ final class KokoroVoicePreview {
         let current = generation
         let speaker = ReplySpeaker()
         speaker.speed = speed
+        speaker.bypassRadio = !radio
         self.speaker = speaker
         task = Task { [self] in
             do {

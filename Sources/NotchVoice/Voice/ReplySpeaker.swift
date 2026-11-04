@@ -14,6 +14,8 @@ import Foundation
 final class ReplySpeaker {
     private var kokoro: KokoroAneManager?
     private var engine: AVAudioEngine?
+    private var radio: RadioOutput?
+    var bypassRadio = false
     private var speakTask: Task<Void, Never>?
     private var onFinish: (() -> Void)?
     private var generation = 0
@@ -80,8 +82,18 @@ final class ReplySpeaker {
         speakTask = nil
         progressTask?.cancel()
         progressTask = nil
-        engine?.stop()
+        let fade = radio?.cancel() ?? 0
+        let stoppingEngine = engine
         engine = nil
+        radio = nil
+        if fade > 0 {
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(fade))
+                stoppingEngine?.stop()
+            }
+        } else {
+            stoppingEngine?.stop()
+        }
         finish(generation: generation)
     }
 
@@ -89,6 +101,7 @@ final class ReplySpeaker {
         _ parts: [String], with kokoro: KokoroAneManager, generation: Int, playbackID: UUID, onStart: () -> Void
     ) async throws {
         let (player, format) = try makePlayer()
+        radio?.begin()
         var prepared: (result: KokoroAneSynthesisResult, speed: SpeechSpeed)?
         let text = parts.joined(separator: " ")
         var characterOffset = 0
@@ -120,12 +133,9 @@ final class ReplySpeaker {
             progressTask?.cancel()
             characterOffset += part.utf16.count + 1
             onProgress?(SpeechPlayback(id: playbackID, text: text, utf16Offset: characterOffset - 1))
-            EventLog.record("speech_part_played", [
-                "speech_id": String(generation), "part": String(index + 1),
-                "parts": String(parts.count), "characters": String(part.count)
-            ])
+            recordPart(generation: generation, index: index, parts: parts.count, characters: part.count)
         }
-        finish(generation: generation)
+        try await finishTail(generation: generation)
     }
 
     private func synthesize(
@@ -143,7 +153,11 @@ final class ReplySpeaker {
         let player = AVAudioPlayerNode()
         let format = AVAudioFormat(standardFormatWithSampleRate: 24000, channels: 1)!
         engine.attach(player)
-        try engine.connectNode(player, to: engine.mainMixerNode, format: format)
+        do {
+            radio = try RadioOutput(engine: engine, player: player, format: format, bypass: bypassRadio)
+        } catch {
+            try engine.connectNode(player, to: engine.mainMixerNode, format: format)
+        }
         try engine.start()
         self.engine = engine
         return (player, format)
@@ -193,6 +207,7 @@ final class ReplySpeaker {
         onProgress?(nil)
         engine?.stop()
         engine = nil
+        radio = nil
         callback()
     }
 
@@ -208,5 +223,23 @@ final class ReplySpeaker {
         samples.withUnsafeBufferPointer { channel.update(from: $0.baseAddress!, count: samples.count) }
         buffer.frameLength = AVAudioFrameCount(samples.count)
         return buffer
+    }
+}
+
+private extension ReplySpeaker {
+    func finishTail(generation: Int) async throws {
+        let tail = radio?.finish() ?? 0
+        if tail > 0 {
+            try await Task.sleep(for: .seconds(tail))
+        }
+        try Task.checkCancellation()
+        finish(generation: generation)
+    }
+
+    func recordPart(generation: Int, index: Int, parts: Int, characters: Int) {
+        EventLog.record("speech_part_played", [
+            "speech_id": String(generation), "part": String(index + 1),
+            "parts": String(parts), "characters": String(characters)
+        ])
     }
 }

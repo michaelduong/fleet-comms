@@ -39,7 +39,12 @@ Settings has seven sections:
 - **General**: the firstmate home (with the homes found on this Mac), hotkey, placement, text size, dismiss
   delay, the "still working" timeout and Launch at Login.
 - **Voice & Speech**: speech model, end of turn (Silence or Smart Turn), silence threshold, the Kokoro voice,
-  speech speed (1.0x to 2.0x, pitch preserved), Read the whole reply, Keep listening after a reply.
+  speech speed (1.0x to 2.0x, pitch preserved), Radio transmission sounds, Read the whole reply,
+  Keep listening after a reply. Radio sounds start off. Enable them for locally processed radio speech
+  on replies and spoken updates, then choose Dispatch, Police dispatch (the default), or ATC transmission.
+  Background static starts at 25% and changes in five-point steps; 0% keeps the radio voice without static.
+  Preview radio uses the local voice preparation path, not a realtime connection or microphone.
+  The voice picker's original Preview stays clean. Turning radio sounds off bypasses both voice processing and static.
 - **Assistant**: the messenger on or off, its model and Claude CLI path, active/idle fleet refresh rates,
   and Refresh now. Only models meeting the measured five-second median limit are offered; currently Claude Haiku.
 - **Realtime**: the voice lane, each lane's sign-in state and voice, unprompted outreach voice, the hang-up window, and the privacy note.

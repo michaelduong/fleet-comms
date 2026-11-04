@@ -27,6 +27,7 @@ extension RealtimeCall {
                 }, onFailure: { [weak self] _ in
                     Task { @MainActor in self?.end(.audioFailed) }
                 })
+                audio?.finishTransmission()
             }
         } catch {
             end(RealtimeError.from(error))

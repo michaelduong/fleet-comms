@@ -45,6 +45,7 @@ extension RealtimeCall {
             if status != "completed" {
                 EventLog.record("realtime_response_ended", ["lane": provider.id, "status": status])
             }
+            audio?.finishTransmission()
             continueAfterTools()
             if !responseActive, pendingTools == 0, !audioQueued {
                 becameQuiet()

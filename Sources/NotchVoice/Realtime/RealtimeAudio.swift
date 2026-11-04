@@ -17,6 +17,11 @@ final class RealtimeAudio: @unchecked Sendable {
     private let queue = DispatchQueue(label: "io.github.michaelduong.fleetcomms.realtime-audio")
     private var engine: AVAudioEngine?
     private var player: AVAudioPlayerNode?
+    private var radio: RadioOutput?
+    private var transmissionActive = false
+    private var responseComplete = false
+    private var tailPending = false
+    private var tailSerial = 0
     private var pending = 0
     private var generation = 0
     private var queuedFrames: Int64 = 0
@@ -54,6 +59,16 @@ final class RealtimeAudio: @unchecked Sendable {
                 onFailure?(RealtimeError.audioFailed)
                 return
             }
+            if tailPending {
+                tailPending = false
+                tailSerial += 1
+                transmissionActive = false
+            }
+            if !transmissionActive {
+                radio?.begin()
+                transmissionActive = true
+                responseComplete = false
+            }
             pending += 1
             queuedFrames += Int64(samples.count)
             let current = generation
@@ -84,6 +99,19 @@ final class RealtimeAudio: @unchecked Sendable {
             progressTimer?.cancel()
             progressTimer = nil
             player?.stop()
+            radio?.cancel()
+            transmissionActive = false
+            responseComplete = false
+            tailPending = false
+        }
+    }
+
+    func finishTransmission() {
+        queue.async { [self] in
+            responseComplete = true
+            if pending == 0 {
+                finishTail()
+            }
         }
     }
 
@@ -99,6 +127,23 @@ final class RealtimeAudio: @unchecked Sendable {
             playbackStarted = nil
             progressTimer?.cancel()
             progressTimer = nil
+            if responseComplete {
+                finishTail()
+            }
+        }
+    }
+
+    private func finishTail() {
+        guard transmissionActive, !tailPending else { return }
+        tailPending = true
+        let current = generation
+        tailSerial += 1
+        let serial = tailSerial
+        let tail = radio?.finish() ?? 0
+        queue.asyncAfter(deadline: .now() + tail) { [self] in
+            guard generation == current, tailSerial == serial, pending == 0 else { return }
+            tailPending = false
+            transmissionActive = false
             onDrained()
         }
     }
@@ -125,7 +170,11 @@ final class RealtimeAudio: @unchecked Sendable {
         // the engine fails to start (-10875) on macOS 27.
         let player = AVAudioPlayerNode()
         engine.attach(player)
-        try engine.connectNode(player, to: engine.mainMixerNode, format: Self.format)
+        do {
+            radio = try RadioOutput(engine: engine, player: player, format: Self.format)
+        } catch {
+            try engine.connectNode(player, to: engine.mainMixerNode, format: Self.format)
+        }
         self.player = player
         if let onInput {
             hasInput = true
@@ -158,6 +207,9 @@ final class RealtimeAudio: @unchecked Sendable {
 
     private func stopOnQueue() {
         generation += 1
+        transmissionActive = false
+        responseComplete = false
+        tailPending = false
         pending = 0
         queuedFrames = 0
         playbackStarted = nil
@@ -168,12 +220,17 @@ final class RealtimeAudio: @unchecked Sendable {
             engine?.inputNode.removeTap(onBus: 0)
         }
         hasInput = false
-        engine?.stop()
+        let fade = radio?.cancel() ?? 0
+        let stoppingEngine = engine
+        queue.asyncAfter(deadline: .now() + fade) { stoppingEngine?.stop() }
         engine = nil
         player = nil
+        radio = nil
     }
+}
 
-    private static func buffer(_ samples: [Float]) -> AVAudioPCMBuffer? {
+private extension RealtimeAudio {
+    static func buffer(_ samples: [Float]) -> AVAudioPCMBuffer? {
         guard !samples.isEmpty,
               let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(samples.count)),
               let channel = buffer.floatChannelData?[0] else { return nil }

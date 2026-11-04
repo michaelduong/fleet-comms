@@ -39,6 +39,8 @@ final class AppSettings {
         }
     }
 
+    var radio: RadioSettings
+
     var speechSpeed: SpeechSpeed {
         didSet { defaults.set(speechSpeed.rawValue, forKey: Key.speechSpeed) }
     }
@@ -209,6 +211,7 @@ final class AppSettings {
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
+        radio = RadioSettings(defaults: defaults)
         // Decided first: reading the speech model can write keys that would look like an old install.
         onboardingCompleted = Self.initialOnboardingCompleted(defaults)
         speechModel = Self.initialSpeechModel(defaults)
@@ -221,8 +224,7 @@ final class AppSettings {
         endOfTurn = defaults.string(forKey: Key.endOfTurn).flatMap(EndOfTurnChoice.init) ?? .silence
         replyTimeoutSeconds = Self.double(defaults, Key.replyTimeoutSeconds) ?? 60
         autoDismissSeconds = Self.double(defaults, Key.autoDismissSeconds) ?? 5
-        let quiet = Self.double(defaults, Key.hangUpAfterQuietSeconds) ?? 10
-        hangUpAfterQuietSeconds = SettingsOptions.hangUpAfterQuietSeconds.contains(quiet) ? quiet : 10
+        hangUpAfterQuietSeconds = Self.initialHangUp(defaults)
         textSize = defaults.string(forKey: Key.textSize).flatMap(TextSizeChoice.init) ?? .standard
         cardTheme = defaults.string(forKey: Key.cardTheme).flatMap(CardTheme.init) ?? .dark
         pillPlacement = defaults.string(forKey: Key.pillPlacement).flatMap(PillPlacement.init) ?? .notch
