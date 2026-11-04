@@ -4,6 +4,14 @@ All notable changes to Fleet Comms. The format follows [Keep a Changelog](https:
 and versions follow [semantic versioning](https://semver.org). Entries before 0.8.0 were reconstructed from the
 merged pull requests; no releases were published for them.
 
+## [0.10.0] - 2026-11-04
+
+### Added
+- Optional radio transmission styles for spoken replies, with Dispatch, Police dispatch and ATC presets, adjustable background static, and a separate radio preview.
+
+### Changed
+- Press Esc to dismiss first mate replies, matching listening-mode dismissal.
+
 ## [Unreleased]
 
 ## [0.9.1] - 2026-10-29
