@@ -36,6 +36,8 @@ extension AppModel {
             cancelListening()
         } else if state.isCall {
             hangUp()
+        } else if case .reply = state {
+            dismiss()
         }
     }
 
