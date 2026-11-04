@@ -6,6 +6,11 @@
 import Foundation
 
 extension AppSettings {
+    static func initialHangUp(_ defaults: UserDefaults) -> Double {
+        let quiet = double(defaults, Key.hangUpAfterQuietSeconds) ?? 10
+        return SettingsOptions.hangUpAfterQuietSeconds.contains(quiet) ? quiet : 10
+    }
+
     static func initialOutreachHangUp(_ defaults: UserDefaults) -> Double {
         let value = double(defaults, Key.outreachHangUpSeconds) ?? 25
         return [10.0, 20, 25, 30].contains(value) ? value : 25
