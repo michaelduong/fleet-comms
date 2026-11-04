@@ -9,6 +9,18 @@ import Testing
 
 @MainActor
 struct ReplyWindowTests {
+    /// Captain request: Esc closes first mate replies through the listening-mode hotkey route.
+    @Test(arguments: [true, false])
+    func escapeDismissesFirstmateReply(speaking: Bool) throws {
+        let (model, cleanup) = try makeModel(keepListening: false)
+        defer { cleanup() }
+        model.state = .reply(text: "Done.", speaking: speaking, from: .firstMate)
+        #expect(model.state.claimsEscape)
+        model.escapePressed()
+        #expect(model.state == .idle)
+        #expect(!model.state.claimsEscape)
+    }
+
     @Test func silentReplyStaysOnlyWhileThePointerIsReallyOnIt() async throws {
         let (model, cleanup) = try makeModel(keepListening: false)
         defer { cleanup() }

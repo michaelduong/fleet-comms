@@ -32,10 +32,12 @@ enum NotchState: Equatable {
         }
     }
 
-    /// Escape is taken from other apps only while listening or in a call; a reply can stay on screen
-    /// for a long time and must not hold Escape hostage meanwhile.
+    /// Escape is taken from other apps only while listening, in a call or showing a reply.
     var claimsEscape: Bool {
-        self == .listening || isCall
+        switch self {
+        case .listening, .call, .reply: true
+        default: false
+        }
     }
 
     var isCall: Bool {
