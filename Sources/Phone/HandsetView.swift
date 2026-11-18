@@ -31,9 +31,21 @@ struct HandsetView: View {
     }
 
     private var header: some View {
-        HStack {
-            Circle().fill(statusColor).frame(width: 10, height: 10)
-            Text(statusText).font(.subheadline).accessibilityIdentifier("handset.status")
+        HStack(spacing: 10) {
+            Image("BrandIcon")
+                .resizable()
+                .frame(width: 30, height: 30)
+                .clipShape(RoundedRectangle(cornerRadius: 7, style: .continuous))
+                .accessibilityLabel("Fleet Comms")
+                .accessibilityIdentifier("handset.icon")
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Fleet Comms").font(.headline)
+                HStack(spacing: 6) {
+                    Circle().fill(statusColor).frame(width: 8, height: 8)
+                    Text(statusText).font(.subheadline).foregroundStyle(.secondary)
+                        .accessibilityIdentifier("handset.status")
+                }
+            }
             Spacer()
             Button("Pairing", systemImage: "link") { showingPairing = true }
                 .labelStyle(.iconOnly)
@@ -106,10 +118,16 @@ struct TalkButton: View {
     @State private var pressed = false
 
     var body: some View {
+        let ring = model.isTalking ? Color.red : Color.accentColor
         Circle()
-            .fill(model.isTalking ? Color.red : Color.accentColor)
+            .fill(model.isTalking ? Color.red : Color(red: 0.08, green: 0.09, blue: 0.12))
             .frame(width: 150, height: 150)
-            .overlay(Image(systemName: "mic.fill").font(.system(size: 54)).foregroundStyle(.white))
+            .overlay(Circle().strokeBorder(ring, lineWidth: 4))
+            .shadow(color: ring.opacity(0.5), radius: 18)
+            .overlay(
+                Image(systemName: "mic.fill").font(.system(size: 54))
+                    .foregroundStyle(model.isTalking ? Color.white : Color.accentColor)
+            )
             .scaleEffect(pressed ? 0.94 : 1)
             .opacity(model.isConnected ? 1 : 0.35)
             .gesture(DragGesture(minimumDistance: 0)
@@ -138,6 +156,16 @@ struct PairingView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    Image("BrandIcon")
+                        .resizable()
+                        .frame(width: 72, height: 72)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .frame(maxWidth: .infinity)
+                        .listRowBackground(Color.clear)
+                        .accessibilityLabel("Fleet Comms")
+                        .accessibilityIdentifier("pairing.icon")
+                }
                 Section {
                     if PairingScanner.isSupported {
                         Button("Scan QR Code", systemImage: "qrcode.viewfinder") { scanning = true }

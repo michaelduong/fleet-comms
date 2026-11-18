@@ -34,13 +34,40 @@ private extension CommsActivityAttributes.ContentState {
     }
 }
 
+private extension Color {
+    /// Voice-bar teal from the app icon; also the AccentColor in the asset catalog.
+    static let brand = Color(red: 7 / 255, green: 230 / 255, blue: 225 / 255)
+}
+
+private var brandMark: some View {
+    Image("BrandMark")
+        .resizable()
+        .scaledToFit()
+        .frame(width: 18, height: 18)
+        .foregroundStyle(Color.brand)
+        .accessibilityLabel("Fleet Comms")
+}
+
 struct CommsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: CommsActivityAttributes.self) { context in
             VStack(alignment: .leading, spacing: 6) {
-                Label(context.state.title, systemImage: context.state.icon)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    Image("BrandIcon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .clipShape(RoundedRectangle(cornerRadius: 4.5, style: .continuous))
+                        .accessibilityLabel("Fleet Comms")
+                        .accessibilityIdentifier("live.icon")
+                    Text(context.state.title)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.secondary)
+                    Spacer()
+                    Image(systemName: context.state.icon)
+                        .foregroundStyle(context.state.phase == .listening ? Color.red : Color.brand)
+                        .accessibilityLabel(context.state.title)
+                        .accessibilityIdentifier("live.phase")
+                }
                 if !context.state.words.isEmpty {
                     Text(context.state.words).font(.subheadline).foregroundStyle(.secondary).lineLimit(2)
                 }
@@ -52,18 +79,26 @@ struct CommsLiveActivity: Widget {
             .padding(16)
         } dynamicIsland: { context in
             DynamicIsland {
-                DynamicIslandExpandedRegion(.leading) { Image(systemName: context.state.icon) }
+                DynamicIslandExpandedRegion(.leading) {
+                    Image("BrandIcon")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .clipShape(RoundedRectangle(cornerRadius: 4.5, style: .continuous))
+                        .accessibilityLabel("Fleet Comms")
+                }
                 DynamicIslandExpandedRegion(.center) { Text(context.state.title).font(.caption) }
                 DynamicIslandExpandedRegion(.bottom) {
                     Text(context.state.sentence.isEmpty ? context.state.words : context.state.sentence).lineLimit(3)
                 }
             } compactLeading: {
-                Image(systemName: context.state.icon)
+                brandMark
             } compactTrailing: {
-                EmptyView()
-            } minimal: {
                 Image(systemName: context.state.icon)
+                    .foregroundStyle(context.state.phase == .listening ? Color.red : Color.brand)
+            } minimal: {
+                brandMark
             }
+            .keylineTint(Color.brand)
         }
     }
 }
