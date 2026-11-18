@@ -11,6 +11,8 @@ extension AppModel {
     /// the window the setting asks for, so the owner can answer it.
     func scheduleFollowUp() {
         guard settings.keepListeningAfterReply, settings.autoDismissSeconds > 0 else { return }
+        // The phone's microphone is only open when its owner presses the button.
+        guard !phoneConnected else { return collapse(after: settings.autoDismissSeconds) }
         // Without the models there is nothing to listen with; the reply still leaves on its own.
         guard modelsReady else { return collapse(after: settings.autoDismissSeconds) }
         let shown = state

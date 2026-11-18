@@ -65,11 +65,19 @@ struct ModelsSettingsView: View {
     }
 
     private var deleteShown: Binding<Bool> {
-        Binding(get: { pendingDelete != nil }, set: { if !$0 { pendingDelete = nil } })
+        Binding(get: { pendingDelete != nil }, set: {
+            if !$0 {
+                pendingDelete = nil
+            }
+        })
     }
 
     private var errorShown: Binding<Bool> {
-        Binding(get: { deleteError != nil }, set: { if !$0 { deleteError = nil } })
+        Binding(get: { deleteError != nil }, set: {
+            if !$0 {
+                deleteError = nil
+            }
+        })
     }
 
     private func bytesOf(_ model: LocalModel) -> Int64 {
@@ -172,9 +180,10 @@ struct ModelRow: View {
     }
 }
 
+@MainActor
 extension LocalModel {
     /// Chosen by the current settings, so it may not be deleted while that holds.
-    @MainActor func isInUse(settings: AppSettings) -> Bool {
+    func isInUse(settings: AppSettings) -> Bool {
         switch self {
         case .sileroVAD, .kokoro: true
         case .parakeetRealtime320: settings.speechModel == .parakeetRealtime320

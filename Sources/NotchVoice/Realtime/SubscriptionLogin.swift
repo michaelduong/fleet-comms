@@ -112,7 +112,9 @@ enum SubscriptionLogin {
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
             let resumeOnce: @Sendable () -> Void = {
                 let first = resumed.exchange(true) == false
-                if first { continuation.resume() }
+                if first {
+                    continuation.resume()
+                }
             }
             Task.detached {
                 _ = try? await ProcessRunner.run(

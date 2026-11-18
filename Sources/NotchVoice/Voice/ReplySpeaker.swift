@@ -25,6 +25,9 @@ final class ReplySpeaker {
 
     var speed: () -> SpeechSpeed = { .brisk }
 
+    /// Set while a phone is connected: speech is rendered for it instead of this Mac's speakers.
+    var phone: PhoneSpeechPlayer?
+
     var isLoaded: Bool {
         kokoro != nil
     }
@@ -67,6 +70,16 @@ final class ReplySpeaker {
         ])
         speakTask = Task {
             do {
+                if let phone, phone.isAvailable {
+                    try await phone.play(
+                        parts,
+                        with: kokoro,
+                        speed: speed().rawValue,
+                        id: playbackID,
+                        progress: onProgress
+                    )
+                    return finish(generation: current)
+                }
                 try await play(parts, with: kokoro, generation: current, playbackID: playbackID, onStart: onStart)
             } catch is CancellationError {
                 return
@@ -78,6 +91,7 @@ final class ReplySpeaker {
     }
 
     func stop() {
+        phone?.stop()
         speakTask?.cancel()
         speakTask = nil
         progressTask?.cancel()
@@ -148,42 +162,6 @@ final class ReplySpeaker {
         return try await kokoro.synthesizeDetailed(text: part, speed: chosen.rawValue)
     }
 
-    private func makePlayer() throws -> (AVAudioPlayerNode, AVAudioFormat) {
-        let engine = AVAudioEngine()
-        let player = AVAudioPlayerNode()
-        let format = AVAudioFormat(standardFormatWithSampleRate: 24000, channels: 1)!
-        engine.attach(player)
-        do {
-            radio = try RadioOutput(engine: engine, player: player, format: format, bypass: bypassRadio)
-        } catch {
-            try engine.connectNode(player, to: engine.mainMixerNode, format: format)
-        }
-        try engine.start()
-        self.engine = engine
-        return (player, format)
-    }
-
-    private func trackProgress(
-        player: AVAudioPlayerNode, playback: SpeechPlayback, characters: Range<Int>, frames: Range<Int64>,
-        generation current: Int
-    ) {
-        progressTask?.cancel()
-        guard onProgress != nil else { return }
-        progressTask = Task { [weak self] in
-            while !Task.isCancelled, let self, generation == current, isSpeaking {
-                if let render = player.lastRenderTime, let time = player.playerTime(forNodeTime: render) {
-                    let fraction = min(
-                        1,
-                        max(0, Double(time.sampleTime - frames.lowerBound) / Double(max(1, frames.count)))
-                    )
-                    let offset = characters.lowerBound + Int(Double(characters.count) * fraction)
-                    onProgress?(SpeechPlayback(id: playback.id, text: playback.text, utf16Offset: offset))
-                }
-                do { try await Task.sleep(for: .milliseconds(100)) } catch { return }
-            }
-        }
-    }
-
     private static func enqueue(
         _ samples: [Float], on player: AVAudioPlayerNode, format: AVAudioFormat
     ) -> AsyncStream<Void> {
@@ -227,6 +205,42 @@ final class ReplySpeaker {
 }
 
 private extension ReplySpeaker {
+    func makePlayer() throws -> (AVAudioPlayerNode, AVAudioFormat) {
+        let engine = AVAudioEngine()
+        let player = AVAudioPlayerNode()
+        let format = AVAudioFormat(standardFormatWithSampleRate: 24000, channels: 1)!
+        engine.attach(player)
+        do {
+            radio = try RadioOutput(engine: engine, player: player, format: format, bypass: bypassRadio)
+        } catch {
+            try engine.connectNode(player, to: engine.mainMixerNode, format: format)
+        }
+        try engine.start()
+        self.engine = engine
+        return (player, format)
+    }
+
+    func trackProgress(
+        player: AVAudioPlayerNode, playback: SpeechPlayback, characters: Range<Int>, frames: Range<Int64>,
+        generation current: Int
+    ) {
+        progressTask?.cancel()
+        guard onProgress != nil else { return }
+        progressTask = Task { [weak self] in
+            while !Task.isCancelled, let self, generation == current, isSpeaking {
+                if let render = player.lastRenderTime, let time = player.playerTime(forNodeTime: render) {
+                    let fraction = min(
+                        1,
+                        max(0, Double(time.sampleTime - frames.lowerBound) / Double(max(1, frames.count)))
+                    )
+                    let offset = characters.lowerBound + Int(Double(characters.count) * fraction)
+                    onProgress?(SpeechPlayback(id: playback.id, text: playback.text, utf16Offset: offset))
+                }
+                do { try await Task.sleep(for: .milliseconds(100)) } catch { return }
+            }
+        }
+    }
+
     func finishTail(generation: Int) async throws {
         let tail = radio?.finish() ?? 0
         if tail > 0 {

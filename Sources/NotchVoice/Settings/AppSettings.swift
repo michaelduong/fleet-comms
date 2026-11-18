@@ -20,10 +20,15 @@ final class AppSettings {
         case followUp
         case autoSpeak
         case placement
+        case phoneLink
     }
 
     @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored var onChange: ((Change) -> Void)?
+
+    @ObservationIgnored lazy var phone = PhoneLinkSettings(defaults: defaults) { [weak self] in
+        self?.onChange?(.phoneLink)
+    }
 
     var speechModel: SpeechModelChoice {
         didSet {

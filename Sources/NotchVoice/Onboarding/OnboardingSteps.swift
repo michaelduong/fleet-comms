@@ -21,12 +21,21 @@ struct WelcomeStep: View {
                 )
                 .padding(.bottom, -18)
             }
-            point("waveform", "Press the hotkey, speak, pause. Your words become a note to Firstmate, "
-                + "or a quick spoken answer from the fast assistant.")
-            point("lock.shield", "Speech recognition, voice detection and the voice stay on this Mac. "
-                + "The fast assistant runs through your own Claude Code login.")
-            point("antenna.radiowaves.left.and.right", "Two optional realtime lanes (ChatGPT, Grok) send your voice "
-                + "to OpenAI or xAI. They are off until you turn them on in Settings › Realtime.")
+            point(
+                "waveform",
+                "Press the hotkey, speak, pause. Your words become a note to Firstmate, "
+                    + "or a quick spoken answer from the fast assistant."
+            )
+            point(
+                "lock.shield",
+                "Speech recognition, voice detection and the voice stay on this Mac. "
+                    + "The fast assistant runs through your own Claude Code login."
+            )
+            point(
+                "antenna.radiowaves.left.and.right",
+                "Two optional realtime lanes (ChatGPT, Grok) send your voice "
+                    + "to OpenAI or xAI. They are off until you turn them on in Settings › Realtime."
+            )
         }
         .accessibilityIdentifier("onboarding.welcome")
     }
