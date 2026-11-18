@@ -23,12 +23,18 @@ final class PhoneSocket: @unchecked Sendable {
     static func client(host: String, port: UInt16) -> PhoneSocket {
         let parameters = NWParameters.tcp
         parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
-        let connection = NWConnection(
-            host: NWEndpoint.Host(host),
-            port: NWEndpoint.Port(rawValue: port)!,
-            using: parameters
-        )
-        return PhoneSocket(connection: connection)
+        // The WebSocket protocol needs a URL endpoint to build its handshake; a host and port endpoint fails at once
+        // with "unable to create url endpoint".
+        var components = URLComponents()
+        components.scheme = "ws"
+        components.host = host.contains(":") && !host.hasPrefix("[") ? "[\(host)]" : host
+        components.port = Int(port)
+        let endpoint: NWEndpoint = if let url = components.url {
+            .url(url)
+        } else {
+            .hostPort(host: NWEndpoint.Host(host), port: NWEndpoint.Port(rawValue: port)!)
+        }
+        return PhoneSocket(connection: NWConnection(to: endpoint, using: parameters))
     }
 
     func start(onReady: (@Sendable () -> Void)? = nil) {

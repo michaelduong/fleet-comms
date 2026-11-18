@@ -24,7 +24,9 @@ final class HandsetAudio: @unchecked Sendable {
 
     /// Frames played since the first queued buffer, in the speech format's rate.
     var playedFrames: Int64 {
-        guard let render = player.lastRenderTime, let time = player.playerTime(forNodeTime: render) else { return 0 }
+        // Before the first reply or microphone use the player is not attached yet, and asking it for its time throws.
+        guard player.engine != nil, let render = player.lastRenderTime,
+              let time = player.playerTime(forNodeTime: render) else { return 0 }
         return max(0, time.sampleTime)
     }
 

@@ -181,6 +181,7 @@
 		F23528EC4D314F780993FDC1 /* TranscriptProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55970DE88F8A4431A872CF48 /* TranscriptProofTests.swift */; };
 		F344130635EF231F163F37CD /* CardTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCEA74EBC3EF7B2C089210D /* CardTheme.swift */; };
 		F44C2C8E1C55CE1646CCE3B8 /* NotchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2034DB51B85B17D96ACCC61D /* NotchState.swift */; };
+		F63434647E37AB184AC9A1F8 /* PhoneSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7975F75014EDA5150CF38EAC /* PhoneSocketTests.swift */; };
 		F813170D6E98C5C08240E419 /* FluidAudio in Frameworks */ = {isa = PBXBuildFile; productRef = CAFC6394337BFED281082E25 /* FluidAudio */; };
 		FB97772C516D368A675DEEEA /* RealtimeCall+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEA1B2909D4C00FCE5B5AEA5 /* RealtimeCall+Tools.swift */; };
 		FBFBAA70D3330F32A34CC639 /* DockPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2557B2BFAA4650888CAF9C61 /* DockPill.swift */; };
@@ -280,6 +281,7 @@
 		6F614234E9D86261687F9AB9 /* AssistantConversation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantConversation.swift; sourceTree = "<group>"; };
 		748095FA1ECC5F0D69DE6ACF /* AssistantSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantSettingsView.swift; sourceTree = "<group>"; };
 		786F3D8A8A2398BF5B0EF9AA /* RadioAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioAudioUnit.swift; sourceTree = "<group>"; };
+		7975F75014EDA5150CF38EAC /* PhoneSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSocketTests.swift; sourceTree = "<group>"; };
 		7A7177C2FE0CFCF583DD433B /* SpeechPlaybackTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechPlaybackTests.swift; sourceTree = "<group>"; };
 		7AE37B0B7910E74DA21CB698 /* RealtimeSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeSettingsView.swift; sourceTree = "<group>"; };
 		7CB6ECA171E372E301CF2969 /* SpokenSummaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenSummaryTests.swift; sourceTree = "<group>"; };
@@ -479,6 +481,7 @@
 				47F79080C032795BD585946B /* OnboardingFlowTests.swift */,
 				E77A96928A6E9976BD1C783E /* OutreachTests.swift */,
 				B74EAC00DFF2903978B99DD4 /* OutreachUIProofTests.swift */,
+				7975F75014EDA5150CF38EAC /* PhoneSocketTests.swift */,
 				26494007F7C3B14A4D799D3E /* PillLayoutTests.swift */,
 				4C2FD6EC1B2239D1060ED40A /* RadioTransmissionTests.swift */,
 				D8EE9461F2A0E130BCBB154F /* RealtimeLookupProofTests.swift */,
@@ -1033,6 +1036,7 @@
 				F135A98033ECA4639E955588 /* OnboardingFlowTests.swift in Sources */,
 				5C418D762860CEF24C5BB98E /* OutreachTests.swift in Sources */,
 				1FEC2DE3BE60B2F9617A68E5 /* OutreachUIProofTests.swift in Sources */,
+				F63434647E37AB184AC9A1F8 /* PhoneSocketTests.swift in Sources */,
 				4126FE295BF2E75B85FDCFC0 /* PillLayoutTests.swift in Sources */,
 				A66B0D7D31D0CC87F486CF8F /* RadioTransmissionTests.swift in Sources */,
 				B922CFE81BDAC8D585C67AA2 /* RealtimeLookupProofTests.swift in Sources */,
