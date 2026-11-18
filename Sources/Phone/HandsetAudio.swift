@@ -37,6 +37,8 @@ final class HandsetAudio: @unchecked Sendable {
         let session = AVAudioSession.sharedInstance()
         do {
             try session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .allowBluetoothHFP])
+            // Without this iOS mutes every app haptic while the session records.
+            try session.setAllowHapticsAndSystemSoundsDuringRecording(true)
             try session.setActive(true)
         } catch { return false }
         engine.attach(player)

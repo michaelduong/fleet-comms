@@ -20,6 +20,7 @@
 		C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366FE7BA1EB5867246B17202 /* HandsetView.swift */; };
 		CFA8EB65CF9B7273D860A895 /* CommsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA0A4E5938283E851191C7 /* CommsActivity.swift */; };
 		E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */; };
+		EB6F4AC9AC99DA29DCC895DB /* TalkHaptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10135EA6D16C10EE50C968DE /* TalkHaptics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneProtocol.swift; sourceTree = "<group>"; };
 		0DEA0A4E5938283E851191C7 /* CommsActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommsActivity.swift; sourceTree = "<group>"; };
+		10135EA6D16C10EE50C968DE /* TalkHaptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkHaptics.swift; sourceTree = "<group>"; };
 		114B310B8094E7E47D82EB6D /* Fleet Comms.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Fleet Comms.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FleetCommsPhoneLive.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		24EB9A6951E7ED307F861B2C /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */,
 				24EB9A6951E7ED307F861B2C /* PhoneModel.swift */,
 				A079226311381FCD76BD833C /* PushToTalk.swift */,
+				10135EA6D16C10EE50C968DE /* TalkHaptics.swift */,
 				F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */,
 			);
 			path = Phone;
@@ -187,11 +190,11 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					A72CC472A25B65B1E4C5BA78 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = NELGRQX33K;
 						ProvisioningStyle = Automatic;
 					};
 					B90D058878D423428B0A6797 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = NELGRQX33K;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -239,6 +242,7 @@
 				08FD423100322986B197D737 /* PhoneProtocol.swift in Sources */,
 				630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */,
 				56506C4582525C13B7FE63F5 /* PushToTalk.swift in Sources */,
+				EB6F4AC9AC99DA29DCC895DB /* TalkHaptics.swift in Sources */,
 				98A52B2B9F7DEDED6ADB0090 /* TalkIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
