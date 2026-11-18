@@ -143,6 +143,10 @@ final class PhoneModel {
             socket.onClose = nil
             socket.close()
             hostIndex += 1
+            // Pairing is one-shot, so try every address in the code before giving up.
+            if let pairing, hostIndex < pairing.hosts.count {
+                return connect()
+            }
             link = .failed(pairing == nil
                 ? "The Mac did not answer. Check that Tailscale is on, or pair again."
                 : "Could not reach the Mac. Check the code is still showing and try again.")
@@ -204,7 +208,11 @@ final class PhoneModel {
             transcript = message.text ?? ""
             updateLive()
         case .speech: beginSpeech(message.text ?? "")
-        case .part: pendingPart = PendingPart(start: message.start ?? 0, length: message.length ?? 0, words: message.words)
+        case .part: pendingPart = PendingPart(
+                start: message.start ?? 0,
+                length: message.length ?? 0,
+                words: message.words
+            )
         case .speechEnd: break
         case .stopSpeech: flushSpeech()
         default: break

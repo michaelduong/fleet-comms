@@ -5,7 +5,7 @@
 
 import Foundation
 
-/// How a phone can find this Mac: its Tailscale address when there is one, then its local host name.
+/// How a phone can find this Mac: its local host name, then its Tailscale address when there is one.
 enum PhoneAddress {
     /// The Tailscale IPv4 address (100.64.0.0/10) on any interface, read without asking Tailscale.
     static func tailscaleIPv4() -> String? {
@@ -24,7 +24,13 @@ enum PhoneAddress {
     }
 
     static func hosts() -> [String] {
-        [tailscaleIPv4(), ProcessInfo.processInfo.hostName].compactMap(\.self)
+        order(tailscale: tailscaleIPv4(), name: ProcessInfo.processInfo.hostName)
+    }
+
+    /// The local name first: it works on the same network without Tailscale, while a Tailscale address can
+    /// hang the connection (FLC-35).
+    static func order(tailscale: String?, name: String) -> [String] {
+        [name, tailscale].compactMap(\.self)
     }
 
     static func link(for code: PhonePairings.Code) -> PhonePairingLink {
