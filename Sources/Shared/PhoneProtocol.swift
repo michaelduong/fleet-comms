@@ -47,13 +47,15 @@ struct PhoneMessage: Codable, Equatable, Sendable {
     var start: Int?
     var length: Int?
     var assistant: Bool?
+    /// On `part`: when the voice starts each word of the sentence. Absent from older Macs.
+    var words: [PhoneWord]?
 
     init(_ kind: Kind) {
         self.kind = kind
     }
 
     private enum CodingKeys: String, CodingKey {
-        case kind = "t", token, text, state, start, length, assistant
+        case kind = "t", token, text, state, start, length, assistant, words
     }
 }
 

@@ -8,13 +8,6 @@ import Foundation
 import Observation
 
 /// The handset: one link to the Mac, the microphone up, the reply speech down.
-/// Where one sentence of the reply sits in the text and in the queued audio.
-struct SpokenPart {
-    let range: Range<Int>
-    let startFrame: Int64
-    let frames: Int64
-}
-
 @MainActor
 @Observable
 final class PhoneModel {
@@ -34,23 +27,24 @@ final class PhoneModel {
     private(set) var macState = "idle"
     private(set) var macMessage = ""
     private(set) var transcript = ""
-    private(set) var replyText = ""
-    private(set) var spokenOffset = 0
+    var replyText = ""
+    var spokenOffset = 0
+    var revealMarks: [RevealMark] = []
     private(set) var isTalking = false
-    private(set) var isSpeaking = false
+    var isSpeaking = false
     var talkRequestedExternally = false
 
     @ObservationIgnored private let defaults = UserDefaults.standard
     @ObservationIgnored private var socket: PhoneSocket?
-    @ObservationIgnored private let audio = HandsetAudio()
-    @ObservationIgnored private let live = LiveActivityController()
+    @ObservationIgnored let audio = HandsetAudio()
+    @ObservationIgnored let live = LiveActivityController()
     @ObservationIgnored private let channel = PushToTalkChannel()
     @ObservationIgnored private var pttToken: Data?
     @ObservationIgnored private var pressedAt: Date?
-    @ObservationIgnored private var parts: [SpokenPart] = []
-    @ObservationIgnored private var queuedFrames: Int64 = 0
-    @ObservationIgnored private var pendingPart: (start: Int, length: Int)?
-    @ObservationIgnored private var progressTimer: Timer?
+    @ObservationIgnored var parts: [SpokenPart] = []
+    @ObservationIgnored var queuedFrames: Int64 = 0
+    @ObservationIgnored var pendingPart: PendingPart?
+    @ObservationIgnored var ticker: DisplayTicker?
     @ObservationIgnored private var retry: Task<Void, Never>?
 
     init() {
@@ -205,7 +199,7 @@ final class PhoneModel {
             transcript = message.text ?? ""
             updateLive()
         case .speech: beginSpeech(message.text ?? "")
-        case .part: pendingPart = (message.start ?? 0, message.length ?? 0)
+        case .part: pendingPart = PendingPart(start: message.start ?? 0, length: message.length ?? 0, words: message.words)
         case .speechEnd: break
         case .stopSpeech: flushSpeech()
         default: break
@@ -259,24 +253,6 @@ final class PhoneModel {
         socket?.send(message)
     }
 
-    private func updateLive() {
-        let phase: CommsActivityAttributes.ContentState.Phase = isTalking ? .listening
-            : isSpeaking ? .speaking : (macState == "thinking" || macState == "sending") ? .thinking : .idle
-        guard phase != .idle || !replyText.isEmpty || !transcript.isEmpty else { return live.end() }
-        let utf16 = Array(replyText.utf16)
-        let upTo = min(utf16.count, spokenOffset)
-        let sentence: String = {
-            guard isSpeaking else { return "" }
-            let before = String(utf16CodeUnits: Array(utf16[..<upTo]), count: upTo)
-            let start = before.lastIndex(where: { ".!?".contains($0) }).map { before.index(after: $0) } ?? before
-                .startIndex
-            let rest = String(utf16CodeUnits: Array(utf16[upTo...]), count: utf16.count - upTo)
-            let end = rest.firstIndex(where: { ".!?".contains($0) }).map { rest.index(after: $0) } ?? rest.endIndex
-            return (before[start...] + rest[..<end]).trimmingCharacters(in: .whitespaces)
-        }()
-        live.update(.init(phase: phase, words: transcript, sentence: sentence))
-    }
-
     private func release() {
         haptics.sent()
         socket?.send(PhoneMessage(.release))
@@ -296,57 +272,5 @@ final class PhoneModel {
             try? await Task.sleep(for: .milliseconds(250))
         }
         pressDown()
-    }
-}
-
-extension PhoneModel {
-    private func beginSpeech(_ text: String) {
-        flushSpeech()
-        replyText = text
-        spokenOffset = 0
-        isSpeaking = true
-        progressTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.updateProgress() }
-        }
-    }
-
-    private func play(_ data: Data) {
-        let samples = PhoneLink.samples(data)
-        if let part = pendingPart {
-            parts.append(SpokenPart(
-                range: part.start ..< part.start + part.length,
-                startFrame: queuedFrames,
-                frames: Int64(samples.count)
-            ))
-        }
-        queuedFrames += Int64(samples.count)
-        audio.play(samples) { [weak self] in
-            Task { @MainActor in self?.playbackDrained() }
-        }
-    }
-
-    private func playbackDrained() {
-        guard audio.pendingBuffers == 0 else { return }
-        isSpeaking = false
-        progressTimer?.invalidate()
-        spokenOffset = replyText.utf16.count
-        updateLive()
-    }
-
-    private func updateProgress() {
-        let frame = audio.playedFrames
-        guard let part = parts.last(where: { $0.startFrame <= frame }) else { return }
-        let fraction = min(1, max(0, Double(frame - part.startFrame) / Double(max(1, part.frames))))
-        spokenOffset = part.range.lowerBound + Int(Double(part.range.count) * fraction)
-        updateLive()
-    }
-
-    private func flushSpeech() {
-        audio.stopPlayback()
-        progressTimer?.invalidate()
-        parts = []
-        queuedFrames = 0
-        pendingPart = nil
-        isSpeaking = false
     }
 }
