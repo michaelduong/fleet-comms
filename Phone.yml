@@ -32,6 +32,7 @@ targets:
         NSSupportsLiveActivities: true
         UIBackgroundModes: [audio, push-to-talk]
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSCameraUsageDescription: Fleet Comms scans the pairing code shown on your Mac.
         NSMicrophoneUsageDescription: Fleet Comms sends your voice to your Mac while you hold the talk button.
         NSLocalNetworkUsageDescription: Fleet Comms talks to Fleet Comms on your Mac over your network or Tailscale.
     entitlements:

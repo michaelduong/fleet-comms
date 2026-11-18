@@ -25,13 +25,10 @@ final class PhoneModel {
         case unpaired, connecting, connected, failed(String)
     }
 
-    var host: String {
-        didSet { defaults.set(host, forKey: "host") }
-    }
-
-    var token: String {
-        didSet { defaults.set(token, forKey: "token") }
-    }
+    /// Where the paired Mac can be reached, best first, and what to call it.
+    private(set) var mac: PairedMac
+    @ObservationIgnored private var pairing: PhonePairingLink?
+    @ObservationIgnored private var hostIndex = 0
 
     private(set) var link: Link = .unpaired
     private(set) var macState = "idle"
@@ -57,8 +54,7 @@ final class PhoneModel {
     @ObservationIgnored private var retry: Task<Void, Never>?
 
     init() {
-        host = defaults.string(forKey: "host") ?? ""
-        token = defaults.string(forKey: "token") ?? ""
+        mac = PairedMac(defaults: defaults)
         audio.onMicSamples = { [weak self] samples in
             Task { @MainActor in self?.socket?.sendAudio(samples) }
         }
@@ -72,7 +68,7 @@ final class PhoneModel {
     }
 
     var isPaired: Bool {
-        !host.isEmpty && !token.isEmpty
+        mac.isPaired
     }
 
     var isConnected: Bool {
@@ -91,13 +87,41 @@ final class PhoneModel {
         }
     }
 
+    /// Reads a scanned or pasted link and pairs with the Mac it names; false when the text is not a pairing link.
+    @discardableResult
+    func pair(with text: String) -> Bool {
+        guard let link = PhonePairingLink(text) else { return false }
+        pairing = link
+        hostIndex = 0
+        connect()
+        return true
+    }
+
     func connect() {
         retry?.cancel()
         socket?.onClose = nil
         socket?.close()
-        guard isPaired else { return link = .unpaired }
+        let credential: PhoneTLS.Credential
+        let hostList: [String]
+        let port: UInt16
+        if let pairing {
+            credential = .init(identity: "pair-" + pairing.id, key: pairing.key)
+            hostList = pairing.hosts
+            port = pairing.port
+        } else if let own = mac.credential, mac.isPaired {
+            credential = own
+            hostList = mac.hosts
+            port = PhoneLink.port
+        } else {
+            return link = .unpaired
+        }
         link = .connecting
-        let socket = PhoneSocket.client(host: host.trimmingCharacters(in: .whitespaces), port: PhoneLink.port)
+        let host = hostList[hostIndex % hostList.count]
+        let socket = PhoneSocket.client(
+            host: host.trimmingCharacters(in: .whitespaces),
+            port: port,
+            credential: credential
+        )
         socket.onMessage = { [weak self] message in Task { @MainActor in self?.handle(message) } }
         socket.onAudio = { [weak self] data in Task { @MainActor in self?.play(data) } }
         socket.onClose = { [weak self, weak socket] in
@@ -107,20 +131,32 @@ final class PhoneModel {
             }
         }
         self.socket = socket
-        let token = token
+        let pairingID = pairing?.id
+        let phoneID = mac.phoneID
         socket.start {
-            var hello = PhoneMessage(.hello)
-            hello.token = token
+            var hello = PhoneMessage(pairingID == nil ? .hello : .pair)
+            hello.token = pairingID ?? phoneID
             socket.send(hello)
         }
-        // The Mac answers a good token with `ready`; no answer means no Mac there, or a wrong code.
+        // No answer means no Mac there, or one that does not hold this phone's key; try its next address.
         retry = Task {
             try? await Task.sleep(for: .seconds(6))
             guard !Task.isCancelled, link == .connecting else { return }
             socket.onClose = nil
             socket.close()
-            link = .failed("The Mac did not answer. Check the host, the pairing code and that Tailscale is on.")
+            hostIndex += 1
+            link = .failed(pairing == nil
+                ? "The Mac did not answer. Check that Tailscale is on, or pair again."
+                : "Could not reach the Mac. Check the code is still showing and try again.")
         }
+    }
+
+    private func finishPairing(_ message: PhoneMessage) {
+        guard let pairing, let id = message.token, let key = message.text.flatMap(Base64URL.decode) else { return }
+        mac.save(link: pairing, phoneID: id, key: key, defaults: defaults)
+        self.pairing = nil
+        hostIndex = 0
+        connect()
     }
 
     func disconnect() {
@@ -147,6 +183,7 @@ final class PhoneModel {
 
     private func handle(_ message: PhoneMessage) {
         switch message.kind {
+        case .paired: finishPairing(message)
         case .ready:
             retry?.cancel()
             link = .connected

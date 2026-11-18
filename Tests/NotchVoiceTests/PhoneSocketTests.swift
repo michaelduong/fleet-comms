@@ -27,6 +27,82 @@ struct PhoneSocketTests {
         #expect(first?.kind == .hello)
         #expect(first?.token == "pairing-code")
     }
+
+    // Intent: the encrypted link (FLC-24) connects only for a phone holding the key the Mac listens for.
+    @Test func tlsLinkNeedsTheRightKey() async throws {
+        let key = Data((0 ..< 32).map { _ in UInt8.random(in: .min ... .max) })
+        // A fresh listener per attempt: the message stream ends once a read has timed out.
+        let server = LoopbackServer(credentials: [.init(identity: "phone-1", key: key)])
+        let port = try await server.start()
+        defer { server.listener.cancel() }
+
+        let wrong = PhoneSocket.client(
+            host: "127.0.0.1",
+            port: port,
+            credential: .init(identity: "phone-1", key: Data(repeating: 1, count: 32))
+        )
+        defer { wrong.close() }
+        wrong.start { wrong.send(PhoneMessage(.hello)) }
+        #expect(await server.firstMessage(within: .seconds(2)) == nil)
+
+        let second = LoopbackServer(credentials: [.init(identity: "phone-1", key: key)])
+        let secondPort = try await second.start()
+        defer { second.listener.cancel() }
+        let right = PhoneSocket.client(
+            host: "127.0.0.1",
+            port: secondPort,
+            credential: .init(identity: "phone-1", key: key)
+        )
+        defer { right.close() }
+        right.start {
+            var hello = PhoneMessage(.hello)
+            hello.token = "phone-1"
+            right.send(hello)
+        }
+        #expect(await second.firstMessage(within: .seconds(5))?.token == "phone-1")
+    }
+
+    // Intent: the QR carries a link the phone reads back exactly, and refuses anything else.
+    @Test func pairingLinkRoundTrips() throws {
+        let link = PhonePairingLink(
+            name: "Studio Mac",
+            hosts: ["100.64.1.2", "studio.local"],
+            port: 47653,
+            id: "a1b2c3d4",
+            key: Data((0 ..< 16).map { UInt8($0) })
+        )
+        let url = try #require(link.url)
+        #expect(PhonePairingLink(url.absoluteString) == link)
+        #expect(PhonePairingLink("https://example.com/pair?v=1") == nil)
+        #expect(PhonePairingLink("fleetcomms://pair?v=2&a=x&p=1&i=a&k=AAAAAAAAAAAAAAAAAAAAAA") == nil)
+    }
+}
+
+@MainActor
+struct PhonePairingsTests {
+    private func make() -> PhonePairings {
+        let suite = "pairings-\(UUID().uuidString)"
+        return PhonePairings(defaults: UserDefaults(suiteName: suite)!, keys: MemoryKeyStore())
+    }
+
+    // Intent: a code pairs one phone once, within five minutes, and Remove deletes that phone's key.
+    @Test func codeWorksOnceAndRemoveCutsOff() throws {
+        let pairings = make()
+        let code = pairings.beginPairing()
+        #expect(pairings.claim(codeID: "wrong") == nil)
+        let claimed = try #require(pairings.claim(codeID: code.id))
+        #expect(claimed.key.count == 32)
+        #expect(pairings.claim(codeID: code.id) == nil)
+        #expect(pairings.credentials.map(\.identity) == [claimed.phone.id])
+        pairings.remove(claimed.phone.id)
+        #expect(pairings.credentials.isEmpty)
+    }
+
+    @Test func expiredCodeIsRefused() {
+        let pairings = make()
+        let code = pairings.beginPairing()
+        #expect(pairings.claim(codeID: code.id, now: Date().addingTimeInterval(PhonePairings.codeLife + 1)) == nil)
+    }
 }
 
 /// A WebSocket listener on a free loopback port, set up like the Mac's phone server.
@@ -37,9 +113,14 @@ private final class LoopbackServer: @unchecked Sendable {
     /// The accepted socket only holds itself weakly, so the server keeps it.
     private var accepted: PhoneSocket?
 
-    init() {
-        let parameters = NWParameters.tcp
-        parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
+    init(credentials: [PhoneTLS.Credential] = []) {
+        let parameters: NWParameters
+        if credentials.isEmpty {
+            parameters = NWParameters.tcp
+            parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
+        } else {
+            parameters = PhoneTLS.parameters(credentials)
+        }
         listener = try! NWListener(using: parameters) // swiftlint:disable:this force_try
     }
 

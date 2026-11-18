@@ -6,14 +6,15 @@
 import Foundation
 import Network
 
-/// Listens for one paired iPhone handset. The token in the first frame is the only credential; the link
-/// is meant for a Tailscale or home network, and an unpaired connection is closed without an answer.
+/// Listens for one paired iPhone handset. The link is TLS with a pre-shared key per phone, so a connection
+/// only completes for a phone holding its key (or the one-time pairing code); anything else is closed.
 @MainActor
 final class PhoneServer {
     private var listener: NWListener?
     private var socket: PhoneSocket?
     private var authenticated = false
-    private let token: () -> String
+    private let pairings: PhonePairings
+    private var phoneID: String?
     /// The utterance the phone is speaking right now.
     var feed: PhoneFeed?
 
@@ -27,7 +28,9 @@ final class PhoneServer {
 
     /// Pushes the phone awake and waits for it to reconnect; false when it never does.
     func wake() async -> Bool {
-        if isConnected { return true }
+        if isConnected {
+            return true
+        }
         guard let apns, let pttToken, await apns.wake(token: pttToken) else { return false }
         for _ in 0 ..< 40 where !isConnected {
             try? await Task.sleep(for: .milliseconds(250))
@@ -43,14 +46,13 @@ final class PhoneServer {
         authenticated && socket != nil
     }
 
-    init(token: @escaping () -> String) {
-        self.token = token
+    init(pairings: PhonePairings) {
+        self.pairings = pairings
     }
 
     func start() {
         guard listener == nil else { return }
-        let parameters = NWParameters.tcp
-        parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
+        let parameters = PhoneTLS.parameters(pairings.credentials)
         guard let listener = try? NWListener(using: parameters, on: NWEndpoint.Port(rawValue: PhoneLink.port)!) else {
             Log.speech.error("Phone link could not listen on port \(PhoneLink.port)")
             return
@@ -66,6 +68,19 @@ final class PhoneServer {
         listener?.cancel()
         listener = nil
         drop()
+    }
+
+    /// Listens again with the current keys. A connected phone stays connected; use `drop(phone:)` to end one.
+    func rebuildListener() {
+        listener?.cancel()
+        listener = nil
+        start()
+    }
+
+    func drop(phone id: String) {
+        if phoneID == id {
+            drop()
+        }
     }
 
     func send(_ message: PhoneMessage) {
@@ -105,11 +120,21 @@ final class PhoneServer {
 
     private func handle(_ message: PhoneMessage) {
         guard authenticated else {
-            guard message.kind == .hello, let sent = message.token, Self.matches(sent, token()) else {
-                return drop()
+            switch message.kind {
+            case .hello:
+                // The TLS handshake already proved a key; the phone names which one so Remove can find it.
+                guard let id = message.token, pairings.hasPhone(id) else { return drop() }
+                phoneID = id
+                authenticated = true
+                onConnectionChange?(true)
+            case .pair:
+                guard let id = message.token, let claimed = pairings.claim(codeID: id) else { return drop() }
+                var reply = PhoneMessage(.paired)
+                reply.token = claimed.phone.id
+                reply.text = Base64URL.encode(claimed.key)
+                socket?.send(reply)
+            default: drop()
             }
-            authenticated = true
-            onConnectionChange?(true)
             return
         }
         if message.kind == .pttToken {
@@ -125,15 +150,9 @@ final class PhoneServer {
         socket?.close()
         socket = nil
         authenticated = false
+        phoneID = nil
         if wasConnected {
             onConnectionChange?(false)
         }
-    }
-
-    /// Constant-time comparison, so response timing says nothing about the token.
-    nonisolated static func matches(_ sent: String, _ expected: String) -> Bool {
-        let left = Array(sent.utf8), right = Array(expected.utf8)
-        guard left.count == right.count, !right.isEmpty else { return false }
-        return zip(left, right).reduce(0) { $0 | ($1.0 ^ $1.1) } == 0
     }
 }

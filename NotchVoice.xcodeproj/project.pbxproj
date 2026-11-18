@@ -38,6 +38,7 @@
 		1FF4AE3411C011EF429D50D4 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE92513D96F10F32D1411E38 /* ProcessRunner.swift */; };
 		223CC001F1FFD0AF949C1093 /* NotchPanelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 698F70E2BF94F702B93D6DDD /* NotchPanelController.swift */; };
 		24187B51F64D149AD8E05EAA /* AskQuestionDictationProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54DB8BD1305EBE29BD91CF89 /* AskQuestionDictationProofTests.swift */; };
+		241F610AB491CFD13C2017C7 /* PhonePairingLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0718965C9A194ADCF28E400 /* PhonePairingLink.swift */; };
 		254EC6F1BA6D2F6966AEB08F /* MessengerLookupProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A376420ABEE64F6678C7BB36 /* MessengerLookupProofTests.swift */; };
 		259F7C1B4498C08F22376F2A /* LookupFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B7DC59003CB802BDF56ABA /* LookupFiles.swift */; };
 		282FEBB1F99CCAF44C57966B /* AppModel+Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F5E64AEE946645677ED1994 /* AppModel+Assistant.swift */; };
@@ -45,6 +46,7 @@
 		30BF914814BFBDEDB408BDDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E16C539E7BC596D6690A0B39 /* Assets.xcassets */; };
 		3206B71995B066670F623E40 /* RealtimeVoices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A7CEC4C57E2496CA23F8005 /* RealtimeVoices.swift */; };
 		32B9164C60E6460AF54F2C0C /* RealtimeLookupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D351E8916BC1F69058105826 /* RealtimeLookupTests.swift */; };
+		3444E702950806BDD8702C59 /* PhonePairSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 155DFBE333D34D96DEEF7E2E /* PhonePairSheet.swift */; };
 		374A97E45698FED6F44F8EBE /* AboutCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4688D207BB368018CD92754F /* AboutCapture.swift */; };
 		37CD6CFD945770B6D952A5B6 /* AskQuestionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B96AF09190C5FADDDC69BEDB /* AskQuestionTests.swift */; };
 		389360D8664CE4A3CD8C852A /* AppSettings+Keys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051A4C531F63F74A42280682 /* AppSettings+Keys.swift */; };
@@ -83,6 +85,7 @@
 		63FF3B368F22E0DB6ECCB99C /* ExpandedContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E24756CB9636BC659175A123 /* ExpandedContent.swift */; };
 		6452BC5E4977F45A04679C5E /* MessengerLookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A402D9044C22530A3FF7D6C1 /* MessengerLookup.swift */; };
 		655BC6B87067EC02D32CCE37 /* MessengerProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D906B35D1A736FD8FBF7FD4 /* MessengerProcess.swift */; };
+		65C254D7BB2F201FBFB99ABB /* PhoneAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFBFF503951FED7AD20DA820 /* PhoneAddress.swift */; };
 		676E354F5A5410F9FA7C864B /* MessengerProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDF37C8F8DBB992DE07D7B0 /* MessengerProofTests.swift */; };
 		6A2A1ADB67446EB1FC93A81E /* PhoneRadioRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 988DE6E77D0DAD92BDA2F725 /* PhoneRadioRenderer.swift */; };
 		6B429DA9A4407B11EF2F75C4 /* UpdateConfigurationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13654D1189E6349B4718120A /* UpdateConfigurationTests.swift */; };
@@ -92,6 +95,7 @@
 		6EF76F820AC7D8B5E2CCA53A /* PhoneSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AA76409534741B0226C0C30 /* PhoneSettingsSection.swift */; };
 		721BBB0A2CD8C06693767973 /* CallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94EED76EEB86E3DC68E7FF9B /* CallView.swift */; };
 		73945D667481CC16C87BC38A /* AskQuestionProof.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5008FBFD7331C6E6346FD04B /* AskQuestionProof.swift */; };
+		75AC7A53C65B80C0572BDE4C /* PhoneTLS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0CAA374A991C4155FA59AC /* PhoneTLS.swift */; };
 		78294EDDDE2E202B59ED7001 /* AskQuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3548A1052241DAD928439D22 /* AskQuestionView.swift */; };
 		78F3F66416E4254D7C95C225 /* MessengerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B79624D6813B8232A2B4AFE5 /* MessengerModel.swift */; };
 		7A78A92BC35A53AC8C99FCD0 /* RealtimePrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37D72D37DDC83B3B08C8F58B /* RealtimePrompt.swift */; };
@@ -125,6 +129,7 @@
 		A5AAEC80D12EAD465B774150 /* RealtimePCM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFE25D3DC5E1CDB7E19AA2E /* RealtimePCM.swift */; };
 		A5B6343B0A0124485D58BF05 /* ListeningPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A6E8E9F5D72A95C15B385C /* ListeningPipeline.swift */; };
 		A66B0D7D31D0CC87F486CF8F /* RadioTransmissionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2FD6EC1B2239D1060ED40A /* RadioTransmissionTests.swift */; };
+		AAC3BC192F72E881CD2885EB /* PhoneKeyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54727BB1952F7063324B6764 /* PhoneKeyStore.swift */; };
 		AEAC375225AEB29E3083EB26 /* PhoneProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80AEEA98DA1D59D69C68CD2 /* PhoneProtocol.swift */; };
 		AF93435F1302071B9BBE9C54 /* FirstmateInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF8A306D33512A74B219C8F /* FirstmateInbox.swift */; };
 		B005BC2EAE20AB3AD330A2FE /* AssistantWireTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3D1CC36A910BBC1DEB14B4B /* AssistantWireTests.swift */; };
@@ -139,6 +144,7 @@
 		B6CCFF98BEDA74A60A35E3D0 /* MessengerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24B8048950624AB73C68A828 /* MessengerCommand.swift */; };
 		B922CFE81BDAC8D585C67AA2 /* RealtimeLookupProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EE9461F2A0E130BCBB154F /* RealtimeLookupProofTests.swift */; };
 		BB9C1D139AA5FDA40C4D45D2 /* AssistantConversation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F614234E9D86261687F9AB9 /* AssistantConversation.swift */; };
+		BD1B391A12DA9767CE37A63B /* PhonePairings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5A530F4C3BDCEBF12E7E07 /* PhonePairings.swift */; };
 		BD2C46B788D1026E74EC1367 /* ModelDownloadProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6620BFBC300C257057835360 /* ModelDownloadProofTests.swift */; };
 		BDD71EA6D63D69AE3CC77B07 /* FloatingPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB03D95F59550FF6C31D115 /* FloatingPill.swift */; };
 		BF7AB7F6350734A9ECE33A0F /* SpeechScrollFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD41B26B2899771DA67E1994 /* SpeechScrollFixture.swift */; };
@@ -212,6 +218,7 @@
 		13149686D0E993F915DF8B01 /* SpeechSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechSettingsTests.swift; sourceTree = "<group>"; };
 		13654D1189E6349B4718120A /* UpdateConfigurationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateConfigurationTests.swift; sourceTree = "<group>"; };
 		138F9E688E3B627BFFD0BE37 /* ModelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLoader.swift; sourceTree = "<group>"; };
+		155DFBE333D34D96DEEF7E2E /* PhonePairSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairSheet.swift; sourceTree = "<group>"; };
 		16172D5880848FC19EA47D8D /* RealtimeOutreach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeOutreach.swift; sourceTree = "<group>"; };
 		17BBA53CE9D298BA42A49608 /* UICapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICapture.swift; sourceTree = "<group>"; };
 		18661F482540ED172D5D0255 /* AskQuestionFixture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskQuestionFixture.swift; sourceTree = "<group>"; };
@@ -255,12 +262,14 @@
 		51D9A0517B1D620089AFA24D /* FleetRefreshRate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetRefreshRate.swift; sourceTree = "<group>"; };
 		53AB4A5867B9A1F4043558AD /* SpeechScrollAudioProofTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechScrollAudioProofTests.swift; sourceTree = "<group>"; };
 		5402047033B1E7F58BDBA714 /* FleetSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetSummary.swift; sourceTree = "<group>"; };
+		54727BB1952F7063324B6764 /* PhoneKeyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneKeyStore.swift; sourceTree = "<group>"; };
 		54DB8BD1305EBE29BD91CF89 /* AskQuestionDictationProofTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskQuestionDictationProofTests.swift; sourceTree = "<group>"; };
 		558FD40D2D25B67E0ADF71BC /* MenuPlacement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPlacement.swift; sourceTree = "<group>"; };
 		55970DE88F8A4431A872CF48 /* TranscriptProofTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptProofTests.swift; sourceTree = "<group>"; };
 		57F0594E0E7B6BD0B43E86B3 /* RealtimeCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeCall.swift; sourceTree = "<group>"; };
 		582E7C1E1F32B6FC30453E24 /* MenuPlacementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPlacementTests.swift; sourceTree = "<group>"; };
 		5A524285CD7A2BD7B6C89108 /* AudioProofSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioProofSupport.swift; sourceTree = "<group>"; };
+		5B0CAA374A991C4155FA59AC /* PhoneTLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTLS.swift; sourceTree = "<group>"; };
 		5C95477AAA6E8355ED417B43 /* ApnsPushToTalk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApnsPushToTalk.swift; sourceTree = "<group>"; };
 		621FF85DD35503EA71D72192 /* OutreachWire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutreachWire.swift; sourceTree = "<group>"; };
 		623E437BC488EAD0037EE715 /* FleetRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetRefreshTests.swift; sourceTree = "<group>"; };
@@ -336,6 +345,7 @@
 		B9E851AB5030178D5C74044A /* MessageDismissalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDismissalTests.swift; sourceTree = "<group>"; };
 		BEA1B2909D4C00FCE5B5AEA5 /* RealtimeCall+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealtimeCall+Tools.swift"; sourceTree = "<group>"; };
 		BF02FB57DCDB0C2C97F207CA /* AppModel+Listening.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppModel+Listening.swift"; sourceTree = "<group>"; };
+		BFBFF503951FED7AD20DA820 /* PhoneAddress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneAddress.swift; sourceTree = "<group>"; };
 		C0B9F3395904385590D4D225 /* AppSettings+InitialValues.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSettings+InitialValues.swift"; sourceTree = "<group>"; };
 		C23EAEC14C3261DD25C0EB8C /* PhoneFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneFeed.swift; sourceTree = "<group>"; };
 		C3D0891A5B1B1D41E9C954C2 /* SpokenSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenSummary.swift; sourceTree = "<group>"; };
@@ -374,10 +384,12 @@
 		EC181422E55BA41D4CC01EED /* ModelLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelLibrary.swift; sourceTree = "<group>"; };
 		ECB0A16EC706E397A94217DE /* NotchVoiceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchVoiceApp.swift; sourceTree = "<group>"; };
 		EE77D18D23D062F451821F8E /* SettingsChoices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChoices.swift; sourceTree = "<group>"; };
+		F0718965C9A194ADCF28E400 /* PhonePairingLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairingLink.swift; sourceTree = "<group>"; };
 		F0ECF28A6F9A918AB391DA0E /* AssistantWire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantWire.swift; sourceTree = "<group>"; };
 		F4C17EA9A9545599C9B33626 /* RealtimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeTests.swift; sourceTree = "<group>"; };
 		F76BC61EB0AED61CCED62F68 /* AppModel+Replies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppModel+Replies.swift"; sourceTree = "<group>"; };
 		F91DC92612BA816802F3454B /* NotchVoice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotchVoice.entitlements; sourceTree = "<group>"; };
+		FB5A530F4C3BDCEBF12E7E07 /* PhonePairings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairings.swift; sourceTree = "<group>"; };
 		FC99F0A593D67A4691F35BBB /* EndpointDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointDetectorTests.swift; sourceTree = "<group>"; };
 		FDE0B0C24631B52DCC629B99 /* SettingsRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRootView.swift; sourceTree = "<group>"; };
 		FE895BB6A61D1A3D6FCC6D8D /* RadioTransmission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioTransmission.swift; sourceTree = "<group>"; };
@@ -523,6 +535,8 @@
 				278B3A7D5C76B88803E2FCB1 /* OutreachSettingsView.swift */,
 				9469EB91C0A90F42B6232C15 /* OutreachVoice.swift */,
 				0C00E65D512192A07849A462 /* PhoneLinkSettings.swift */,
+				FB5A530F4C3BDCEBF12E7E07 /* PhonePairings.swift */,
+				155DFBE333D34D96DEEF7E2E /* PhonePairSheet.swift */,
 				6AA76409534741B0226C0C30 /* PhoneSettingsSection.swift */,
 				455753AC895AA42B0F47501E /* RadioSettings.swift */,
 				7AE37B0B7910E74DA21CB698 /* RealtimeSettingsView.swift */,
@@ -574,6 +588,7 @@
 			isa = PBXGroup;
 			children = (
 				5C95477AAA6E8355ED417B43 /* ApnsPushToTalk.swift */,
+				BFBFF503951FED7AD20DA820 /* PhoneAddress.swift */,
 				C23EAEC14C3261DD25C0EB8C /* PhoneFeed.swift */,
 				988DE6E77D0DAD92BDA2F725 /* PhoneRadioRenderer.swift */,
 				6C199A0EEA3051A2526CDB5E /* PhoneServer.swift */,
@@ -619,8 +634,11 @@
 		A037D3854F192E3A599D4ECC /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				54727BB1952F7063324B6764 /* PhoneKeyStore.swift */,
+				F0718965C9A194ADCF28E400 /* PhonePairingLink.swift */,
 				E80AEEA98DA1D59D69C68CD2 /* PhoneProtocol.swift */,
 				4C725FFA193B2294780DE344 /* PhoneSocket.swift */,
+				5B0CAA374A991C4155FA59AC /* PhoneTLS.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -955,14 +973,20 @@
 				97ADC418B73CE7BE82031AA0 /* OutreachSettingsView.swift in Sources */,
 				6E96DD5D42572D6B48C1019A /* OutreachVoice.swift in Sources */,
 				8B049FAF348651A190910BE0 /* OutreachWire.swift in Sources */,
+				65C254D7BB2F201FBFB99ABB /* PhoneAddress.swift in Sources */,
 				0C867AE99277CC4659F2E529 /* PhoneFeed.swift in Sources */,
+				AAC3BC192F72E881CD2885EB /* PhoneKeyStore.swift in Sources */,
 				5FE2509A5D55EA3D8183BDC5 /* PhoneLinkSettings.swift in Sources */,
+				3444E702950806BDD8702C59 /* PhonePairSheet.swift in Sources */,
+				241F610AB491CFD13C2017C7 /* PhonePairingLink.swift in Sources */,
+				BD1B391A12DA9767CE37A63B /* PhonePairings.swift in Sources */,
 				AEAC375225AEB29E3083EB26 /* PhoneProtocol.swift in Sources */,
 				6A2A1ADB67446EB1FC93A81E /* PhoneRadioRenderer.swift in Sources */,
 				0FFB0D8A027D23DDBAFA42FE /* PhoneServer.swift in Sources */,
 				6EF76F820AC7D8B5E2CCA53A /* PhoneSettingsSection.swift in Sources */,
 				E6EB75E4E0A6C07B5022D7CE /* PhoneSocket.swift in Sources */,
 				917764EAF2447ECC0710CA5C /* PhoneSpeechPlayer.swift in Sources */,
+				75AC7A53C65B80C0572BDE4C /* PhoneTLS.swift in Sources */,
 				503B9B30E7B93015D3C4BE8D /* PillLayout.swift in Sources */,
 				1FF4AE3411C011EF429D50D4 /* ProcessRunner.swift in Sources */,
 				0D9A83D5A3A0C49EAA38DE52 /* RadioAudioUnit.swift in Sources */,
