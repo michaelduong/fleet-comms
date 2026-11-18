@@ -12,6 +12,9 @@ import Foundation
 final class PhoneSpeechPlayer {
     private let server: PhoneServer
     private let renderer = PhoneRadioRenderer()
+    /// When the audio sent so far finishes playing. Pacing against one deadline keeps timer lateness from adding up.
+    private var deadline = ContinuousClock.now
+    private static let lead = Duration.milliseconds(500)
 
     init(server: PhoneServer) {
         self.server = server
@@ -34,6 +37,7 @@ final class PhoneSpeechPlayer {
         speech.text = parts.joined(separator: " ")
         server.send(speech)
         renderer.begin()
+        deadline = ContinuousClock.now
         var offset = 0
         var next = Task { try await synthesize(parts[0]) }
         for (index, part) in parts.enumerated() {
@@ -63,7 +67,8 @@ final class PhoneSpeechPlayer {
         part.words = words
         server.send(part)
         server.sendAudio(samples)
-        try await Task.sleep(for: .seconds(Double(samples.count) / PhoneLink.speechRate))
+        deadline += .seconds(Double(samples.count) / PhoneLink.speechRate)
+        try await Task.sleep(until: deadline - Self.lead, tolerance: .zero)
     }
 }
 
