@@ -10,8 +10,12 @@ import Foundation
 /// 16 kHz from the phone's microphone, 24 kHz of rendered reply speech (radio effect included) from the Mac.
 struct PhoneMessage: Codable, Equatable, Sendable {
     enum Kind: String, Codable, Sendable {
-        /// Phone to Mac: first frame, carries the pairing token.
+        /// Phone to Mac: first frame on a paired link; `token` names the phone.
         case hello
+        /// Phone to Mac: first frame on a pairing link; `token` is the code's id from the QR.
+        case pair
+        /// Mac to phone: pairing worked; `token` names the phone, `text` is its 32-byte key (base64url).
+        case paired
         /// Phone to Mac: begin an utterance; microphone frames follow.
         case start
         /// Phone to Mac: the owner let go; send what was said now.

@@ -129,35 +129,55 @@ struct TalkButton: View {
 }
 
 struct PairingView: View {
-    @Bindable var model: PhoneModel
+    let model: PhoneModel
     @Environment(\.dismiss) private var dismiss
+    @State private var scanning = false
+    @State private var pasted = ""
+    @State private var problem: String?
 
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Host or Tailscale name", text: $model.host)
+                    if PairingScanner.isSupported {
+                        Button("Scan QR Code", systemImage: "qrcode.viewfinder") { scanning = true }
+                            .accessibilityIdentifier("pairing.scan")
+                    }
+                    TextField("Or paste the link", text: $pasted)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                        .accessibilityIdentifier("pairing.host")
-                    TextField("Pairing code", text: $model.token)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .accessibilityIdentifier("pairing.code")
+                        .accessibilityIdentifier("pairing.link")
+                    Button("Pair") { accept(pasted) }
+                        .disabled(pasted.isEmpty)
+                        .accessibilityIdentifier("pairing.pair")
                 } footer: {
-                    Text(
-                        "On the Mac: Fleet Comms › Settings › Advanced › Phone link. "
-                            + "Turn it on, then copy the host and code."
-                    )
+                    Text(problem ?? "On the Mac: Fleet Comms › Settings › Advanced › Phone link › Pair iPhone…")
                 }
-                Button("Connect") {
-                    model.connect()
-                    dismiss()
+                if model.isPaired {
+                    Section("Paired with \(model.mac.name)") {
+                        Button("Connect") {
+                            model.connect()
+                            dismiss()
+                        }
+                        .accessibilityIdentifier("pairing.connect")
+                    }
                 }
-                .disabled(!model.isPaired)
-                .accessibilityIdentifier("pairing.connect")
             }
             .navigationTitle("Pair with your Mac")
+            .fullScreenCover(isPresented: $scanning) {
+                PairingScanner { text in
+                    scanning = false
+                    accept(text)
+                }
+            }
+        }
+    }
+
+    private func accept(_ text: String) {
+        if model.pair(with: text) {
+            dismiss()
+        } else {
+            problem = "That is not a Fleet Comms pairing code."
         }
     }
 }

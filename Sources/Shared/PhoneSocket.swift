@@ -20,9 +20,15 @@ final class PhoneSocket: @unchecked Sendable {
         self.queue = queue
     }
 
-    static func client(host: String, port: UInt16) -> PhoneSocket {
-        let parameters = NWParameters.tcp
-        parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
+    /// With `credential` the link is TLS with that pre-shared key; without it the socket is plain, for tests.
+    static func client(host: String, port: UInt16, credential: PhoneTLS.Credential? = nil) -> PhoneSocket {
+        let parameters: NWParameters
+        if let credential {
+            parameters = PhoneTLS.parameters([credential])
+        } else {
+            parameters = NWParameters.tcp
+            parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
+        }
         // The WebSocket protocol needs a URL endpoint to build its handshake; a host and port endpoint fails at once
         // with "unable to create url endpoint".
         var components = URLComponents()

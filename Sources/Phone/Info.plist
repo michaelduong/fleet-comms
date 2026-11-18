@@ -20,6 +20,8 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Fleet Comms scans the pairing code shown on your Mac.</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Fleet Comms talks to Fleet Comms on your Mac over your network or Tailscale.</string>
 	<key>NSMicrophoneUsageDescription</key>

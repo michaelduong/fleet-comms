@@ -6,7 +6,7 @@
 import Foundation
 import Observation
 
-/// The phone link's switch and pairing code.
+/// The phone link's switch and its paired phones.
 @MainActor
 @Observable
 final class PhoneLinkSettings {
@@ -21,24 +21,14 @@ final class PhoneLinkSettings {
         }
     }
 
-    /// The pairing code the phone sends; changing it unpairs every phone.
-    private(set) var token: String
+    let pairings: PhonePairings
 
     init(defaults: UserDefaults, onChange: (() -> Void)? = nil) {
         self.defaults = defaults
         self.onChange = onChange
+        pairings = PhonePairings(defaults: defaults)
         enabled = defaults.bool(forKey: AppSettings.Key.phoneLinkEnabled)
-        token = defaults.string(forKey: AppSettings.Key.phoneToken) ?? Self.newToken()
-        defaults.set(token, forKey: AppSettings.Key.phoneToken)
-    }
-
-    func regenerateToken() {
-        token = Self.newToken()
-        defaults.set(token, forKey: AppSettings.Key.phoneToken)
-        onChange?()
-    }
-
-    private static func newToken() -> String {
-        (0 ..< 4).map { _ in String(format: "%08x", UInt32.random(in: .min ... .max)) }.joined()
+        // The lasting pairing code is gone: phones pair by QR and each gets its own key.
+        defaults.removeObject(forKey: AppSettings.Key.phoneToken)
     }
 }

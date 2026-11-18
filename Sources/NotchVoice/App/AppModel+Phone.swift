@@ -17,7 +17,9 @@ extension AppModel {
         phoneServer = nil
         speaker.phone = nil
         guard settings.phone.enabled else { return }
-        let server = PhoneServer(token: { [weak settings] in settings?.phone.token ?? "" })
+        let server = PhoneServer(pairings: settings.phone.pairings)
+        settings.phone.pairings.onKeysChanged = { [weak server] in server?.rebuildListener() }
+        settings.phone.pairings.onRemoved = { [weak server] in server?.drop(phone: $0) }
         server.onConnectionChange = { [weak self] connected in self?.phoneConnectionChanged(connected) }
         server.onMessage = { [weak self] in self?.phoneMessage($0) }
         server.onAudio = { [weak self] in self?.phoneServer?.feed?.receive($0) }
