@@ -52,6 +52,19 @@ final class RadioControl: @unchecked Sendable {
         let selected = defaults.string(forKey: "radioStyle").flatMap(RadioStyle.init) ?? .policeDispatch
         style.store(RadioStyle.allCases.firstIndex(of: selected) ?? 1, ordering: .relaxed)
     }
+
+    struct Snapshot {
+        let enabled: Bool
+        let level: Float
+        let style: RadioStyle
+    }
+
+    /// The published values as the render path reads them.
+    var snapshot: Snapshot {
+        let index = style.load(ordering: .relaxed)
+        let chosen: RadioStyle = index == 0 ? .dispatch : (index == 2 ? .atcTransmission : .policeDispatch)
+        return Snapshot(enabled: enabled.load(ordering: .relaxed), level: level.load(ordering: .relaxed), style: chosen)
+    }
 }
 
 /// Original, stateful output-only DSP. No allocation, preference reads or random system calls occur per sample.

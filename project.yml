@@ -29,6 +29,7 @@ targets:
     platform: macOS
     sources:
       - path: Sources/NotchVoice
+      - path: Sources/Shared
     dependencies:
       - package: Sparkle
       - package: FluidAudio

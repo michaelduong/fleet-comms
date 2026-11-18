@@ -80,6 +80,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             showOnboarding()
         }
         model.configureAssistant()
+        model.configurePhone()
         model.configureAutoSpeak()
         developer.feedLaunchArgumentWhenReady()
         developer.captureIfRequested(settings: settingsWindow, onboarding: makeOnboarding, pill: panel)
@@ -118,7 +119,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         case .voice: model.voiceChanged()
         case .hotkey: hotkeys?.registerTalk(settings.hotkey)
         case .placement: panel?.placementChanged()
-        case .assistant, .fleetSchedule, .refreshFleet:
+        case .assistant, .fleetSchedule, .refreshFleet, .phoneLink:
             assistantSettingChanged(change)
         case .voiceLane:
             model.endCallQuietly()
@@ -140,6 +141,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             model.startQuestions()
         case .fleetSchedule: model.configureFleetSchedule()
         case .refreshFleet: model.fleet.refreshManually()
+        case .phoneLink: model.configurePhone()
         default: break
         }
     }

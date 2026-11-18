@@ -45,11 +45,8 @@ final class RadioAudioUnit: AUAudioUnit, @unchecked Sendable {
             guard let pull else { return kAudioUnitErr_NoConnection }
             let status = pull(flags, timestamp, count, 0, output)
             guard status == noErr else { return status }
-            let enabled = control.enabled.load(ordering: .relaxed)
-            let level = control.level.load(ordering: .relaxed)
-            let index = control.style.load(ordering: .relaxed)
-            let style: RadioStyle = index == 0 ? .dispatch : (index == 2 ? .atcTransmission : .policeDispatch)
-            kernel.prepare(sampleRate: rate, style: style)
+            let radio = control.snapshot
+            kernel.prepare(sampleRate: rate, style: radio.style)
             let hasAudio = !flags.pointee.contains(.unitRenderAction_OutputIsSilence)
             let buffers = UnsafeMutableAudioBufferListPointer(output)
             guard let data = buffers.first?.mData?.assumingMemoryBound(to: Float.self) else { return noErr }
@@ -57,9 +54,9 @@ final class RadioAudioUnit: AUAudioUnit, @unchecked Sendable {
                 data[frame] = kernel.process(
                     data[frame],
                     sampleRate: rate,
-                    enabled: enabled,
-                    level: level,
-                    style: style,
+                    enabled: radio.enabled,
+                    level: radio.level,
+                    style: radio.style,
                     hasAudio: hasAudio
                 )
             }

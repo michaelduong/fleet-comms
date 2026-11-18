@@ -211,3 +211,18 @@ numbered options with the recommended choice marked, a typed or dictated reply, 
 Long questions show three lines with a Show more toggle. Send returns the answers to that session and
 shows "Sent to"; close the question, or let it time out, and the session's own terminal picker takes over.
 A reply or a voice note that arrives meanwhile takes the pill first; the question returns when it is done.
+
+## iPhone handset
+
+Fleet Comms on the iPhone is a walkie-talkie handset for the Mac. The phone sends your voice to the Mac; the Mac
+transcribes it, runs the same Assistant and Firstmate path as the hotkey, and sends the spoken reply back with the
+radio effect and the reply text.
+
+1. On the Mac, turn on Settings › Advanced › Phone link and note the host and pairing code.
+2. Build `FleetCommsPhone.xcodeproj` (scheme `FleetCommsPhone`) to the phone from Xcode, with your team set in
+   `Config/Local.xcconfig`. Enter the host (a Tailscale name or address works from anywhere) and the code.
+3. Hold the button to talk and release to send, or tap once and pause. A second tap sends at once. The Action
+   button can run the "Talk to Firstmate" shortcut.
+
+While the phone is connected, replies play on the phone, not the Mac. The code is the only credential and the link is
+unencrypted, so use it over Tailscale or a network you trust. Regenerate the code to unpair every phone.

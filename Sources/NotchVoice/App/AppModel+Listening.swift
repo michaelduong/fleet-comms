@@ -46,7 +46,7 @@ extension AppModel {
             show(message: "Models are still loading.", autoHideAfter: 2)
             return
         }
-        guard feed is WavFileFeed || microphoneAllowed() else { return }
+        guard !(feed is MicrophoneFeed) || microphoneAllowed() else { return }
         stopAutoSpeech()
         collapseTask?.cancel()
         cancelListeningSession()
@@ -148,6 +148,7 @@ extension AppModel {
                 let update = try await pipeline.process(chunk)
                 guard !Task.isCancelled, listeningGeneration == generation else { return nil }
                 transcript = update.partial
+                phoneTranscriptChanged()
                 if isFollowUp, update.speechAccepted {
                     followUpTask?.cancel()
                     followUpTask = nil

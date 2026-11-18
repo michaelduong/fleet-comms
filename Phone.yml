@@ -1,0 +1,47 @@
+name: FleetCommsPhone
+# The iPhone handset lives in its own project so it builds without the Mac app's packages.
+options:
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+configFiles:
+  Debug: Config/App.xcconfig
+  Release: Config/App.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+targets:
+  FleetCommsPhone:
+    productName: Fleet Comms
+    type: application
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Sources/Phone
+      - path: Sources/Shared
+    info:
+      path: Sources/Phone/Info.plist
+      properties:
+        CFBundleDisplayName: Fleet Comms
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        NSMicrophoneUsageDescription: Fleet Comms sends your voice to your Mac while you hold the talk button.
+        NSLocalNetworkUsageDescription: Fleet Comms talks to Fleet Comms on your Mac over your network or Tailscale.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(FLEET_COMMS_BUNDLE_ID).phone
+        PRODUCT_NAME: Fleet Comms
+        PRODUCT_MODULE_NAME: FleetCommsPhone
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_STRICT_CONCURRENCY: complete
+        SDKROOT: iphoneos
+        SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        CODE_SIGN_IDENTITY: "Apple Development"
+schemes:
+  FleetCommsPhone:
+    build:
+      targets:
+        FleetCommsPhone: all

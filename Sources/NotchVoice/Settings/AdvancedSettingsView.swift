@@ -24,6 +24,7 @@ struct AdvancedSettingsView: View {
                     identifier: "settings.advanced.inboxScriptNote"
                 )
             }
+            PhoneSettingsSection(settings: settings)
             Section("Diagnostics") {
                 LabeledContent("Event log", value: EventLog.url.path.abbreviatingHome)
                     .accessibilityIdentifier("settings.advanced.eventLogPath")

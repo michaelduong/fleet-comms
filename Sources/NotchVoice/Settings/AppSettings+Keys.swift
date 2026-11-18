@@ -31,6 +31,8 @@ extension AppSettings {
         static let autoDismissSeconds = "autoDismissSeconds"
         static let hangUpAfterQuietSeconds = "hangUpAfterQuietSeconds"
         static let voiceLane = "voiceLane"
+        static let phoneLinkEnabled = "phoneLinkEnabled"
+        static let phoneToken = "phoneToken"
         static let onboardingCompleted = "onboardingCompleted"
         static let realtimeVoicePrefix = "realtimeVoice."
         static let realtimeEnabledPrefix = "realtimeEnabled."

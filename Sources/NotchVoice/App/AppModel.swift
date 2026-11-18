@@ -15,6 +15,7 @@ final class AppModel {
     var state: NotchState = .idle {
         didSet {
             hotkeys?.setEscapeEnabled(state.claimsEscape)
+            phoneStateChanged()
         }
     }
 
@@ -26,6 +27,7 @@ final class AppModel {
     let questions = AskQuestionStore()
 
     @ObservationIgnored var hotkeys: HotkeyCenter?
+    @ObservationIgnored var phoneServer: PhoneServer?
     @ObservationIgnored let speaker = ReplySpeaker()
     @ObservationIgnored let watcher = ReplyWatcher()
     @ObservationIgnored var sessionReplyTask: Task<Void, Never>?

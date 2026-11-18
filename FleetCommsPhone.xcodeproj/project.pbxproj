@@ -1,0 +1,350 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08FD423100322986B197D737 /* PhoneProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */; };
+		0E4439362C62986C0B9BF7A1 /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB9A6951E7ED307F861B2C /* PhoneModel.swift */; };
+		2A3AA3AF28D24CD6B29C9122 /* FleetCommsPhoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */; };
+		630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511B96CA577CE37EB00453A0 /* PhoneSocket.swift */; };
+		98A52B2B9F7DEDED6ADB0090 /* TalkIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */; };
+		C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366FE7BA1EB5867246B17202 /* HandsetView.swift */; };
+		E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneProtocol.swift; sourceTree = "<group>"; };
+		114B310B8094E7E47D82EB6D /* Fleet Comms.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Fleet Comms.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		24EB9A6951E7ED307F861B2C /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
+		30A885B4F54DE9668C66CC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		366FE7BA1EB5867246B17202 /* HandsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsetView.swift; sourceTree = "<group>"; };
+		48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsetAudio.swift; sourceTree = "<group>"; };
+		4E2B2D1BB2772E1FDB53636F /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
+		511B96CA577CE37EB00453A0 /* PhoneSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSocket.swift; sourceTree = "<group>"; };
+		5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCommsPhoneApp.swift; sourceTree = "<group>"; };
+		F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkIntent.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		1FA0649290AE929AB1359FFF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				114B310B8094E7E47D82EB6D /* Fleet Comms.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		228897C7C20BFFFAEEC95B5E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				EDAB2073FA16862AF0BBE37A /* Phone */,
+				5D73D2E025589C8EEC47C6F8 /* Shared */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		5D73D2E025589C8EEC47C6F8 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */,
+				511B96CA577CE37EB00453A0 /* PhoneSocket.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		7B1D4045E9675A1510DB252A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				4E2B2D1BB2772E1FDB53636F /* App.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		E439694B7B0D4A3B071BBA8E = {
+			isa = PBXGroup;
+			children = (
+				7B1D4045E9675A1510DB252A /* Config */,
+				228897C7C20BFFFAEEC95B5E /* Sources */,
+				1FA0649290AE929AB1359FFF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EDAB2073FA16862AF0BBE37A /* Phone */ = {
+			isa = PBXGroup;
+			children = (
+				5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */,
+				48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */,
+				366FE7BA1EB5867246B17202 /* HandsetView.swift */,
+				30A885B4F54DE9668C66CC41 /* Info.plist */,
+				24EB9A6951E7ED307F861B2C /* PhoneModel.swift */,
+				F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */,
+			);
+			path = Phone;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A72CC472A25B65B1E4C5BA78 /* FleetCommsPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BB04D02BE9B1BF700FC1CF8 /* Build configuration list for PBXNativeTarget "FleetCommsPhone" */;
+			buildPhases = (
+				EFAF7133553B4500E987B25A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FleetCommsPhone;
+			packageProductDependencies = (
+			);
+			productName = FleetCommsPhone;
+			productReference = 114B310B8094E7E47D82EB6D /* Fleet Comms.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		80CB2E5B6BD59FF7926227E8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A72CC472A25B65B1E4C5BA78 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = DE548B9F27C8647696F36685 /* Build configuration list for PBXProject "FleetCommsPhone" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = E439694B7B0D4A3B071BBA8E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 1FA0649290AE929AB1359FFF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A72CC472A25B65B1E4C5BA78 /* FleetCommsPhone */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EFAF7133553B4500E987B25A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A3AA3AF28D24CD6B29C9122 /* FleetCommsPhoneApp.swift in Sources */,
+				E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */,
+				C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */,
+				0E4439362C62986C0B9BF7A1 /* PhoneModel.swift in Sources */,
+				08FD423100322986B197D737 /* PhoneProtocol.swift in Sources */,
+				630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */,
+				98A52B2B9F7DEDED6ADB0090 /* TalkIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1924AB82F446B083F6A1BD57 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E2B2D1BB2772E1FDB53636F /* App.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		ACE7832F224E09832E99C76D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/Phone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FLEET_COMMS_BUNDLE_ID).phone";
+				PRODUCT_MODULE_NAME = FleetCommsPhone;
+				PRODUCT_NAME = "Fleet Comms";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		BCD5BA3568B0DBA4462C1830 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/Phone/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FLEET_COMMS_BUNDLE_ID).phone";
+				PRODUCT_MODULE_NAME = FleetCommsPhone;
+				PRODUCT_NAME = "Fleet Comms";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		E329F3C97FB8F1E1DAFF3231 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4E2B2D1BB2772E1FDB53636F /* App.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7BB04D02BE9B1BF700FC1CF8 /* Build configuration list for PBXNativeTarget "FleetCommsPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				ACE7832F224E09832E99C76D /* Debug */,
+				BCD5BA3568B0DBA4462C1830 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DE548B9F27C8647696F36685 /* Build configuration list for PBXProject "FleetCommsPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E329F3C97FB8F1E1DAFF3231 /* Debug */,
+				1924AB82F446B083F6A1BD57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 80CB2E5B6BD59FF7926227E8 /* Project object */;
+}
