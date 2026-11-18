@@ -19,6 +19,7 @@ struct SpokenPart {
 @Observable
 final class PhoneModel {
     static let shared = PhoneModel()
+    private let haptics = TalkHaptics()
 
     enum Link: Equatable {
         case unpaired, connecting, connected, failed(String)
@@ -152,8 +153,14 @@ final class PhoneModel {
             sendPTTToken()
             Task { await channel.join() }
         case .state:
+            let previous = macState
             macState = message.state ?? "idle"
             macMessage = message.text ?? ""
+            if previous == "listening", macState == "sending" {
+                haptics.sentByMac()
+            } else if macState == "message", previous == "listening" || previous == "sending" {
+                haptics.warning()
+            }
             if macState != "listening" {
                 endTalking()
             }
@@ -173,7 +180,7 @@ final class PhoneModel {
     /// Press: open the mic. Release after a hold sends at once; a quick tap stays open for the Mac's
     /// pause detection, and tapping again while open sends now.
     func pressDown() {
-        guard isConnected else { return }
+        guard isConnected else { return haptics.error() }
         if isTalking {
             return release()
         }
@@ -183,6 +190,7 @@ final class PhoneModel {
         replyText = ""
         guard audio.startMic() else { return }
         isTalking = true
+        haptics.opened()
         updateLive()
         pressedAt = Date()
         socket?.send(PhoneMessage(.start))
@@ -195,6 +203,7 @@ final class PhoneModel {
         }
         guard let pressedAt else { return }
         self.pressedAt = nil
+        haptics.cancelHold()
         if Date().timeIntervalSince(pressedAt) >= PhoneLink.holdSeconds {
             release()
         }
@@ -222,7 +231,8 @@ final class PhoneModel {
         let sentence: String = {
             guard isSpeaking else { return "" }
             let before = String(utf16CodeUnits: Array(utf16[..<upTo]), count: upTo)
-            let start = before.lastIndex(where: { ".!?".contains($0) }).map { before.index(after: $0) } ?? before.startIndex
+            let start = before.lastIndex(where: { ".!?".contains($0) }).map { before.index(after: $0) } ?? before
+                .startIndex
             let rest = String(utf16CodeUnits: Array(utf16[upTo...]), count: utf16.count - upTo)
             let end = rest.firstIndex(where: { ".!?".contains($0) }).map { rest.index(after: $0) } ?? rest.endIndex
             return (before[start...] + rest[..<end]).trimmingCharacters(in: .whitespaces)
@@ -231,6 +241,7 @@ final class PhoneModel {
     }
 
     private func release() {
+        haptics.sent()
         socket?.send(PhoneMessage(.release))
         endTalking()
     }
@@ -239,6 +250,7 @@ final class PhoneModel {
         guard isTalking else { return }
         isTalking = false
         pressedAt = nil
+        haptics.cancelHold()
         audio.stopMic()
     }
 
@@ -251,7 +263,7 @@ final class PhoneModel {
 }
 
 extension PhoneModel {
-    fileprivate func beginSpeech(_ text: String) {
+    private func beginSpeech(_ text: String) {
         flushSpeech()
         replyText = text
         spokenOffset = 0
