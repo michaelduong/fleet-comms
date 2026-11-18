@@ -45,6 +45,9 @@ final class PhoneModel {
     @ObservationIgnored private let defaults = UserDefaults.standard
     @ObservationIgnored private var socket: PhoneSocket?
     @ObservationIgnored private let audio = HandsetAudio()
+    @ObservationIgnored private let live = LiveActivityController()
+    @ObservationIgnored private let channel = PushToTalkChannel()
+    @ObservationIgnored private var pttToken: Data?
     @ObservationIgnored private var pressedAt: Date?
     @ObservationIgnored private var parts: [SpokenPart] = []
     @ObservationIgnored private var queuedFrames: Int64 = 0
@@ -58,6 +61,13 @@ final class PhoneModel {
         audio.onMicSamples = { [weak self] samples in
             Task { @MainActor in self?.socket?.sendAudio(samples) }
         }
+        channel.onToken = { [weak self] token in
+            self?.pttToken = token
+            self?.sendPTTToken()
+        }
+        channel.onTalkBegan = { [weak self] in self?.pressDown() }
+        channel.onTalkEnded = { [weak self] in self?.pressUp(force: true) }
+        channel.onIncomingReply = { [weak self] in self?.appBecameActive() }
     }
 
     var isPaired: Bool {
@@ -139,13 +149,17 @@ final class PhoneModel {
         case .ready:
             retry?.cancel()
             link = .connected
+            sendPTTToken()
+            Task { await channel.join() }
         case .state:
             macState = message.state ?? "idle"
             macMessage = message.text ?? ""
             if macState != "listening" {
                 endTalking()
             }
-        case .transcript: transcript = message.text ?? ""
+        case .transcript:
+            transcript = message.text ?? ""
+            updateLive()
         case .speech: beginSpeech(message.text ?? "")
         case .part: pendingPart = (message.start ?? 0, message.length ?? 0)
         case .speechEnd: break
@@ -169,12 +183,17 @@ final class PhoneModel {
         replyText = ""
         guard audio.startMic() else { return }
         isTalking = true
+        updateLive()
         pressedAt = Date()
         socket?.send(PhoneMessage(.start))
     }
 
-    func pressUp() {
-        guard isTalking, let pressedAt else { return }
+    func pressUp(force: Bool = false) {
+        guard isTalking else { return }
+        if force {
+            return release()
+        }
+        guard let pressedAt else { return }
         self.pressedAt = nil
         if Date().timeIntervalSince(pressedAt) >= PhoneLink.holdSeconds {
             release()
@@ -185,6 +204,30 @@ final class PhoneModel {
         guard isTalking else { return }
         socket?.send(PhoneMessage(.cancel))
         endTalking()
+    }
+
+    private func sendPTTToken() {
+        guard isConnected, let pttToken else { return }
+        var message = PhoneMessage(.pttToken)
+        message.text = pttToken.map { String(format: "%02x", $0) }.joined()
+        socket?.send(message)
+    }
+
+    private func updateLive() {
+        let phase: CommsActivityAttributes.ContentState.Phase = isTalking ? .listening
+            : isSpeaking ? .speaking : (macState == "thinking" || macState == "sending") ? .thinking : .idle
+        guard phase != .idle || !replyText.isEmpty || !transcript.isEmpty else { return live.end() }
+        let utf16 = Array(replyText.utf16)
+        let upTo = min(utf16.count, spokenOffset)
+        let sentence: String = {
+            guard isSpeaking else { return "" }
+            let before = String(utf16CodeUnits: Array(utf16[..<upTo]), count: upTo)
+            let start = before.lastIndex(where: { ".!?".contains($0) }).map { before.index(after: $0) } ?? before.startIndex
+            let rest = String(utf16CodeUnits: Array(utf16[upTo...]), count: utf16.count - upTo)
+            let end = rest.firstIndex(where: { ".!?".contains($0) }).map { rest.index(after: $0) } ?? rest.endIndex
+            return (before[start...] + rest[..<end]).trimmingCharacters(in: .whitespaces)
+        }()
+        live.update(.init(phase: phase, words: transcript, sentence: sentence))
     }
 
     private func release() {
@@ -208,7 +251,7 @@ final class PhoneModel {
 }
 
 extension PhoneModel {
-    private func beginSpeech(_ text: String) {
+    fileprivate func beginSpeech(_ text: String) {
         flushSpeech()
         replyText = text
         spokenOffset = 0
@@ -238,6 +281,7 @@ extension PhoneModel {
         isSpeaking = false
         progressTimer?.invalidate()
         spokenOffset = replyText.utf16.count
+        updateLive()
     }
 
     private func updateProgress() {
@@ -245,6 +289,7 @@ extension PhoneModel {
         guard let part = parts.last(where: { $0.startFrame <= frame }) else { return }
         let fraction = min(1, max(0, Double(frame - part.startFrame) / Double(max(1, part.frames))))
         spokenOffset = part.range.lowerBound + Int(Double(part.range.count) * fraction)
+        updateLive()
     }
 
     private func flushSpeech() {

@@ -10,15 +10,47 @@
 		08FD423100322986B197D737 /* PhoneProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */; };
 		0E4439362C62986C0B9BF7A1 /* PhoneModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24EB9A6951E7ED307F861B2C /* PhoneModel.swift */; };
 		2A3AA3AF28D24CD6B29C9122 /* FleetCommsPhoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */; };
+		45A325EAD1271B40C10F6ED9 /* CommsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA0A4E5938283E851191C7 /* CommsActivity.swift */; };
+		56506C4582525C13B7FE63F5 /* PushToTalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A079226311381FCD76BD833C /* PushToTalk.swift */; };
+		5D6D02AB8851DBFAC29FB96B /* FleetCommsPhoneLive.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511B96CA577CE37EB00453A0 /* PhoneSocket.swift */; };
 		98A52B2B9F7DEDED6ADB0090 /* TalkIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */; };
+		9D970ACF8E45EAC0BF5397A0 /* FleetCommsLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF12E0E5A9331D3AD93B9192 /* FleetCommsLive.swift */; };
+		B8C03ECDA16C94D11C576E3A /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */; };
 		C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366FE7BA1EB5867246B17202 /* HandsetView.swift */; };
+		CFA8EB65CF9B7273D860A895 /* CommsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA0A4E5938283E851191C7 /* CommsActivity.swift */; };
 		E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D5181F22082F4E605180D792 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 80CB2E5B6BD59FF7926227E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B90D058878D423428B0A6797;
+			remoteInfo = FleetCommsPhoneLive;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E70B6A4D2CF3051DC8C29066 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5D6D02AB8851DBFAC29FB96B /* FleetCommsPhoneLive.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneProtocol.swift; sourceTree = "<group>"; };
+		0DEA0A4E5938283E851191C7 /* CommsActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommsActivity.swift; sourceTree = "<group>"; };
 		114B310B8094E7E47D82EB6D /* Fleet Comms.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Fleet Comms.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FleetCommsPhoneLive.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		24EB9A6951E7ED307F861B2C /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
 		30A885B4F54DE9668C66CC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		366FE7BA1EB5867246B17202 /* HandsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsetView.swift; sourceTree = "<group>"; };
@@ -26,7 +58,12 @@
 		4E2B2D1BB2772E1FDB53636F /* App.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = App.xcconfig; sourceTree = "<group>"; };
 		511B96CA577CE37EB00453A0 /* PhoneSocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSocket.swift; sourceTree = "<group>"; };
 		5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCommsPhoneApp.swift; sourceTree = "<group>"; };
+		A079226311381FCD76BD833C /* PushToTalk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushToTalk.swift; sourceTree = "<group>"; };
+		CA61CD46C975072F81103C29 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DF12E0E5A9331D3AD93B9192 /* FleetCommsLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCommsLive.swift; sourceTree = "<group>"; };
+		E11B72C030464BDF502E782A /* FleetCommsPhone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FleetCommsPhone.entitlements; sourceTree = "<group>"; };
 		F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkIntent.swift; sourceTree = "<group>"; };
+		FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -34,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				114B310B8094E7E47D82EB6D /* Fleet Comms.app */,
+				1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -42,14 +80,25 @@
 			isa = PBXGroup;
 			children = (
 				EDAB2073FA16862AF0BBE37A /* Phone */,
+				4F910DF422B16573B7002B9F /* PhoneLive */,
 				5D73D2E025589C8EEC47C6F8 /* Shared */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		4F910DF422B16573B7002B9F /* PhoneLive */ = {
+			isa = PBXGroup;
+			children = (
+				DF12E0E5A9331D3AD93B9192 /* FleetCommsLive.swift */,
+				CA61CD46C975072F81103C29 /* Info.plist */,
+			);
+			path = PhoneLive;
+			sourceTree = "<group>";
+		};
 		5D73D2E025589C8EEC47C6F8 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				0DEA0A4E5938283E851191C7 /* CommsActivity.swift */,
 				0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */,
 				511B96CA577CE37EB00453A0 /* PhoneSocket.swift */,
 			);
@@ -76,11 +125,14 @@
 		EDAB2073FA16862AF0BBE37A /* Phone */ = {
 			isa = PBXGroup;
 			children = (
+				E11B72C030464BDF502E782A /* FleetCommsPhone.entitlements */,
 				5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */,
 				48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */,
 				366FE7BA1EB5867246B17202 /* HandsetView.swift */,
 				30A885B4F54DE9668C66CC41 /* Info.plist */,
+				FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */,
 				24EB9A6951E7ED307F861B2C /* PhoneModel.swift */,
+				A079226311381FCD76BD833C /* PushToTalk.swift */,
 				F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */,
 			);
 			path = Phone;
@@ -94,10 +146,12 @@
 			buildConfigurationList = 7BB04D02BE9B1BF700FC1CF8 /* Build configuration list for PBXNativeTarget "FleetCommsPhone" */;
 			buildPhases = (
 				EFAF7133553B4500E987B25A /* Sources */,
+				E70B6A4D2CF3051DC8C29066 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				E17E059346471A525CDD7335 /* PBXTargetDependency */,
 			);
 			name = FleetCommsPhone;
 			packageProductDependencies = (
@@ -105,6 +159,23 @@
 			productName = FleetCommsPhone;
 			productReference = 114B310B8094E7E47D82EB6D /* Fleet Comms.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B90D058878D423428B0A6797 /* FleetCommsPhoneLive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E00B314A7E0129A222202932 /* Build configuration list for PBXNativeTarget "FleetCommsPhoneLive" */;
+			buildPhases = (
+				BBED4A5AF1D5A6473D7C76BE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FleetCommsPhoneLive;
+			packageProductDependencies = (
+			);
+			productName = FleetCommsPhoneLive;
+			productReference = 1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -116,6 +187,10 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					A72CC472A25B65B1E4C5BA78 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					B90D058878D423428B0A6797 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
@@ -136,26 +211,47 @@
 			projectRoot = "";
 			targets = (
 				A72CC472A25B65B1E4C5BA78 /* FleetCommsPhone */,
+				B90D058878D423428B0A6797 /* FleetCommsPhoneLive */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BBED4A5AF1D5A6473D7C76BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CFA8EB65CF9B7273D860A895 /* CommsActivity.swift in Sources */,
+				9D970ACF8E45EAC0BF5397A0 /* FleetCommsLive.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EFAF7133553B4500E987B25A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				45A325EAD1271B40C10F6ED9 /* CommsActivity.swift in Sources */,
 				2A3AA3AF28D24CD6B29C9122 /* FleetCommsPhoneApp.swift in Sources */,
 				E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */,
 				C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */,
+				B8C03ECDA16C94D11C576E3A /* LiveActivityController.swift in Sources */,
 				0E4439362C62986C0B9BF7A1 /* PhoneModel.swift in Sources */,
 				08FD423100322986B197D737 /* PhoneProtocol.swift in Sources */,
 				630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */,
+				56506C4582525C13B7FE63F5 /* PushToTalk.swift in Sources */,
 				98A52B2B9F7DEDED6ADB0090 /* TalkIntent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		E17E059346471A525CDD7335 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B90D058878D423428B0A6797 /* FleetCommsPhoneLive */;
+			targetProxy = D5181F22082F4E605180D792 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1924AB82F446B083F6A1BD57 /* Release */ = {
@@ -215,10 +311,49 @@
 			};
 			name = Release;
 		};
+		331ED809AF1E40F525486516 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/PhoneLive/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FLEET_COMMS_BUNDLE_ID).phone.live";
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		97BC5662BAC0666ED272B70A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Sources/PhoneLive/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(FLEET_COMMS_BUNDLE_ID).phone.live";
+				SDKROOT = iphoneos;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		ACE7832F224E09832E99C76D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Sources/Phone/FleetCommsPhone.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sources/Phone/Info.plist;
@@ -241,6 +376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Sources/Phone/FleetCommsPhone.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sources/Phone/Info.plist;
@@ -340,6 +476,15 @@
 			buildConfigurations = (
 				E329F3C97FB8F1E1DAFF3231 /* Debug */,
 				1924AB82F446B083F6A1BD57 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E00B314A7E0129A222202932 /* Build configuration list for PBXNativeTarget "FleetCommsPhoneLive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				331ED809AF1E40F525486516 /* Debug */,
+				97BC5662BAC0666ED272B70A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

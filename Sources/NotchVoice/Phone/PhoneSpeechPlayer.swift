@@ -18,7 +18,7 @@ final class PhoneSpeechPlayer {
     }
 
     var isAvailable: Bool {
-        server.isConnected
+        server.isConnected || server.canWake
     }
 
     func stop() {
@@ -29,6 +29,7 @@ final class PhoneSpeechPlayer {
         _ parts: [String], synthesize: @escaping @Sendable (String) async throws -> [Float],
         onStart: () -> Void, onPartPlayed: (Int) -> Void
     ) async throws {
+        guard await server.wake() else { throw PhoneWakeError.unreachable }
         var speech = PhoneMessage(.speech)
         speech.text = parts.joined(separator: " ")
         server.send(speech)
@@ -76,3 +77,5 @@ extension PhoneSpeechPlayer {
         )
     }
 }
+
+enum PhoneWakeError: Error { case unreachable }

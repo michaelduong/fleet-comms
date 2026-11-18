@@ -19,6 +19,9 @@ targets:
     sources:
       - path: Sources/Phone
       - path: Sources/Shared
+    dependencies:
+      - target: FleetCommsPhoneLive
+        embed: true
     info:
       path: Sources/Phone/Info.plist
       properties:
@@ -26,9 +29,15 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen: {}
+        NSSupportsLiveActivities: true
+        UIBackgroundModes: [audio, push-to-talk]
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         NSMicrophoneUsageDescription: Fleet Comms sends your voice to your Mac while you hold the talk button.
         NSLocalNetworkUsageDescription: Fleet Comms talks to Fleet Comms on your Mac over your network or Tailscale.
+    entitlements:
+      path: Sources/Phone/FleetCommsPhone.entitlements
+      properties:
+        com.apple.developer.push-to-talk: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: $(FLEET_COMMS_BUNDLE_ID).phone
@@ -39,6 +48,29 @@ targets:
         SWIFT_STRICT_CONCURRENCY: complete
         SDKROOT: iphoneos
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
+        CODE_SIGN_IDENTITY: "Apple Development"
+  FleetCommsPhoneLive:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "26.0"
+    sources:
+      - path: Sources/PhoneLive
+      - path: Sources/Shared/CommsActivity.swift
+    info:
+      path: Sources/PhoneLive/Info.plist
+      properties:
+        CFBundleDisplayName: Fleet Comms Live
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(FLEET_COMMS_BUNDLE_ID).phone.live
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_STRICT_CONCURRENCY: complete
+        SDKROOT: iphoneos
+        TARGETED_DEVICE_FAMILY: "1"
         CODE_SIGN_IDENTITY: "Apple Development"
 schemes:
   FleetCommsPhone:
