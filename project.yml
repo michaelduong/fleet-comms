@@ -10,9 +10,9 @@ packages:
   FluidAudio:
     url: https://github.com/FluidInference/FluidAudio.git
     exactVersion: 0.17.7
+  # Microsoft's ONNX Runtime 1.24.2 package, kept locally because its GitHub repository returns 404.
   OnnxRuntime:
-    url: https://github.com/microsoft/onnxruntime-swift-package-manager.git
-    exactVersion: 1.24.2
+    path: Vendor/OnnxRuntime
 # Signing, bundle id and version live in Config/*.xcconfig so a clone builds without edits here.
 configFiles:
   Debug: Config/App.xcconfig
@@ -30,6 +30,9 @@ targets:
     sources:
       - path: Sources/NotchVoice
       - path: Sources/Shared
+        # The Live Activity attributes are iOS-only; the phone project compiles them.
+        excludes:
+          - CommsActivity.swift
     dependencies:
       - package: Sparkle
       - package: FluidAudio

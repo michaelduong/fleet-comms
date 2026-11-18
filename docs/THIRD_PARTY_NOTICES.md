@@ -8,7 +8,7 @@ The Xcode project pins FluidAudio **0.17.7**, ONNX Runtime’s Swift package **1
 | Component | License | Retained notices |
 | --- | --- | --- |
 | [FluidAudio 0.17.7](https://github.com/FluidInference/FluidAudio/tree/0.17.7) | Apache-2.0 | [Full license](licenses/FluidAudio-LICENSE), [upstream third-party notices](licenses/FluidAudio-third-party/) |
-| [ONNX Runtime 1.24.2](https://github.com/microsoft/onnxruntime-swift-package-manager/tree/v1.24.2) | MIT | [Full license and Microsoft copyright](licenses/ONNXRuntime-LICENSE) |
+| [ONNX Runtime 1.24.2](../Vendor/OnnxRuntime) (from Microsoft's `download.onnxruntime.ai` archives) | MIT | [Full license and Microsoft copyright](licenses/ONNXRuntime-LICENSE) |
 | [Sparkle 2.10.1](https://github.com/sparkle-project/Sparkle/tree/2.10.1) | MIT; bundled components BSD / MIT / zlib | [Full license and bundled component notices](licenses/Sparkle-LICENSE) |
 | fastcluster (through FluidAudio) | BSD-2-Clause | [Copyright, terms and disclaimer](licenses/FluidAudio-third-party/fastcluster-LICENSE.md) |
 | NeMo text processing (through FluidAudio) | Apache-2.0; upstream components MIT / Apache-2.0 | [Upstream component notice](licenses/FluidAudio-third-party/NemoTextProcessing-LICENSE.md) |

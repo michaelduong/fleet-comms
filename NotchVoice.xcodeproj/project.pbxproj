@@ -22,6 +22,7 @@
 		0DFE48B01FD468A7060ECC31 /* AppModel+FollowUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67F50B86BEA5313154E2927B /* AppModel+FollowUp.swift */; };
 		0FFB0D8A027D23DDBAFA42FE /* PhoneServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C199A0EEA3051A2526CDB5E /* PhoneServer.swift */; };
 		10FA02F172106741F0F1CF3F /* AssistantSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 748095FA1ECC5F0D69DE6ACF /* AssistantSettingsView.swift */; };
+		117FEC9DADBCC13085E29BB8 /* ApnsPushToTalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95477AAA6E8355ED417B43 /* ApnsPushToTalk.swift */; };
 		119A22D34C26E1EEB340507A /* SessionReplyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375F889564395AC9BCD6308A /* SessionReplyTests.swift */; };
 		13E2A4F280EF229CEFF9C90A /* AppModel+Realtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB3D8107551BAD0976AC8D0 /* AppModel+Realtime.swift */; };
 		1421F490CB3D36DDE35CCA97 /* CollapsedPill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 199F0B9E79B3453DEFD6C045 /* CollapsedPill.swift */; };
@@ -259,6 +260,7 @@
 		57F0594E0E7B6BD0B43E86B3 /* RealtimeCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeCall.swift; sourceTree = "<group>"; };
 		582E7C1E1F32B6FC30453E24 /* MenuPlacementTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuPlacementTests.swift; sourceTree = "<group>"; };
 		5A524285CD7A2BD7B6C89108 /* AudioProofSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioProofSupport.swift; sourceTree = "<group>"; };
+		5C95477AAA6E8355ED417B43 /* ApnsPushToTalk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApnsPushToTalk.swift; sourceTree = "<group>"; };
 		621FF85DD35503EA71D72192 /* OutreachWire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutreachWire.swift; sourceTree = "<group>"; };
 		623E437BC488EAD0037EE715 /* FleetRefreshTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetRefreshTests.swift; sourceTree = "<group>"; };
 		6620BFBC300C257057835360 /* ModelDownloadProofTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDownloadProofTests.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 		9F5E64AEE946645677ED1994 /* AppModel+Assistant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppModel+Assistant.swift"; sourceTree = "<group>"; };
 		9F8040FB1BD9819BFA7E8463 /* SettingsSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSupport.swift; sourceTree = "<group>"; };
 		9FE40AD4CA05178DAA12DC94 /* PhoneSpeechPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneSpeechPlayer.swift; sourceTree = "<group>"; };
+		A0B0C3BCB771B53FA557ADAE /* OnnxRuntime */ = {isa = PBXFileReference; lastKnownFileType = folder; name = OnnxRuntime; path = Vendor/OnnxRuntime; sourceTree = SOURCE_ROOT; };
 		A2F3D42766AD918E0DEC3FB3 /* FleetContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetContext.swift; sourceTree = "<group>"; };
 		A343ACA8B0EB7EAEA26857CF /* PillLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillLayout.swift; sourceTree = "<group>"; };
 		A376420ABEE64F6678C7BB36 /* MessengerLookupProofTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessengerLookupProofTests.swift; sourceTree = "<group>"; };
@@ -415,6 +418,7 @@
 			isa = PBXGroup;
 			children = (
 				F79601A01D5F4BC81C548920 /* Config */,
+				D98A5B5AB345B88DD46F60DB /* Packages */,
 				CC32811EEBBF593C701DC774 /* Sources */,
 				D04AD97BCD0C104821242509 /* Tests */,
 				88B1A4BBDE6A0C5082CA7FC2 /* Products */,
@@ -566,6 +570,7 @@
 		809A04BD21DFF533D331899F /* Phone */ = {
 			isa = PBXGroup;
 			children = (
+				5C95477AAA6E8355ED417B43 /* ApnsPushToTalk.swift */,
 				C23EAEC14C3261DD25C0EB8C /* PhoneFeed.swift */,
 				988DE6E77D0DAD92BDA2F725 /* PhoneRadioRenderer.swift */,
 				6C199A0EEA3051A2526CDB5E /* PhoneServer.swift */,
@@ -684,6 +689,14 @@
 				55951ED1CAA6A3E36CB0E097 /* NotchVoiceTests */,
 			);
 			path = Tests;
+			sourceTree = "<group>";
+		};
+		D98A5B5AB345B88DD46F60DB /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				A0B0C3BCB771B53FA557ADAE /* OnnxRuntime */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		E0BA3FEDB46CA5314B4F3979 /* Models */ = {
@@ -806,11 +819,11 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					65AFA8BD1F3FD32110F9911B = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = NELGRQX33K;
 						ProvisioningStyle = Automatic;
 					};
 					C1CAEF7AAD6FA2855FAC2FA5 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = NELGRQX33K;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -826,8 +839,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				00ADC2673413A6D24899082B /* XCRemoteSwiftPackageReference "FluidAudio" */,
-				CD90CF528FD04ED5FA1065A9 /* XCRemoteSwiftPackageReference "onnxruntime-swift-package-manager" */,
 				2839E8CEFE80C34B77D09748 /* XCRemoteSwiftPackageReference "Sparkle" */,
+				552628CA440DB90F36C89801 /* XCLocalSwiftPackageReference "Vendor/OnnxRuntime" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 88B1A4BBDE6A0C5082CA7FC2 /* Products */;
@@ -859,6 +872,7 @@
 				374A97E45698FED6F44F8EBE /* AboutCapture.swift in Sources */,
 				4F5E6677670FBDD83C5B8ADF /* AboutSettingsView.swift in Sources */,
 				BF8DCB937587A53FCF94A057 /* AdvancedSettingsView.swift in Sources */,
+				117FEC9DADBCC13085E29BB8 /* ApnsPushToTalk.swift in Sources */,
 				282FEBB1F99CCAF44C57966B /* AppModel+Assistant.swift in Sources */,
 				43A7B276E25B332D88ACE0E7 /* AppModel+AutoSpeak.swift in Sources */,
 				0DFE48B01FD468A7060ECC31 /* AppModel+FollowUp.swift in Sources */,
@@ -1281,6 +1295,13 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		552628CA440DB90F36C89801 /* XCLocalSwiftPackageReference "Vendor/OnnxRuntime" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Vendor/OnnxRuntime;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		00ADC2673413A6D24899082B /* XCRemoteSwiftPackageReference "FluidAudio" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -1298,14 +1319,6 @@
 				version = 2.10.1;
 			};
 		};
-		CD90CF528FD04ED5FA1065A9 /* XCRemoteSwiftPackageReference "onnxruntime-swift-package-manager" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/microsoft/onnxruntime-swift-package-manager.git";
-			requirement = {
-				kind = exactVersion;
-				version = 1.24.2;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1321,7 +1334,6 @@
 		};
 		CBF84C1832C9C1CC8FC2C6BC /* onnxruntime */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CD90CF528FD04ED5FA1065A9 /* XCRemoteSwiftPackageReference "onnxruntime-swift-package-manager" */;
 			productName = onnxruntime;
 		};
 /* End XCSwiftPackageProductDependency section */

@@ -1,5 +1,4 @@
 {
-  "originHash" : "c304e6a1419eb4a3ef75b35bead95db6841bf3df2a4993b84e3dca9be9c0c154",
   "pins" : [
     {
       "identity" : "fluidaudio",
@@ -8,15 +7,6 @@
       "state" : {
         "revision" : "503b4bd1bbf7220882de39fe8ae6716aae4132da",
         "version" : "0.17.7"
-      }
-    },
-    {
-      "identity" : "onnxruntime-swift-package-manager",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/microsoft/onnxruntime-swift-package-manager.git",
-      "state" : {
-        "revision" : "b7fb7f7dea8a2469e6335d95a61b8f36d0dc83b2",
-        "version" : "1.24.2"
       }
     },
     {
@@ -29,5 +19,5 @@
       }
     }
   ],
-  "version" : 3
+  "version" : 2
 }
