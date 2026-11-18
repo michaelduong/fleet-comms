@@ -6,10 +6,12 @@
 import ActivityKit
 import Foundation
 
-/// Keeps one Live Activity in step with the handset: the captain's words, then the sentence being spoken.
+/// Keeps one Live Activity in step with the handset: the first mate's sentence.
 @MainActor
 final class LiveActivityController {
     private var activityID: String?
+    /// Refreshes run one after another, so a late dot step cannot land after a newer state.
+    private var tail: Task<Void, Never>?
     private var last: CommsActivityAttributes.ContentState?
 
     func update(_ state: CommsActivityAttributes.ContentState) {
@@ -17,7 +19,8 @@ final class LiveActivityController {
         last = state
         let content = ActivityContent(state: state, staleDate: nil)
         if let id = activityID {
-            Task { await Self.push(id, content) }
+            let previous = tail
+            tail = Task { await previous?.value; await Self.push(id, content) }
         } else if let activity = try? Activity.request(
             attributes: CommsActivityAttributes(channel: "First mate"), content: content
         ) {
@@ -29,7 +32,8 @@ final class LiveActivityController {
         guard let id = activityID else { return }
         activityID = nil
         last = nil
-        Task { await Self.finish(id) }
+        let previous = tail
+        tail = Task { await previous?.value; await Self.finish(id) }
     }
 
     private nonisolated static func push(_ id: String, _ content: ActivityContent<CommsActivityAttributes.ContentState>) async {

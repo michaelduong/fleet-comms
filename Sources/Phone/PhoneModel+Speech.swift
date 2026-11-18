@@ -9,21 +9,33 @@ import QuartzCore
 
 extension PhoneModel {
     func updateLive() {
-        let phase: CommsActivityAttributes.ContentState.Phase = isTalking ? .listening
-            : isSpeaking ? .speaking : (macState == "thinking" || macState == "sending") ? .thinking : .idle
-        guard phase != .idle || !replyText.isEmpty || !transcript.isEmpty else { return live.end() }
-        let utf16 = Array(replyText.utf16)
-        let upTo = min(utf16.count, spokenOffset)
-        let sentence: String = {
-            guard isSpeaking else { return "" }
-            let before = String(utf16CodeUnits: Array(utf16[..<upTo]), count: upTo)
-            let start = before.lastIndex(where: { ".!?".contains($0) }).map { before.index(after: $0) } ?? before
-                .startIndex
-            let rest = String(utf16CodeUnits: Array(utf16[upTo...]), count: utf16.count - upTo)
-            let end = rest.firstIndex(where: { ".!?".contains($0) }).map { rest.index(after: $0) } ?? rest.endIndex
-            return (before[start...] + rest[..<end]).trimmingCharacters(in: .whitespaces)
-        }()
-        live.update(.init(phase: phase, words: transcript, sentence: sentence))
+        let phase = LiveCard.phase(isTalking: isTalking, isSpeaking: isSpeaking, macState: macState)
+        if phase == .speaking {
+            stopDots()
+            let sentence = LiveCard.sentence(phase: phase, reply: replyText, offset: spokenOffset, held: lastSentence)
+            lastSentence = sentence
+        }
+        guard phase != .idle || !lastSentence.isEmpty else { return live.end() }
+        if phase == .listening || phase == .thinking { startDots() } else { stopDots() }
+        live.update(.init(phase: phase, sentence: lastSentence, dots: dotStep))
+    }
+
+    private func startDots() {
+        guard dotTask == nil else { return }
+        dotStep = 1
+        dotTask = Task { @MainActor [weak self] in
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .milliseconds(600))
+                guard let self, !Task.isCancelled else { return }
+                dotStep = dotStep % 3 + 1
+                updateLive()
+            }
+        }
+    }
+
+    private func stopDots() {
+        dotTask?.cancel()
+        dotTask = nil
     }
 
     func beginSpeech(_ text: String) {

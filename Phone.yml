@@ -63,6 +63,7 @@ targets:
     sources:
       - path: Sources/PhoneLive
       - path: Sources/Shared/CommsActivity.swift
+      - path: Sources/Shared/LiveCard.swift
       - path: Sources/PhoneAssets
     info:
       path: Sources/PhoneLive/Info.plist

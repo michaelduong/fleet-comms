@@ -6,13 +6,14 @@
 import ActivityKit
 import Foundation
 
-/// The lock-screen Live Activity: the captain's words, then the sentence being spoken.
+/// The lock-screen Live Activity: the first mate's sentence, or Listening / Thinking while it is not speaking.
 struct CommsActivityAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable {
-        enum Phase: String, Codable, Hashable { case listening, thinking, speaking, idle }
+        typealias Phase = LiveCard.Phase
         var phase: Phase
-        var words: String
         var sentence: String
+        /// Which of the three dots are lit while Listening or Thinking.
+        var dots: Int = 3
     }
 
     var channel: String

@@ -14,6 +14,7 @@
 		2A3AA3AF28D24CD6B29C9122 /* FleetCommsPhoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1AA05B7959ABCCE281D118 /* FleetCommsPhoneApp.swift */; };
 		45A325EAD1271B40C10F6ED9 /* CommsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA0A4E5938283E851191C7 /* CommsActivity.swift */; };
 		56506C4582525C13B7FE63F5 /* PushToTalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = A079226311381FCD76BD833C /* PushToTalk.swift */; };
+		5A77366A6F4F617BE0F791EB /* LiveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25552F1538199BBBA2D928E5 /* LiveCard.swift */; };
 		5D6D02AB8851DBFAC29FB96B /* FleetCommsPhoneLive.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5E137DF79D97F8C81254D499 /* PhonePairingLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = B114B1E6ADECAE853F03BA04 /* PhonePairingLink.swift */; };
 		630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511B96CA577CE37EB00453A0 /* PhoneSocket.swift */; };
@@ -26,6 +27,7 @@
 		B8C03ECDA16C94D11C576E3A /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */; };
 		C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366FE7BA1EB5867246B17202 /* HandsetView.swift */; };
 		CFA8EB65CF9B7273D860A895 /* CommsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA0A4E5938283E851191C7 /* CommsActivity.swift */; };
+		DB68EC1079D850C7DA8035F2 /* LiveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25552F1538199BBBA2D928E5 /* LiveCard.swift */; };
 		E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */; };
 		E0A24329680620E4D1024D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E916D7F90BBC75C6E00FACA /* Assets.xcassets */; };
 		E3007A96782DD1BF980A44A6 /* PhoneModel+Speech.swift in Sources */ = {isa = PBXBuildFile; fileRef = 677CB42BAAA6056BE7212100 /* PhoneModel+Speech.swift */; };
@@ -65,6 +67,7 @@
 		114B310B8094E7E47D82EB6D /* Fleet Comms.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "Fleet Comms.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C9FC8E2D11864F7CBB27809 /* FleetCommsPhoneLive.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = FleetCommsPhoneLive.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		24EB9A6951E7ED307F861B2C /* PhoneModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneModel.swift; sourceTree = "<group>"; };
+		25552F1538199BBBA2D928E5 /* LiveCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCard.swift; sourceTree = "<group>"; };
 		2C433E5A42A275091AEE28B2 /* PairedMac.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairedMac.swift; sourceTree = "<group>"; };
 		30A885B4F54DE9668C66CC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		32F3A7F46399A037BAE60634 /* PhoneTLS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTLS.swift; sourceTree = "<group>"; };
@@ -129,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				0DEA0A4E5938283E851191C7 /* CommsActivity.swift */,
+				25552F1538199BBBA2D928E5 /* LiveCard.swift */,
 				00E7AC9EED6A247524B94E9A /* PhoneKeyStore.swift */,
 				B114B1E6ADECAE853F03BA04 /* PhonePairingLink.swift */,
 				0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */,
@@ -283,6 +287,7 @@
 			files = (
 				CFA8EB65CF9B7273D860A895 /* CommsActivity.swift in Sources */,
 				9D970ACF8E45EAC0BF5397A0 /* FleetCommsLive.swift in Sources */,
+				DB68EC1079D850C7DA8035F2 /* LiveCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,6 +300,7 @@
 				E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */,
 				C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */,
 				B8C03ECDA16C94D11C576E3A /* LiveActivityController.swift in Sources */,
+				5A77366A6F4F617BE0F791EB /* LiveCard.swift in Sources */,
 				8269303E97A87378D54991A9 /* PairedMac.swift in Sources */,
 				69FEE01B8998CDB530CA1484 /* PairingScanner.swift in Sources */,
 				1577D37999881840802FB58B /* PhoneKeyStore.swift in Sources */,

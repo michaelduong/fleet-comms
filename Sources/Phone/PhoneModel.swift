@@ -32,6 +32,10 @@ final class PhoneModel {
     var revealMarks: [RevealMark] = []
     private(set) var isTalking = false
     var isSpeaking = false
+    /// The last sentence the first mate said; the lock-screen card keeps it until the next one.
+    var lastSentence = ""
+    var dotStep = 3
+    @ObservationIgnored var dotTask: Task<Void, Never>?
     var talkRequestedExternally = false
 
     @ObservationIgnored private let defaults = UserDefaults.standard
@@ -195,6 +199,7 @@ final class PhoneModel {
             if macState != "listening" {
                 endTalking()
             }
+            updateLive()
         case .transcript:
             transcript = message.text ?? ""
             updateLive()
@@ -257,6 +262,7 @@ final class PhoneModel {
         haptics.sent()
         socket?.send(PhoneMessage(.release))
         endTalking()
+        updateLive()
     }
 
     private func endTalking() {

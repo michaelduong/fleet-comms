@@ -48,6 +48,24 @@ private var brandMark: some View {
         .accessibilityLabel("Fleet Comms")
 }
 
+/// "Listening…" with the dots lit one more at a time; still in always-on mode.
+private struct StatusLine: View {
+    let title: String
+    let dots: Int
+    @Environment(\.isLuminanceReduced) private var reduced
+
+    var body: some View {
+        HStack(spacing: 0) {
+            Text(title)
+            ForEach(1 ... 3, id: \.self) { index in
+                Text(".").opacity(reduced || index <= dots ? 1 : 0.15)
+            }
+        }
+        .font(.headline)
+        .animation(.easeInOut(duration: 0.3), value: dots)
+    }
+}
+
 struct CommsLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: CommsActivityAttributes.self) { context in
@@ -68,10 +86,9 @@ struct CommsLiveActivity: Widget {
                         .accessibilityLabel(context.state.title)
                         .accessibilityIdentifier("live.phase")
                 }
-                if !context.state.words.isEmpty {
-                    Text(context.state.words).font(.subheadline).foregroundStyle(.secondary).lineLimit(2)
-                }
-                if !context.state.sentence.isEmpty {
+                if context.state.phase == .listening || context.state.phase == .thinking {
+                    StatusLine(title: context.state.title, dots: context.state.dots)
+                } else if !context.state.sentence.isEmpty {
                     Text(context.state.sentence).font(.headline).lineLimit(4)
                 }
             }
@@ -88,7 +105,11 @@ struct CommsLiveActivity: Widget {
                 }
                 DynamicIslandExpandedRegion(.center) { Text(context.state.title).font(.caption) }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text(context.state.sentence.isEmpty ? context.state.words : context.state.sentence).lineLimit(3)
+                    if context.state.phase == .listening || context.state.phase == .thinking {
+                        StatusLine(title: context.state.title, dots: context.state.dots)
+                    } else {
+                        Text(context.state.sentence).lineLimit(3)
+                    }
                 }
             } compactLeading: {
                 brandMark
