@@ -6,6 +6,7 @@
 import AVFoundation
 import Foundation
 import PushToTalk
+import UIKit
 
 /// Apple Push to Talk: a channel that gives the lock screen a Talk button and lets the Mac wake the app
 /// to play a reply. The Mac sends a `pushtotalk` push to the ephemeral token this reports.
@@ -13,6 +14,9 @@ import PushToTalk
 final class PushToTalkChannel: NSObject {
     private var manager: PTChannelManager?
     private let channelID = UUID(uuidString: "6F1E7B8A-4C3D-4E55-9A10-FC0000000001")!
+    /// The Fleet Comms icon, shown on the lock screen's Push to Talk card.
+    private nonisolated static var brandImage: UIImage? { UIImage(named: "BrandIcon") }
+
     var onToken: ((Data) -> Void)?
     var onTalkBegan: (() -> Void)?
     var onTalkEnded: (() -> Void)?
@@ -24,7 +28,7 @@ final class PushToTalkChannel: NSObject {
             return
         }
         self.manager = manager
-        let descriptor = PTChannelDescriptor(name: "First mate", image: nil)
+        let descriptor = PTChannelDescriptor(name: "First mate", image: Self.brandImage)
         manager.requestJoinChannel(channelUUID: channelID, descriptor: descriptor)
     }
 
@@ -39,7 +43,7 @@ final class PushToTalkChannel: NSObject {
 
 extension PushToTalkChannel: PTChannelManagerDelegate, PTChannelRestorationDelegate {
     nonisolated func channelDescriptor(restoredChannelUUID channelUUID: UUID) -> PTChannelDescriptor {
-        PTChannelDescriptor(name: "First mate", image: nil)
+        PTChannelDescriptor(name: "First mate", image: Self.brandImage)
     }
 
     nonisolated func channelManager(_ channelManager: PTChannelManager, didJoinChannel channelUUID: UUID, reason: PTChannelJoinReason) {}
@@ -55,7 +59,7 @@ extension PushToTalkChannel: PTChannelManagerDelegate, PTChannelRestorationDeleg
     }
     nonisolated func incomingPushResult(channelManager: PTChannelManager, channelUUID: UUID, pushPayload: [String: Any]) -> PTPushResult {
         Task { @MainActor in onIncomingReply?() }
-        return .activeRemoteParticipant(PTParticipant(name: "First mate", image: nil))
+        return .activeRemoteParticipant(PTParticipant(name: "First mate", image: Self.brandImage))
     }
     nonisolated func channelManager(_ channelManager: PTChannelManager, didActivate audioSession: AVAudioSession) {}
     nonisolated func channelManager(_ channelManager: PTChannelManager, didDeactivate audioSession: AVAudioSession) {}
