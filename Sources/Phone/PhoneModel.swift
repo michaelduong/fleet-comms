@@ -47,6 +47,7 @@ final class PhoneModel {
     @ObservationIgnored private var pressedAt: Date?
     @ObservationIgnored var parts: [SpokenPart] = []
     @ObservationIgnored var queuedFrames: Int64 = 0
+    @ObservationIgnored var speechEnded = false
     @ObservationIgnored var pendingPart: PendingPart?
     @ObservationIgnored var ticker: DisplayTicker?
     @ObservationIgnored private var retry: Task<Void, Never>?
@@ -213,7 +214,9 @@ final class PhoneModel {
                 length: message.length ?? 0,
                 words: message.words
             )
-        case .speechEnd: break
+        case .speechEnd:
+            speechEnded = true
+            finishIfDone()
         case .stopSpeech: flushSpeech()
         default: break
         }

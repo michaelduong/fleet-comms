@@ -27,6 +27,7 @@
 		B8C03ECDA16C94D11C576E3A /* LiveActivityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */; };
 		C9AE6BA2A2702DFD408A3C7A /* HandsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366FE7BA1EB5867246B17202 /* HandsetView.swift */; };
 		CFA8EB65CF9B7273D860A895 /* CommsActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DEA0A4E5938283E851191C7 /* CommsActivity.swift */; };
+		D23979577EC7A2DD89E9EB25 /* SpeechEnd.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57709858A252B6877636271 /* SpeechEnd.swift */; };
 		DB68EC1079D850C7DA8035F2 /* LiveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25552F1538199BBBA2D928E5 /* LiveCard.swift */; };
 		E0790D72C985A6C5B6B47ADC /* HandsetAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48A19998DCE9360FD4623BB6 /* HandsetAudio.swift */; };
 		E0A24329680620E4D1024D4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7E916D7F90BBC75C6E00FACA /* Assets.xcassets */; };
@@ -86,6 +87,7 @@
 		DF12E0E5A9331D3AD93B9192 /* FleetCommsLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FleetCommsLive.swift; sourceTree = "<group>"; };
 		E11B72C030464BDF502E782A /* FleetCommsPhone.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FleetCommsPhone.entitlements; sourceTree = "<group>"; };
 		F25ED97237110F32109B5636 /* SpokenWords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenWords.swift; sourceTree = "<group>"; };
+		F57709858A252B6877636271 /* SpeechEnd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechEnd.swift; sourceTree = "<group>"; };
 		F85B64CAE89B7FB006A7F9E9 /* TalkIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TalkIntent.swift; sourceTree = "<group>"; };
 		FC56F45283789D1E0CC35A21 /* LiveActivityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveActivityController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -138,6 +140,7 @@
 				0AD21430B6A3329F61D9761E /* PhoneProtocol.swift */,
 				511B96CA577CE37EB00453A0 /* PhoneSocket.swift */,
 				32F3A7F46399A037BAE60634 /* PhoneTLS.swift */,
+				F57709858A252B6877636271 /* SpeechEnd.swift */,
 				F25ED97237110F32109B5636 /* SpokenWords.swift */,
 			);
 			path = Shared;
@@ -311,6 +314,7 @@
 				630AF246682147D5A01F25B0 /* PhoneSocket.swift in Sources */,
 				A60098483139BA5A50FE2D79 /* PhoneTLS.swift in Sources */,
 				56506C4582525C13B7FE63F5 /* PushToTalk.swift in Sources */,
+				D23979577EC7A2DD89E9EB25 /* SpeechEnd.swift in Sources */,
 				F87E06E09CE3B8B7B9DE00EE /* SpokenPart.swift in Sources */,
 				7FC454C94A1A1E31F01635A9 /* SpokenWords.swift in Sources */,
 				EB6F4AC9AC99DA29DCC895DB /* TalkHaptics.swift in Sources */,

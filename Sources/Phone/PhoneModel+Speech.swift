@@ -44,10 +44,13 @@ extension PhoneModel {
         spokenOffset = 0
         revealMarks = []
         isSpeaking = true
+        speechEnded = false
         ticker = DisplayTicker { [weak self] in self?.updateProgress() }
     }
 
     func play(_ data: Data) {
+        // A part that arrives after the queue ran dry starts now, not where the queue would have been.
+        queuedFrames = max(queuedFrames, audio.playedFrames)
         let samples = PhoneLink.samples(data)
         if let part = pendingPart {
             let base = Int(queuedFrames)
@@ -66,7 +69,11 @@ extension PhoneModel {
     }
 
     func playbackDrained() {
-        guard audio.pendingBuffers == 0 else { return }
+        finishIfDone()
+    }
+
+    func finishIfDone() {
+        guard SpeechEnd.shouldEnd(speechEnded: speechEnded, pendingBuffers: audio.pendingBuffers) else { return }
         isSpeaking = false
         ticker?.stop()
         ticker = nil
@@ -100,6 +107,7 @@ extension PhoneModel {
         parts = []
         queuedFrames = 0
         pendingPart = nil
+        speechEnded = false
         isSpeaking = false
     }
 }
