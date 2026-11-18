@@ -46,35 +46,89 @@ final class PhoneServer {
         authenticated && socket != nil
     }
 
-    init(pairings: PhonePairings) {
+    private let port: UInt16
+    /// True while the listener is bound and accepting; the restart race is checked through this.
+    private(set) var isListening = false
+    private var restartTask: Task<Void, Never>?
+
+    init(pairings: PhonePairings, port: UInt16 = PhoneLink.port) {
         self.pairings = pairings
+        self.port = port
     }
 
     func start() {
         guard listener == nil else { return }
         let parameters = PhoneTLS.parameters(pairings.credentials)
-        guard let listener = try? NWListener(using: parameters, on: NWEndpoint.Port(rawValue: PhoneLink.port)!) else {
-            Log.speech.error("Phone link could not listen on port \(PhoneLink.port)")
+        guard let listener = try? NWListener(using: parameters, on: NWEndpoint.Port(rawValue: port)!) else {
+            Log.speech.error("Phone link could not listen on port \(self.port)")
             return
         }
         listener.newConnectionHandler = { [weak self] connection in
             Task { @MainActor in self?.accept(connection) }
+        }
+        listener.stateUpdateHandler = { [weak self, weak listener] state in
+            Task { @MainActor in
+                guard let self, let listener, listener === self.listener else { return }
+                switch state {
+                case .ready:
+                    self.isListening = true
+                case let .failed(error):
+                    // Without this a lost bind (address in use) left the Mac deaf with no trace.
+                    Log.speech.error("Phone link listener failed: \(error.localizedDescription)")
+                    self.isListening = false
+                    self.listener = nil
+                    self.scheduleRestart()
+                default:
+                    break
+                }
+            }
         }
         listener.start(queue: .main)
         self.listener = listener
     }
 
     func stop() {
+        restartTask?.cancel()
         listener?.cancel()
         listener = nil
+        isListening = false
         drop()
     }
 
     /// Listens again with the current keys. A connected phone stays connected; use `drop(phone:)` to end one.
+    /// The old listener must finish cancelling first: starting on the same port while it still holds it fails
+    /// with "address already in use".
     func rebuildListener() {
-        listener?.cancel()
+        restartTask?.cancel()
+        let old = listener
         listener = nil
-        start()
+        isListening = false
+        guard let old else { return start() }
+        old.stateUpdateHandler = nil
+        let cancelled = AsyncStream<Void> { continuation in
+            old.stateUpdateHandler = { state in
+                if case .cancelled = state {
+                    continuation.yield(); continuation.finish()
+                }
+            }
+        }
+        old.cancel()
+        restartTask = Task { [weak self] in
+            for await _ in cancelled {
+                break
+            }
+            guard !Task.isCancelled else { return }
+            self?.start()
+        }
+    }
+
+    private func scheduleRestart() {
+        restartTask?.cancel()
+        restartTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(1))
+            guard !Task.isCancelled else { return }
+            self?.start()
+        }
     }
 
     func drop(phone id: String) {

@@ -105,6 +105,36 @@ struct PhonePairingsTests {
     }
 }
 
+@MainActor
+struct PhoneServerRestartTests {
+    /// Intent (FLC-35): Pair iPhone restarts the listener; cancel-then-start lost the bind to "address in use"
+    /// and left the Mac silently deaf. After many quick restarts the listener must still be accepting.
+    @Test func repeatedRestartsKeepListening() async throws {
+        let pairings = try PhonePairings(
+            defaults: #require(UserDefaults(suiteName: "restart-\(UUID().uuidString)")),
+            keys: MemoryKeyStore()
+        )
+        let port = UInt16.random(in: 49152 ... 60000)
+        let server = PhoneServer(pairings: pairings, port: port)
+        server.start()
+        defer { server.stop() }
+        for _ in 0 ..< 30 {
+            server.rebuildListener()
+            try await Task.sleep(for: .milliseconds(5))
+        }
+        for _ in 0 ..< 100 where !server.isListening {
+            try await Task.sleep(for: .milliseconds(50))
+        }
+        #expect(server.isListening)
+    }
+
+    /// Intent (FLC-35): the QR lists the local name before the Tailscale address, which can hang the handshake.
+    @Test func localNameComesBeforeTailscale() {
+        #expect(PhoneAddress.order(tailscale: "100.64.1.2", name: "studio.local") == ["studio.local", "100.64.1.2"])
+        #expect(PhoneAddress.order(tailscale: nil, name: "studio.local") == ["studio.local"])
+    }
+}
+
 /// A WebSocket listener on a free loopback port, set up like the Mac's phone server.
 private final class LoopbackServer: @unchecked Sendable {
     let listener: NWListener
