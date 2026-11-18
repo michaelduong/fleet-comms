@@ -73,12 +73,35 @@ struct HandsetView: View {
         }
     }
 
-    /// Words already spoken are bright, the rest dim, so the text follows the voice as on the desktop.
-    private var spoken: Text {
-        let text = model.replyText
-        let index = String.Index(utf16Offset: min(model.spokenOffset, text.utf16.count), in: text)
-        return Text(text[..<index]).foregroundStyle(.white) + Text(text[index...]).foregroundStyle(.secondary)
+    /// While the voice speaks, only the words said so far show, each fading in over 200 ms. Once it stops
+    /// or finishes, the words not said show dimmed.
+    private var spoken: some View {
+        TimelineView(.animation(minimumInterval: 1.0 / 30, paused: !model.isSpeaking)) { _ in
+            revealed(now: CACurrentMediaTime())
+        }
     }
+
+    // swiftlint:disable shorthand_operator
+    private func revealed(now: Double) -> Text {
+        let text = model.replyText
+        let utf16 = text.utf16
+        func slice(_ from: Int, _ upTo: Int) -> String {
+            let start = String.Index(utf16Offset: min(from, utf16.count), in: text)
+            return String(text[start ..< String.Index(utf16Offset: min(upTo, utf16.count), in: text)])
+        }
+        var result = Text("")
+        var done = 0
+        for mark in model.revealMarks where mark.end > done {
+            let alpha = model.isSpeaking ? min(1, max(0, (now - mark.time) / 0.2)) : 1
+            result = result + Text(slice(done, mark.end)).foregroundStyle(Color.white.opacity(alpha))
+            done = mark.end
+        }
+        if !model.isSpeaking, done < utf16.count {
+            result = result + Text(slice(done, utf16.count)).foregroundStyle(.secondary)
+        }
+        return result
+    }
+    // swiftlint:enable shorthand_operator
 
     private var statusText: String {
         switch model.link {
