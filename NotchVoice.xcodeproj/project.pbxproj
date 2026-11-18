@@ -109,6 +109,7 @@
 		7EEC85C2ED399B4CF1ABB4C9 /* EndpointDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 242EDBCCC77FFA95826D9702 /* EndpointDetector.swift */; };
 		804033033F815B8CCD9B7DD0 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84D0CC5A2BA535CAEDF34353 /* SpeechRecognizer.swift */; };
 		81E6ED15576A1E51F4754DB1 /* NotchVoiceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECB0A16EC706E397A94217DE /* NotchVoiceApp.swift */; };
+		846C5B326BD71FCD73BE6ED0 /* LiveCardTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE62C663BAE1BE612C17F122 /* LiveCardTests.swift */; };
 		8495118D0B67EB1D0F0090B5 /* RadioTransmission.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE895BB6A61D1A3D6FCC6D8D /* RadioTransmission.swift */; };
 		84A9376701E7F02C7CC30844 /* ReplySpeaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113A80CE4754DFEAB064B6FC /* ReplySpeaker.swift */; };
 		8AEA917CBE6BAF7A15A82673 /* RealtimeSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3E38C57330DAC8D1B580E8E /* RealtimeSocket.swift */; };
@@ -172,6 +173,7 @@
 		DD275709614D7FC0318061C9 /* ListeningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAB291EE0C7A7B150503C91 /* ListeningView.swift */; };
 		DD5E6DEFC115702551C41A5F /* SpokenSummaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CB6ECA171E372E301CF2969 /* SpokenSummaryTests.swift */; };
 		DDA6FAA3081EB9D8D3BE7AD3 /* GeneralSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B83194DDB641C20883C10955 /* GeneralSettingsView.swift */; };
+		DDA9053469EA58B46461D1C7 /* LiveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B1AB2C8C0EBE14C328F554 /* LiveCard.swift */; };
 		DF17D348FEBEEBCF69782CB3 /* RealtimeWire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8778024C6A8A44BC815637EC /* RealtimeWire.swift */; };
 		E02E21BD980C8469A8C66351 /* InboxRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89361EE899267FE292A692 /* InboxRecords.swift */; };
 		E207FAB96A5245109FDC9C28 /* RealtimeCall+Events.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3274863B46A2BB48F092F26 /* RealtimeCall+Events.swift */; };
@@ -357,6 +359,7 @@
 		C815B126A12FB50A8B494C0F /* NotchVoiceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NotchVoiceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C3E16DB6E026F1D2C14098 /* MessengerLookupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessengerLookupTests.swift; sourceTree = "<group>"; };
 		CBB3D8107551BAD0976AC8D0 /* AppModel+Realtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppModel+Realtime.swift"; sourceTree = "<group>"; };
+		CE62C663BAE1BE612C17F122 /* LiveCardTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCardTests.swift; sourceTree = "<group>"; };
 		D04AAB8A0E78D610F461E78B /* AskQuestionProof+Script.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AskQuestionProof+Script.swift"; sourceTree = "<group>"; };
 		D10AEF9B8996BC53838EB81C /* NotchRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchRootView.swift; sourceTree = "<group>"; };
 		D351E8916BC1F69058105826 /* RealtimeLookupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeLookupTests.swift; sourceTree = "<group>"; };
@@ -389,6 +392,7 @@
 		ECB0A16EC706E397A94217DE /* NotchVoiceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchVoiceApp.swift; sourceTree = "<group>"; };
 		EE77D18D23D062F451821F8E /* SettingsChoices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsChoices.swift; sourceTree = "<group>"; };
 		F0718965C9A194ADCF28E400 /* PhonePairingLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhonePairingLink.swift; sourceTree = "<group>"; };
+		F0B1AB2C8C0EBE14C328F554 /* LiveCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCard.swift; sourceTree = "<group>"; };
 		F0ECF28A6F9A918AB391DA0E /* AssistantWire.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssistantWire.swift; sourceTree = "<group>"; };
 		F4C17EA9A9545599C9B33626 /* RealtimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealtimeTests.swift; sourceTree = "<group>"; };
 		F76BC61EB0AED61CCED62F68 /* AppModel+Replies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppModel+Replies.swift"; sourceTree = "<group>"; };
@@ -486,6 +490,7 @@
 				E6574D88F537CACD9770F52E /* FleetSummaryTests.swift */,
 				B243C2F1727C907D4DF3F713 /* FollowUpProofTests.swift */,
 				DA17BF5BAF437607ACE93F7E /* InboxRecordsTests.swift */,
+				CE62C663BAE1BE612C17F122 /* LiveCardTests.swift */,
 				9566DDA7D8C3A75B4D3F94B1 /* LocalModelTests.swift */,
 				582E7C1E1F32B6FC30453E24 /* MenuPlacementTests.swift */,
 				B9E851AB5030178D5C74044A /* MessageDismissalTests.swift */,
@@ -639,6 +644,7 @@
 		A037D3854F192E3A599D4ECC /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				F0B1AB2C8C0EBE14C328F554 /* LiveCard.swift */,
 				54727BB1952F7063324B6764 /* PhoneKeyStore.swift */,
 				F0718965C9A194ADCF28E400 /* PhonePairingLink.swift */,
 				E80AEEA98DA1D59D69C68CD2 /* PhoneProtocol.swift */,
@@ -952,6 +958,7 @@
 				475EF502663769826D9C2E57 /* LaunchAtLogin.swift in Sources */,
 				A5B6343B0A0124485D58BF05 /* ListeningPipeline.swift in Sources */,
 				DD275709614D7FC0318061C9 /* ListeningView.swift in Sources */,
+				DDA9053469EA58B46461D1C7 /* LiveCard.swift in Sources */,
 				A06842632EBC0D9F4780CCC5 /* LocalModel.swift in Sources */,
 				DAC788122FA18EF27C6142DC /* Log.swift in Sources */,
 				259F7C1B4498C08F22376F2A /* LookupFiles.swift in Sources */,
@@ -1056,6 +1063,7 @@
 				8F79CEDD55DF99142A3EE8D9 /* FleetSummaryTests.swift in Sources */,
 				05547E486B03516FF525042B /* FollowUpProofTests.swift in Sources */,
 				DCBA65E5218B2A7BE319CA6A /* InboxRecordsTests.swift in Sources */,
+				846C5B326BD71FCD73BE6ED0 /* LiveCardTests.swift in Sources */,
 				B63984DA9407DAFE0002A871 /* LocalModelTests.swift in Sources */,
 				D86CECB4F07EF1A28FF59CD6 /* MenuPlacementTests.swift in Sources */,
 				1FEF476D1E01B88AB259E446 /* MessageDismissalTests.swift in Sources */,
