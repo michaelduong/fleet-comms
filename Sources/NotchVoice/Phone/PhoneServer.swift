@@ -17,6 +17,24 @@ final class PhoneServer {
     /// The utterance the phone is speaking right now.
     var feed: PhoneFeed?
 
+    /// Hex Push to Talk token the phone last reported, kept so the Mac can wake a locked phone.
+    private(set) var pttToken: String?
+    private let apns = ApnsPushToTalk.load()
+
+    var canWake: Bool {
+        apns != nil && pttToken != nil
+    }
+
+    /// Pushes the phone awake and waits for it to reconnect; false when it never does.
+    func wake() async -> Bool {
+        if isConnected { return true }
+        guard let apns, let pttToken, await apns.wake(token: pttToken) else { return false }
+        for _ in 0 ..< 40 where !isConnected {
+            try? await Task.sleep(for: .milliseconds(250))
+        }
+        return isConnected
+    }
+
     var onMessage: ((PhoneMessage) -> Void)?
     var onAudio: (([Float]) -> Void)?
     var onConnectionChange: ((Bool) -> Void)?
@@ -92,6 +110,10 @@ final class PhoneServer {
             }
             authenticated = true
             onConnectionChange?(true)
+            return
+        }
+        if message.kind == .pttToken {
+            pttToken = message.text
             return
         }
         onMessage?(message)

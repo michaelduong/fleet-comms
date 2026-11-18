@@ -24,6 +24,13 @@
 	<string>Fleet Comms talks to Fleet Comms on your Mac over your network or Tailscale.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Fleet Comms sends your voice to your Mac while you hold the talk button.</string>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>push-to-talk</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>

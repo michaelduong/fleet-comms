@@ -20,6 +20,8 @@ struct PhoneMessage: Codable, Equatable, Sendable {
         case cancel
         /// Phone to Mac: stop the reply that is playing.
         case stopSpeech
+        /// Phone to Mac: the Push to Talk push token, hex in `text`; nil text clears it.
+        case pttToken
         /// Mac to phone: the token was accepted.
         case ready
         /// Mac to phone: the pill's state, with a message when it has one.
