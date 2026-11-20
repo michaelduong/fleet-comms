@@ -99,11 +99,14 @@ final class PhoneSpeechPlayer {
         server.send(part)
         server.sendAudio(samples)
         guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeIfNoticedOnSend, reason: "reset on send") }
+        let sentStart = ContinuousClock.now
         deadline += .seconds(Double(samples.count) / PhoneLink.speechRate)
+        // A reset can arrive late: one seen right after a send may belong to the end of the previous sentence.
+        let early = { ContinuousClock.now - sentStart < .seconds(1) ? resumeIfNoticedOnSend : resumeAt }
         // Wait in short steps so a drop ends the wait at once and the Mac takes over without a silent gap.
         let wakeAt = deadline - Self.lead
         while ContinuousClock.now < wakeAt {
-            guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeAt, reason: "link dropped") }
+            guard server.isConnected else { throw PhoneLinkLost(resumeAt: early(), reason: "link dropped") }
             try await Task.sleep(until: min(wakeAt, ContinuousClock.now + .milliseconds(50)), tolerance: .zero)
         }
         guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeAt, reason: "link dropped") }

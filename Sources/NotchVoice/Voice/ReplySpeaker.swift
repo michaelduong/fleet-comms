@@ -83,6 +83,7 @@ final class ReplySpeaker {
             do {
                 var first = 0
                 if let phone, phone.isAvailable {
+                    playingOnMac = false
                     do {
                         try await phone.play(
                             parts,
@@ -99,6 +100,7 @@ final class ReplySpeaker {
                         ])
                         first = lost.resumeAt
                     } catch is PhoneWakeError {
+                        try Task.checkCancellation()
                         // The phone could not be woken: the Mac says the whole reply instead of losing it.
                         EventLog.record("speech_phone_lost", [
                             "speech_id": String(current), "resume_part": "0", "reason": "wake failed"
