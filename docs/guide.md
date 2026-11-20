@@ -218,9 +218,10 @@ Fleet Comms on the iPhone is a walkie-talkie handset for the Mac. The phone send
 transcribes it, runs the same Assistant and Firstmate path as the hotkey, and sends the spoken reply back with the
 radio effect and the reply text.
 
-1. On the Mac, turn on Settings › Advanced › Phone link and choose **Pair iPhone…** to show a one-time QR code.
-2. Build `FleetCommsPhone.xcodeproj` (scheme `FleetCommsPhone`) to the phone from Xcode, with your team set in
-   `Config/Local.xcconfig`. Scan the QR code in the handset to pair it with the Mac.
+1. Build `FleetCommsPhone.xcodeproj` (scheme `FleetCommsPhone`) to the phone from Xcode, with your team set in
+   `Config/Local.xcconfig`.
+2. On the Mac, turn on Settings › Advanced › Phone link and choose **Pair iPhone…**. Scan the one-time QR code
+   in the handset within five minutes to pair it with the Mac.
 3. Hold the button to talk and release to send, or tap once and pause. A second tap sends at once. The Action
    button can run the "Talk to Firstmate" shortcut.
 
