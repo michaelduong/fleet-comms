@@ -4,6 +4,18 @@ All notable changes to Fleet Comms. The format follows [Keep a Changelog](https:
 and versions follow [semantic versioning](https://semver.org). Entries before 0.8.0 were reconstructed from the
 merged pull requests; no releases were published for them.
 
+## [0.11.0] - 2026-11-20
+
+### Added
+- Pair an iPhone with a one-time QR code, then use its branded handset to talk to Fleet Comms with button haptics and a Live Activity on the Lock Screen and Dynamic Island.
+- See each spoken word appear on the iPhone as it is read, and follow long replies through their final sentence.
+- Keep replies playing on the Mac when the iPhone link drops, with the unheard sentence resumed on the Mac.
+
+### Fixed
+- Keep the iPhone connected while pairing and try each available QR address.
+- Connect the handset and play replies even before Talk has been pressed.
+- Keep one Live Activity open as replies start instead of adopting an activity that is already closing.
+
 ## [0.10.0] - 2026-11-04
 
 ### Added
