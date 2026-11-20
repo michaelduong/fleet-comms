@@ -24,18 +24,25 @@ until you need it.
   <br><em>Hear the reply. Keep the details on screen.</em>
 </p>
 
-Screenshots use neutral demo content from a separate local build. [Capture details](docs/images/README.md).
+The macOS screenshots above use neutral demo content from a separate local build. [Capture details](docs/images/README.md).
 
 ## iPhone companion
 
-The iPhone companion lets you talk to Fleet Comms on your Mac and follow replies from the phone. To pair it, open **Fleet Comms → Settings → Advanced → Phone link → Pair iPhone…** on your Mac. In Fleet Comms on the iPhone, scan the QR code or paste the pairing link. The one-time pairing code expires after five minutes; keep it private.
+The iPhone companion is a walkie-talkie handset for Fleet Comms on your Mac and requires iOS 26 or later.
+To install it, build `FleetCommsPhone.xcodeproj` with the `FleetCommsPhone` scheme in Xcode and sign with
+your Apple development team; see the [iPhone handset guide](docs/guide.md#iphone-handset).
+
+To pair, connect the iPhone and Mac to the same home network or Tailscale. On the Mac, open **Fleet Comms →
+Settings → Advanced → Phone link**, turn on **Allow the iPhone handset**, then choose **Pair iPhone…**. On
+the iPhone, tap the link icon and scan the Mac’s QR code or paste its one-time link. The link expires after five
+minutes. The connection is encrypted, and removing a phone in Mac settings revokes its key.
 
 <p align="center">
-  <img src="docs/images/phone-pairing.png" width="460" alt="Fleet Comms on iPhone showing the Pair with your Mac screen, an empty pairing-link field, and the Mac pairing instructions">
-  <br><em>Scan the Mac’s QR code or paste its pairing link.</em>
+  <img src="docs/images/phone-pairing.png" width="300" alt="Fleet Comms on iPhone showing Pair with your Mac, an empty link field, and Mac pairing instructions">
+  <br><em>Paste the Mac’s one-time link, or scan its QR code on a camera-capable iPhone.</em>
 </p>
 
-After pairing, tap **Pairing** in the phone app to reconnect or pair another Mac. Hold the microphone button to talk; a tap followed by a pause also works.
+The simulator image shows the paste field; its camera is unavailable, so the Scan QR Code control is not shown. On a physical iPhone, tap the link icon to reconnect or pair with a different Mac; a new pairing replaces the existing one. Hold the microphone button to talk; a tap followed by a pause also works.
 
 ## Features
 
@@ -135,7 +142,7 @@ the hotkey opens a call; the hotkey or Esc hangs up. [More usage details →](do
 | Assistant | Fast assistant, CLI path, model, fleet refresh intervals |
 | Realtime | Voice lane, provider opt-in, voices, outreach voice, hang-up windows |
 | Models | Model sources, licenses, downloads, removal, disk use |
-| Advanced | Inbox script override, event log, WAV input, onboarding |
+| Advanced | Inbox script override, event log, WAV input, onboarding, Phone link |
 | About | Version, license, Sparkle update check |
 
 Models live under `~/Library/Application Support/NotchVoice/Models`, a folder name kept so earlier downloads
@@ -176,9 +183,10 @@ Models and configuration are managed by `Models/` and `Settings/`.
   install until you opt in. These subscription-login integrations are unofficial and may change or stop working.
 - **Firstmate integration:** notes and replies are local files in the selected home. The firstmate agent’s
   own providers and data handling apply after a note is handed off. Past-work lookup is scoped to that home’s `data/`.
-- **Phone link:** when enabled, the Mac pairs with the iPhone handset using a one-time QR code and a separate
-  encryption key for each phone. Voice and replies travel between the phone and Mac while connected; remove a
-  paired phone in Settings to revoke its access.
+- **Phone link:** when enabled, the Mac pairs with the iPhone handset on the same network or Tailscale using a
+  one-time QR code or link that expires after five minutes and a separate encryption key for each phone. Voice
+  and replies travel between phone and Mac while connected. Remove a paired phone in Settings to revoke its key.
+  After the Mac receives a voice note, its usual assistant and provider privacy rules apply.
 - **Diagnostics:** the event log records IDs, decisions, and timings, without transcript or reply text.
   Login credentials are read from the relevant CLI’s login store and used with that provider; never share them in issues.
 

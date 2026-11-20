@@ -12,6 +12,7 @@ The installed app and its preferences were left unchanged.
 - `bottom-placement.png`: the listening card in the bottom-center placement.
 - `side-placement.png`: the listening card and round buttons in the side-dock placement.
 - `ask-user-question.png`: a neutral three-option Claude question, with the recommended choice selected.
+- `phone-pairing.png`: the real Fleet Comms iPhone app on a pooled simulator, unpaired with an empty link field. No pairing link or code is shown; the simulator has no camera, so the Scan QR Code control is unavailable. The top status-bar strip is cropped to remove its live clock.
 
 The existing `--capture-ui` / `--capture-reply-text` developer switches set the listening and reply demo
 states. The question image uses `--question-proof` and `--question-proof-script` with the real
@@ -25,7 +26,7 @@ only the isolated app’s windows. The pill captures were cropped and placed ove
 at 1120 × 320 pixels. The settings and question images are 1560 × 1184 pixels. These are close-ups of the
 app surfaces; the desktop and Dock are omitted. PNGs are losslessly optimized; no text, controls, or app
 content was retouched. Capture scripts, raw frames, and logs stay outside the repository. Temporary
-DerivedData is removed after capture. Only the six selected images are checked in.
+DerivedData is removed after capture. The six macOS captures and one iPhone simulator capture are the seven selected images checked in. The phone screenshot is cropped above the live clock and scaled from the full-resolution capture to 600 pixels wide for a 300-pixel README display; no app text or controls are retouched.
 
 For reproduction, use a separate bundle ID, scratch `HOME` / `CFFIXED_USER_HOME`, `-modelsRoot`, event log,
 and an empty `-firstmateHome` (a scratch home for the question hook). Disable the assistant and unsolicited
