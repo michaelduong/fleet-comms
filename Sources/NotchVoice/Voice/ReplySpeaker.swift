@@ -76,7 +76,9 @@ final class ReplySpeaker {
         let parts = Self.parts(of: text)
         let playbackID = UUID()
         onProgress?(SpeechPlayback(id: playbackID, text: parts.joined(separator: " "), utf16Offset: 0))
-        EventLog.record("speech_queued", ["speech_id": String(current), "parts": String(parts.count)])
+        EventLog.record("speech_queued", [
+            "speech_id": String(current), "parts": String(parts.count), "characters": String(text.count)
+        ])
         speakTask = Task {
             do {
                 var first = 0
@@ -96,6 +98,11 @@ final class ReplySpeaker {
                             "speech_id": String(current), "resume_part": String(lost.resumeAt), "reason": lost.reason
                         ])
                         first = lost.resumeAt
+                    } catch is PhoneWakeError {
+                        // The phone could not be woken: the Mac says the whole reply instead of losing it.
+                        EventLog.record("speech_phone_lost", [
+                            "speech_id": String(current), "resume_part": "0", "reason": "wake failed"
+                        ])
                     }
                 }
                 try await playOnMac(parts, with: kokoro, generation: current, id: playbackID, from: first, onStart)
@@ -114,7 +121,10 @@ final class ReplySpeaker {
         _ onStart: () -> Void
     ) async throws {
         playingOnMac = true
-        defer { playingOnMac = false }
+        defer {
+            // An earlier reply unwinding must not clear the flag while a newer one plays on the Mac.
+            if generation == self.generation { playingOnMac = false }
+        }
         try await play(parts, with: kokoro, generation: generation, playbackID: id, from: first, onStart: onStart)
     }
 

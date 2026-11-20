@@ -6,8 +6,6 @@
 import FluidAudio
 import Foundation
 
-/// Plays a reply on the phone: each synthesized sentence goes through the radio kernel and over the link,
-/// and the Mac waits out the sentence's duration so its own state follows what the phone is saying.
 @MainActor
 protocol PhoneTransport: AnyObject {
     var isConnected: Bool { get }
@@ -19,6 +17,8 @@ protocol PhoneTransport: AnyObject {
 
 extension PhoneServer: PhoneTransport {}
 
+/// Plays a reply on the phone: each synthesized sentence goes through the radio kernel and over the link,
+/// and the Mac waits out the sentence's duration so its own state follows what the phone is saying.
 @MainActor
 final class PhoneSpeechPlayer {
     private let server: PhoneTransport
@@ -41,8 +41,9 @@ final class PhoneSpeechPlayer {
 
     func play(
         _ parts: [String], synthesize: @escaping @Sendable (String) async throws -> PhoneSentence,
-        from first: Int = 0, onStart: () -> Void, onPartPlayed: (Int) -> Void
+        onStart: () -> Void, onPartPlayed: (Int) -> Void
     ) async throws {
+        let first = 0
         guard await server.wake() else { throw PhoneWakeError.unreachable }
         var speech = PhoneMessage(.speech)
         speech.text = parts.joined(separator: " ")
@@ -64,10 +65,13 @@ final class PhoneSpeechPlayer {
                 onStart()
             }
             do {
-                try await send(renderer.render(samples), start: offset, length: part.utf16.count, words: sentence.words)
+                // A reset that answers this send usually means the phone left while the previous sentence played.
+                try await send(
+                    renderer.render(samples), start: offset, length: part.utf16.count, words: sentence.words,
+                    resumeAt: index, resumeIfNoticedOnSend: max(first, index - 1)
+                )
             } catch let error as PhoneLinkLost {
-                // This sentence reached nobody; the Mac says it, so the caller resumes at its index.
-                throw PhoneLinkLost(resumeAt: index, reason: error.reason)
+                throw error
             }
             offset += part.utf16.count + 1
             onPartPlayed(offset - 1)
@@ -80,26 +84,36 @@ final class PhoneSpeechPlayer {
         server.send(PhoneMessage(.speechEnd))
     }
 
-    private func send(_ samples: [Float], start: Int, length: Int, words: [PhoneWord]? = nil) async throws {
+    // swiftlint:disable:next function_parameter_count
+    private func send(
+        _ samples: [Float], start: Int, length: Int, words: [PhoneWord]? = nil,
+        resumeAt: Int = 0, resumeIfNoticedOnSend: Int = 0
+    ) async throws {
         guard !samples.isEmpty else { return }
         // The iPhone resets the link whenever the app leaves the screen, and send drops silently when it is gone.
-        guard server.isConnected else { throw PhoneLinkLost(resumeAt: 0, reason: "link down") }
+        guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeAt, reason: "link down") }
         var part = PhoneMessage(.part)
         part.start = start
         part.length = length
         part.words = words
         server.send(part)
         server.sendAudio(samples)
+        guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeIfNoticedOnSend, reason: "reset on send") }
         deadline += .seconds(Double(samples.count) / PhoneLink.speechRate)
-        try await Task.sleep(until: deadline - Self.lead, tolerance: .zero)
-        guard server.isConnected else { throw PhoneLinkLost(resumeAt: 0, reason: "link dropped") }
+        // Wait in short steps so a drop ends the wait at once and the Mac takes over without a silent gap.
+        let wakeAt = deadline - Self.lead
+        while ContinuousClock.now < wakeAt {
+            guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeAt, reason: "link dropped") }
+            try await Task.sleep(until: min(wakeAt, ContinuousClock.now + .milliseconds(50)), tolerance: .zero)
+        }
+        guard server.isConnected else { throw PhoneLinkLost(resumeAt: resumeAt, reason: "link dropped") }
     }
 }
 
 extension PhoneSpeechPlayer {
     func play(
         _ parts: [String], with kokoro: KokoroAneManager, speed: Float, id: UUID,
-        from first: Int = 0, progress: ((SpeechPlayback?) -> Void)?
+        progress: ((SpeechPlayback?) -> Void)?
     ) async throws {
         let text = parts.joined(separator: " ")
         try await play(
@@ -111,7 +125,7 @@ extension PhoneSpeechPlayer {
                 )
                 return PhoneSentence(samples: result.samples, words: words)
             },
-            from: first, onStart: {}, onPartPlayed: { progress?(SpeechPlayback(id: id, text: text, utf16Offset: $0)) }
+            onStart: {}, onPartPlayed: { progress?(SpeechPlayback(id: id, text: text, utf16Offset: $0)) }
         )
     }
 }

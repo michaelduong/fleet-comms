@@ -33,7 +33,15 @@ enum PhoneTLS {
 
     /// TCP, then TLS, then WebSocket, the order Network stacks them.
     static func parameters(_ credentials: [Credential]) -> NWParameters {
-        let parameters = NWParameters(tls: options(credentials), tcp: NWProtocolTCP.Options())
+        // A heartbeat: a phone that vanishes without a reset (Wi-Fi lost, out of range) is dropped in about 6 s
+        // instead of leaving the Mac sending into TCP retransmission.
+        let tcp = NWProtocolTCP.Options()
+        tcp.enableKeepalive = true
+        tcp.keepaliveIdle = 2
+        tcp.keepaliveInterval = 1
+        tcp.keepaliveCount = 3
+        tcp.connectionDropTime = 6
+        let parameters = NWParameters(tls: options(credentials), tcp: tcp)
         parameters.defaultProtocolStack.applicationProtocols.insert(NWProtocolWebSocket.Options(), at: 0)
         return parameters
     }
