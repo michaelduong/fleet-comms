@@ -28,9 +28,16 @@ struct LiveCardTests {
 
 /// Intent: the island opens by itself once per spoken reply, never on screen or on a locked phone (FLC-47).
 struct IslandAlertTests {
-    private func alert(_ phase: LiveCard.Phase = .speaking, done: Bool = false, text: String = "Hi.",
-                       onScreen: Bool = false, unlocked: Bool = true) -> Bool {
-        LiveCard.shouldAlert(phase: phase, alreadyAlerted: done, sentence: text, appOnScreen: onScreen, unlocked: unlocked)
+    private func alert(
+        _ phase: LiveCard.Phase = .speaking,
+        done: Bool = false,
+        text: String = "Hi.",
+        onScreen: Bool = false,
+        unlocked: Bool = true
+    ) -> Bool {
+        LiveCard.shouldAlert(
+            phase: phase, alreadyAlerted: done, sentence: text, appOnScreen: onScreen, unlocked: unlocked
+        )
     }
 
     @Test func alertsOnceWhenVoiceStartsInBackground() {
