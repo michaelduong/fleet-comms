@@ -34,6 +34,8 @@ final class PhoneModel {
     var isSpeaking = false
     /// The last sentence the first mate said; the lock-screen card keeps it until the next one.
     var lastSentence = ""
+    /// Whether this reply already popped the island open; one alert per reply.
+    @ObservationIgnored var alertedReply = false
     var dotStep = 3
     @ObservationIgnored var dotTask: Task<Void, Never>?
     var talkRequestedExternally = false
