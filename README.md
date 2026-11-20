@@ -26,6 +26,17 @@ until you need it.
 
 Screenshots use neutral demo content from a separate local build. [Capture details](docs/images/README.md).
 
+## iPhone companion
+
+The iPhone companion lets you talk to Fleet Comms on your Mac and follow replies from the phone. To pair it, open **Fleet Comms → Settings → Advanced → Phone link → Pair iPhone…** on your Mac. In Fleet Comms on the iPhone, scan the QR code or paste the pairing link. The one-time pairing code expires after five minutes; keep it private.
+
+<p align="center">
+  <img src="docs/images/phone-pairing.png" width="460" alt="Fleet Comms on iPhone showing the Pair with your Mac screen, an empty pairing-link field, and the Mac pairing instructions">
+  <br><em>Scan the Mac’s QR code or paste its pairing link.</em>
+</p>
+
+After pairing, tap **Pairing** in the phone app to reconnect or pair another Mac. Hold the microphone button to talk; a tap followed by a pause also works.
+
 ## Features
 
 - **One hotkey to talk.** Live transcription, voice activity detection, and automatic sending after a pause.
