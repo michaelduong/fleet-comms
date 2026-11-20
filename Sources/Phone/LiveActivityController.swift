@@ -14,13 +14,20 @@ final class LiveActivityController {
     private var tail: Task<Void, Never>?
     private var last: CommsActivityAttributes.ContentState?
 
-    func update(_ state: CommsActivityAttributes.ContentState) {
-        guard state != last, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
+    /// `alert` asks iOS to expand the Dynamic Island for this update; it needs an activity already showing.
+    func update(_ state: CommsActivityAttributes.ContentState, alert: Bool = false) {
+        guard state != last || alert, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         last = state
         let content = ActivityContent(state: state, staleDate: nil)
+        // After a relaunch the activity is still on screen; adopt it rather than leave nothing to alert.
+        if activityID == nil { activityID = Activity<CommsActivityAttributes>.activities.first?.id }
         if let id = activityID {
             let previous = tail
-            tail = Task { await previous?.value; await Self.push(id, content) }
+            let config = alert ? AlertConfiguration(
+                title: "First mate", body: LocalizedStringResource(stringLiteral: state.sentence),
+                sound: .named("silence.wav")
+            ) : nil
+            tail = Task { await previous?.value; await Self.push(id, content, config) }
         } else if let activity = try? Activity.request(
             attributes: CommsActivityAttributes(channel: "First mate"), content: content
         ) {
@@ -36,8 +43,10 @@ final class LiveActivityController {
         tail = Task { await previous?.value; await Self.finish(id) }
     }
 
-    private nonisolated static func push(_ id: String, _ content: ActivityContent<CommsActivityAttributes.ContentState>) async {
-        await Activity<CommsActivityAttributes>.activities.first { $0.id == id }?.update(content)
+    private nonisolated static func push(_ id: String, _ content: ActivityContent<CommsActivityAttributes.ContentState>,
+                                        _ alert: AlertConfiguration?) async {
+        let activity = Activity<CommsActivityAttributes>.activities.first { $0.id == id }
+        if let alert { await activity?.update(content, alertConfiguration: alert) } else { await activity?.update(content) }
     }
 
     private nonisolated static func finish(_ id: String) async {

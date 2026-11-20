@@ -6,6 +6,7 @@
 import AVFoundation
 import Foundation
 import QuartzCore
+import UIKit
 
 extension PhoneModel {
     func updateLive() {
@@ -17,7 +18,13 @@ extension PhoneModel {
         }
         guard phase != .idle || !lastSentence.isEmpty else { return live.end() }
         if phase == .listening || phase == .thinking { startDots() } else { stopDots() }
-        live.update(.init(phase: phase, sentence: lastSentence, dots: dotStep))
+        let alert = LiveCard.shouldAlert(
+            phase: phase, alreadyAlerted: alertedReply, sentence: lastSentence,
+            appOnScreen: UIApplication.shared.applicationState == .active,
+            unlocked: UIApplication.shared.isProtectedDataAvailable
+        )
+        if alert { alertedReply = true }
+        live.update(.init(phase: phase, sentence: lastSentence, dots: dotStep), alert: alert)
     }
 
     private func startDots() {
@@ -41,6 +48,7 @@ extension PhoneModel {
     func beginSpeech(_ text: String) {
         flushSpeech()
         replyText = text
+        alertedReply = false
         spokenOffset = 0
         revealMarks = []
         isSpeaking = true

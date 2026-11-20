@@ -34,4 +34,11 @@ enum LiveCard {
         let current = spokenSentence(reply: reply, offset: offset)
         return current.isEmpty ? held : current
     }
+
+    /// Whether the island should pop open by itself: once per reply, when the voice starts on the phone, only
+    /// while Fleet Comms is off screen and the phone is unlocked. Replies the Mac plays never reach here.
+    static func shouldAlert(phase: Phase, alreadyAlerted: Bool, sentence: String, appOnScreen: Bool,
+                            unlocked: Bool) -> Bool {
+        phase == .speaking && !alreadyAlerted && !sentence.isEmpty && !appOnScreen && unlocked
+    }
 }
