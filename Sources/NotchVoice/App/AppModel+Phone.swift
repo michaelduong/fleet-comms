@@ -26,6 +26,7 @@ extension AppModel {
         server.start()
         phoneServer = server
         speaker.phone = PhoneSpeechPlayer(server: server)
+        speaker.onRouteChange = { [weak self] in self?.phoneStateChanged() }
     }
 
     private func phoneConnectionChanged(_ connected: Bool) {
@@ -80,12 +81,20 @@ extension AppModel {
         if state != .listening {
             phoneServer?.feed = nil
         }
+        phoneServer?.send(phoneStateMessage())
+    }
+
+    private func phoneStateMessage() -> PhoneMessage {
         var message = PhoneMessage(.state)
         switch state {
         case .listening: message.state = "listening"
         case .sending: message.state = "sending"
         case .thinking: message.state = "thinking"
         case .waiting, .stillWorking: message.state = "waiting"
+        case .reply where speaker.playingOnMac:
+            // The route is chosen once per reply, so a phone that connects mid-reply hears nothing; say so.
+            message.state = "message"
+            message.text = "Playing on the Mac"
         case .reply: message.state = "reply"
         case let .message(text):
             message.state = "message"
@@ -93,6 +102,6 @@ extension AppModel {
         case .preparing: message.state = "preparing"
         default: message.state = "idle"
         }
-        phoneServer?.send(message)
+        return message
     }
 }
