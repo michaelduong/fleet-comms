@@ -33,17 +33,62 @@ struct PhoneLinkLossTests {
         }
     }
 
-    /// Intent (FLC-43): a phone that connects mid-reply, or after the link was lost, resumes at a sentence offset.
-    @Test func playResumesFromGivenSentence() async throws {
+    /// Intent (FLC-49 finding 1): the real iPhone leaves silently and the Mac learns of it from the reset that answers
+    /// its next send; it must resume at the sentence that was playing, not one sentence late.
+    @Test func dropNoticedOnNextSendResumesAtTheUnheardSentence() async throws {
         let transport = FakeTransport()
         let player = PhoneSpeechPlayer(server: transport)
-        var played: [Int] = []
-        try await player.play(
-            ["One.", "Two.", "Three."],
-            synthesize: { _ in PhoneSentence(samples: [Float](repeating: 0.1, count: 2400), words: nil) },
-            from: 1, onStart: {}, onPartPlayed: { played.append($0) }
-        )
-        #expect(played == [9, 16])
+        var sends = 0
+        transport.onAudio = {
+            sends += 1
+            if sends == 2 { transport.isConnected = false } // the reset answers sentence 1's send
+        }
+        do {
+            try await player.play(
+                ["One.", "Two.", "Three."],
+                synthesize: { _ in PhoneSentence(samples: [Float](repeating: 0.1, count: 2400), words: nil) },
+                onStart: {}, onPartPlayed: { _ in }
+            )
+            Issue.record("play finished although the link dropped")
+        } catch let lost as PhoneLinkLost {
+            #expect(lost.resumeAt == 0)
+        }
+    }
+
+    /// Intent (FLC-49 finding 1): a drop during the pacing wait ends it at once instead of at the sentence's deadline.
+    @Test func dropDuringPacingEndsTheWaitPromptly() async throws {
+        let transport = FakeTransport()
+        let player = PhoneSpeechPlayer(server: transport)
+        Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(300))
+            transport.isConnected = false
+        }
+        let start = ContinuousClock.now
+        do {
+            try await player.play(
+                ["One one one.", "Two two two."],
+                synthesize: { _ in PhoneSentence(samples: [Float](repeating: 0.1, count: 24000), words: nil) },
+                onStart: {}, onPartPlayed: { _ in }
+            )
+            Issue.record("play finished although the link dropped")
+        } catch let lost as PhoneLinkLost {
+            #expect(lost.resumeAt == 0)
+            #expect(ContinuousClock.now - start < .milliseconds(700))
+        }
+    }
+
+    /// Intent (FLC-49 finding 3): a phone that cannot be woken must fail with PhoneWakeError, which the speaker
+    /// answers by saying the whole reply on the Mac.
+    @Test func failedWakeThrowsSoTheMacCanSpeak() async throws {
+        let transport = FakeTransport()
+        transport.isConnected = false
+        let player = PhoneSpeechPlayer(server: transport)
+        await #expect(throws: PhoneWakeError.self) {
+            try await player.play(
+                ["One."], synthesize: { _ in PhoneSentence(samples: [], words: nil) },
+                onStart: {}, onPartPlayed: { _ in }
+            )
+        }
     }
 }
 
