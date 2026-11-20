@@ -165,6 +165,9 @@ Models and configuration are managed by `Models/` and `Settings/`.
   install until you opt in. These subscription-login integrations are unofficial and may change or stop working.
 - **Firstmate integration:** notes and replies are local files in the selected home. The firstmate agent’s
   own providers and data handling apply after a note is handed off. Past-work lookup is scoped to that home’s `data/`.
+- **Phone link:** when enabled, the Mac pairs with the iPhone handset using a one-time QR code and a separate
+  encryption key for each phone. Voice and replies travel between the phone and Mac while connected; remove a
+  paired phone in Settings to revoke its access.
 - **Diagnostics:** the event log records IDs, decisions, and timings, without transcript or reply text.
   Login credentials are read from the relevant CLI’s login store and used with that provider; never share them in issues.
 
