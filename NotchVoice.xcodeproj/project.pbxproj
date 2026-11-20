@@ -11,6 +11,7 @@
 		00E3CE6FC8D48087302C2B0E /* RadioSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455753AC895AA42B0F47501E /* RadioSettings.swift */; };
 		01E3757DD29188C82E5E6624 /* AppSettings+InitialValues.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B9F3395904385590D4D225 /* AppSettings+InitialValues.swift */; };
 		030E6ECADE8D9CF8C3C09A03 /* ModelPins.swift in Sources */ = {isa = PBXBuildFile; fileRef = 692FA46041B5CC0BC18570BE /* ModelPins.swift */; };
+		032BF7E8A9D149650B4DC9A4 /* PhoneLinkLossTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 209FB2EF119E55E084C3D3EF /* PhoneLinkLossTests.swift */; };
 		04852411D1DAE5FBB119B9B7 /* SpeechSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13149686D0E993F915DF8B01 /* SpeechSettingsTests.swift */; };
 		05547E486B03516FF525042B /* FollowUpProofTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B243C2F1727C907D4DF3F713 /* FollowUpProofTests.swift */; };
 		0A4D297A83ACAC6ED14EE541 /* AudioProofSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A524285CD7A2BD7B6C89108 /* AudioProofSupport.swift */; };
@@ -232,6 +233,7 @@
 		1D21C657329D51BE3995A38A /* GlobalHotKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHotKey.swift; sourceTree = "<group>"; };
 		1D36FAE33A6AB15DC6DCC10C /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		2034DB51B85B17D96ACCC61D /* NotchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchState.swift; sourceTree = "<group>"; };
+		209FB2EF119E55E084C3D3EF /* PhoneLinkLossTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneLinkLossTests.swift; sourceTree = "<group>"; };
 		220C38336FFCB34F348C2EAE /* FluidSpeechPro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidSpeechPro.swift; sourceTree = "<group>"; };
 		242EDBCCC77FFA95826D9702 /* EndpointDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointDetector.swift; sourceTree = "<group>"; };
 		243ABDD161A23B4CF8903289 /* SpokenWordTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpokenWordTimerTests.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				47F79080C032795BD585946B /* OnboardingFlowTests.swift */,
 				E77A96928A6E9976BD1C783E /* OutreachTests.swift */,
 				B74EAC00DFF2903978B99DD4 /* OutreachUIProofTests.swift */,
+				209FB2EF119E55E084C3D3EF /* PhoneLinkLossTests.swift */,
 				7975F75014EDA5150CF38EAC /* PhoneSocketTests.swift */,
 				26494007F7C3B14A4D799D3E /* PillLayoutTests.swift */,
 				4C2FD6EC1B2239D1060ED40A /* RadioTransmissionTests.swift */,
@@ -1082,6 +1085,7 @@
 				F135A98033ECA4639E955588 /* OnboardingFlowTests.swift in Sources */,
 				5C418D762860CEF24C5BB98E /* OutreachTests.swift in Sources */,
 				1FEC2DE3BE60B2F9617A68E5 /* OutreachUIProofTests.swift in Sources */,
+				032BF7E8A9D149650B4DC9A4 /* PhoneLinkLossTests.swift in Sources */,
 				F63434647E37AB184AC9A1F8 /* PhoneSocketTests.swift in Sources */,
 				4126FE295BF2E75B85FDCFC0 /* PillLayoutTests.swift in Sources */,
 				A66B0D7D31D0CC87F486CF8F /* RadioTransmissionTests.swift in Sources */,

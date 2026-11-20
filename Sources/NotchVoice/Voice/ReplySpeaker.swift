@@ -28,6 +28,17 @@ final class ReplySpeaker {
     /// Set while a phone is connected: speech is rendered for it instead of this Mac's speakers.
     var phone: PhoneSpeechPlayer?
 
+    /// True while a reply is playing on this Mac's speakers; the phone, if connected, is told so.
+    private(set) var playingOnMac = false {
+        didSet {
+            if oldValue != playingOnMac {
+                onRouteChange?()
+            }
+        }
+    }
+
+    var onRouteChange: (() -> Void)?
+
     var isLoaded: Bool {
         kokoro != nil
     }
@@ -65,22 +76,29 @@ final class ReplySpeaker {
         let parts = Self.parts(of: text)
         let playbackID = UUID()
         onProgress?(SpeechPlayback(id: playbackID, text: parts.joined(separator: " "), utf16Offset: 0))
-        EventLog.record("speech_queued", [
-            "speech_id": String(current), "parts": String(parts.count), "characters": String(text.count)
-        ])
+        EventLog.record("speech_queued", ["speech_id": String(current), "parts": String(parts.count)])
         speakTask = Task {
             do {
+                var first = 0
                 if let phone, phone.isAvailable {
-                    try await phone.play(
-                        parts,
-                        with: kokoro,
-                        speed: speed().rawValue,
-                        id: playbackID,
-                        progress: onProgress
-                    )
-                    return finish(generation: current)
+                    do {
+                        try await phone.play(
+                            parts,
+                            with: kokoro,
+                            speed: speed().rawValue,
+                            id: playbackID,
+                            progress: onProgress
+                        )
+                        return finish(generation: current)
+                    } catch let lost as PhoneLinkLost {
+                        // The phone went away mid-reply: the Mac says the rest instead of pacing it to nobody.
+                        EventLog.record("speech_phone_lost", [
+                            "speech_id": String(current), "resume_part": String(lost.resumeAt), "reason": lost.reason
+                        ])
+                        first = lost.resumeAt
+                    }
                 }
-                try await play(parts, with: kokoro, generation: current, playbackID: playbackID, onStart: onStart)
+                try await playOnMac(parts, with: kokoro, generation: current, id: playbackID, from: first, onStart)
             } catch is CancellationError {
                 return
             } catch {
@@ -88,6 +106,16 @@ final class ReplySpeaker {
                 finish(generation: current)
             }
         }
+    }
+
+    // swiftlint:disable:next function_parameter_count
+    private func playOnMac(
+        _ parts: [String], with kokoro: KokoroAneManager, generation: Int, id: UUID, from first: Int,
+        _ onStart: () -> Void
+    ) async throws {
+        playingOnMac = true
+        defer { playingOnMac = false }
+        try await play(parts, with: kokoro, generation: generation, playbackID: id, from: first, onStart: onStart)
     }
 
     func stop() {
@@ -112,19 +140,20 @@ final class ReplySpeaker {
     }
 
     private func play(
-        _ parts: [String], with kokoro: KokoroAneManager, generation: Int, playbackID: UUID, onStart: () -> Void
+        _ parts: [String], with kokoro: KokoroAneManager, generation: Int, playbackID: UUID, from first: Int = 0,
+        onStart: () -> Void
     ) async throws {
         let (player, format) = try makePlayer()
         radio?.begin()
         var prepared: (result: KokoroAneSynthesisResult, speed: SpeechSpeed)?
         let text = parts.joined(separator: " ")
-        var characterOffset = 0
-        for (index, part) in parts.enumerated() {
+        var characterOffset = parts[..<first].reduce(0) { $0 + $1.utf16.count + 1 }
+        for (index, part) in parts.enumerated() where index >= first {
             let result = try await synthesize(part, with: kokoro, prepared: prepared)
             try Task.checkCancellation()
             let frameOffset = player.lastRenderTime.flatMap { player.playerTime(forNodeTime: $0) }?.sampleTime ?? 0
             let played = Self.enqueue(result.samples, on: player, format: format)
-            if index == 0 {
+            if index == first {
                 try player.playAudio()
                 onStart()
             }
