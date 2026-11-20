@@ -14,6 +14,7 @@ struct FleetCommsPhoneApp: App {
         WindowGroup {
             HandsetView(model: model)
                 .preferredColorScheme(.dark)
+                .onAppear { model.appBecameActive() }
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {

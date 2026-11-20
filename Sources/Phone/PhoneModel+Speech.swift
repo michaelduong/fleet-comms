@@ -16,15 +16,23 @@ extension PhoneModel {
             let sentence = LiveCard.sentence(phase: phase, reply: replyText, offset: spokenOffset, held: lastSentence)
             lastSentence = sentence
         }
-        guard phase != .idle || !lastSentence.isEmpty else { return live.end() }
-        if phase == .listening || phase == .thinking { startDots() } else { stopDots() }
+        let onScreen = UIApplication.shared.applicationState == .active
+        // An empty idle used to end the card. A reply then needed a new one, which iOS refuses off screen.
+        guard !LiveCard.retiresActivity(phase: phase, spoken: lastSentence) else { return live.end() }
+        if phase == .listening || phase == .thinking {
+            startDots()
+        } else {
+            stopDots()
+        }
         let alert = LiveCard.shouldAlert(
             phase: phase, alreadyAlerted: alertedReply, sentence: lastSentence,
-            appOnScreen: UIApplication.shared.applicationState == .active,
+            appOnScreen: onScreen,
             unlocked: UIApplication.shared.isProtectedDataAvailable
         )
-        if alert { alertedReply = true }
-        live.update(.init(phase: phase, sentence: lastSentence, dots: dotStep), alert: alert)
+        if alert {
+            alertedReply = true
+        }
+        live.update(.init(phase: phase, sentence: lastSentence, dots: dotStep), alert: alert, canStart: onScreen)
     }
 
     private func startDots() {

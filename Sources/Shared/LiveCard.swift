@@ -37,8 +37,21 @@ enum LiveCard {
 
     /// Whether the island should pop open by itself: once per reply, when the voice starts on the phone, only
     /// while Fleet Comms is off screen and the phone is unlocked. Replies the Mac plays never reach here.
-    static func shouldAlert(phase: Phase, alreadyAlerted: Bool, sentence: String, appOnScreen: Bool,
-                            unlocked: Bool) -> Bool {
+    static func shouldAlert(
+        phase: Phase,
+        alreadyAlerted: Bool,
+        sentence: String,
+        appOnScreen: Bool,
+        unlocked: Bool
+    ) -> Bool {
         phase == .speaking && !alreadyAlerted && !sentence.isEmpty && !appOnScreen && unlocked
+    }
+
+    /// The handset never closes the card from a Mac state. Idle, waiting, listening, message and reply all
+    /// arrive before the voice starts; closing then forces a new card, and iOS refuses that off screen
+    /// (FLC-59). `spoken` stays in the signature so a caller cannot treat an empty sentence as a close.
+    static func retiresActivity(phase: Phase, spoken: String) -> Bool {
+        _ = (phase, spoken)
+        return false
     }
 }
