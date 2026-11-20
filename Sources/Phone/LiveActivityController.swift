@@ -9,7 +9,9 @@ import Foundation
 /// Keeps one Live Activity in step with the handset: the first mate's sentence.
 @MainActor
 final class LiveActivityController {
-    private var activityID: String?
+    /// After a relaunch the activity is still on screen; adopt it once, here, so an alert has something to expand.
+    /// Only an active one: adopting later would grab the activity `end()` is closing and write to it forever.
+    private var activityID: String? = Activity<CommsActivityAttributes>.activities.first { $0.activityState == .active }?.id
     /// Refreshes run one after another, so a late dot step cannot land after a newer state.
     private var tail: Task<Void, Never>?
     private var last: CommsActivityAttributes.ContentState?
@@ -19,8 +21,6 @@ final class LiveActivityController {
         guard state != last || alert, ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         last = state
         let content = ActivityContent(state: state, staleDate: nil)
-        // After a relaunch the activity is still on screen; adopt it rather than leave nothing to alert.
-        if activityID == nil { activityID = Activity<CommsActivityAttributes>.activities.first?.id }
         if let id = activityID {
             let previous = tail
             let config = alert ? AlertConfiguration(
