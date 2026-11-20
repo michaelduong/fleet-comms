@@ -218,11 +218,11 @@ Fleet Comms on the iPhone (iOS 26 or later) is a walkie-talkie handset for the M
 transcribes it, runs the same Assistant and Firstmate path as the hotkey, and sends the spoken reply back with the
 radio effect and the reply text.
 
-1. Connect the iPhone and Mac to the same home network or Tailscale. In Fleet Comms on the Mac, open
-   **Settings → Advanced → Phone link**, turn on **Allow the iPhone handset**, then choose **Pair iPhone…**.
-   The one-time QR code or copied link expires after five minutes.
-2. Build `FleetCommsPhone.xcodeproj` with the `FleetCommsPhone` scheme in Xcode, set your team in
-   `Config/Local.xcconfig`, and install Fleet Comms on an iPhone running iOS 26 or later.
+1. Connect the iPhone and Mac to the same home network or Tailscale. Build `FleetCommsPhone.xcodeproj` with
+   the `FleetCommsPhone` scheme in Xcode, set your team in `Config/Local.xcconfig`, and install Fleet Comms on an
+   iPhone running iOS 26 or later.
+2. In Fleet Comms on the Mac, open **Settings → Advanced → Phone link**, turn on **Allow the iPhone handset**,
+   then choose **Pair iPhone…**. The one-time QR code or copied link expires after five minutes.
 3. In Fleet Comms on the iPhone, tap the link icon and scan the QR code or paste the link. Pairing gives the phone
    its own encrypted key. Pairing with a different Mac replaces the current Mac; use **Remove** in Phone link
    settings to revoke only that phone.
