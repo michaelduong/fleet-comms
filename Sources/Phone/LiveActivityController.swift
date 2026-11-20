@@ -10,8 +10,7 @@ import os
 /// Keeps one Live Activity in step with the handset: the first mate's sentence.
 @MainActor
 final class LiveActivityController {
-    /// After a relaunch the activity is still on screen; adopt it once, here, so an alert has something to expand.
-    /// Only an active one: adopting later would grab the activity `end()` is closing and write to it forever.
+    /// After a relaunch, reuse the active card so the next off-screen reply has something to update.
     private var activityID: String? = Activity<CommsActivityAttributes>.activities
         .first { $0.activityState == .active }?.id
     /// Refreshes run one after another, so a late dot step cannot land after a newer state.
@@ -49,14 +48,6 @@ final class LiveActivityController {
             sound: .named("silence.wav")
         ) : nil
         tail = Task { await previous?.value; await Self.push(id, content, config) }
-    }
-
-    func end() {
-        guard let id = activityID else { return }
-        activityID = nil
-        last = nil
-        let previous = tail
-        tail = Task { await previous?.value; await Self.finish(id) }
     }
 
     /// iOS or a swipe ends the card. Forget it so the next time the app is on screen starts another.
@@ -115,10 +106,5 @@ final class LiveActivityController {
         } else {
             await activity?.update(content)
         }
-    }
-
-    private nonisolated static func finish(_ id: String) async {
-        await Activity<CommsActivityAttributes>.activities.first { $0.id == id }?
-            .end(nil, dismissalPolicy: .after(.now + 8))
     }
 }

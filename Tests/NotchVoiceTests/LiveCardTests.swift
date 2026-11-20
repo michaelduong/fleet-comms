@@ -52,16 +52,3 @@ struct IslandAlertTests {
         #expect(!alert(unlocked: false))
     }
 }
-
-/// Intent: a first reply must not close the card. The Mac sends idle, waiting, listening, message or
-/// reply before any sentence, and ending then makes the next card a request iOS refuses off screen (FLC-59).
-struct LiveActivityLifetimeTests {
-    @Test func macStatesBeforeSpeechKeepTheCard() {
-        for state in ["idle", "waiting", "listening", "message", "reply", "thinking", "sending"] {
-            let phase = LiveCard.phase(isTalking: false, isSpeaking: false, macState: state)
-            #expect(!LiveCard.retiresActivity(phase: phase, spoken: ""))
-        }
-        #expect(!LiveCard.retiresActivity(phase: .idle, spoken: "Last line."))
-        #expect(!LiveCard.retiresActivity(phase: .speaking, spoken: ""))
-    }
-}

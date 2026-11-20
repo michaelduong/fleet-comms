@@ -46,12 +46,4 @@ enum LiveCard {
     ) -> Bool {
         phase == .speaking && !alreadyAlerted && !sentence.isEmpty && !appOnScreen && unlocked
     }
-
-    /// The handset never closes the card from a Mac state. Idle, waiting, listening, message and reply all
-    /// arrive before the voice starts; closing then forces a new card, and iOS refuses that off screen
-    /// (FLC-59). `spoken` stays in the signature so a caller cannot treat an empty sentence as a close.
-    static func retiresActivity(phase: Phase, spoken: String) -> Bool {
-        _ = (phase, spoken)
-        return false
-    }
 }

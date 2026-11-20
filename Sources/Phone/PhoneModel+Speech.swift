@@ -17,8 +17,6 @@ extension PhoneModel {
             lastSentence = sentence
         }
         let onScreen = UIApplication.shared.applicationState == .active
-        // An empty idle used to end the card. A reply then needed a new one, which iOS refuses off screen.
-        guard !LiveCard.retiresActivity(phase: phase, spoken: lastSentence) else { return live.end() }
         if phase == .listening || phase == .thinking {
             startDots()
         } else {
@@ -32,6 +30,7 @@ extension PhoneModel {
         if alert {
             alertedReply = true
         }
+        // Idle still updates the card: ending it would force the reply to open a new one off screen.
         live.update(.init(phase: phase, sentence: lastSentence, dots: dotStep), alert: alert, canStart: onScreen)
     }
 

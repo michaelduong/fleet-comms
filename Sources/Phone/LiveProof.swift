@@ -3,6 +3,7 @@
 //
 //  Created by Michael Duong on 11/20/26.
 
+import ActivityKit
 import Foundation
 import os
 import UIKit
@@ -43,22 +44,52 @@ import UIKit
                 try? await Task.sleep(for: .milliseconds(400))
             }
             write("card-up \(model.liveProof)")
+            guard let id = activeCard?.id, activeCard?.content.state.phase == .thinking else {
+                write("FAIL: no Thinking card to update before switching apps")
+                return
+            }
             write("waiting-background")
-            while UIApplication.shared.applicationState == .active {
+            while UIApplication.shared.applicationState != .background {
                 try? await Task.sleep(for: .milliseconds(200))
             }
+            await macStatesBeforeSpeechKeepTheCard(model, id: id, write: write)
+        }
+
+        /// FLC-59: exercise the handset and ActivityKit, not just the mapping from Mac states to card phases.
+        @MainActor
+        private static func macStatesBeforeSpeechKeepTheCard(
+            _ model: PhoneModel, id: String, write: (String) -> Void
+        ) async {
+            let first = "Copy that, lab reply one."
+            let last = "It has a second sentence."
             model.prove(stateMessage("reply"))
             var speech = PhoneMessage(.speech)
-            speech.text = "Copy that, lab reply one. It has a second sentence."
+            speech.text = first + " " + last
             model.prove(speech)
-            model.spokenOffset = "Copy that, lab reply one.".utf16.count
+            model.spokenOffset = first.utf16.count
             model.updateLive()
             try? await Task.sleep(for: .milliseconds(800))
-            write("reply-off-screen \(model.liveProof) sentence=\(model.lastSentence)")
+            write("reply-off-screen \(model.liveProof)")
+            guard activeCard?.id == id, activeCard?.content.state.phase == .speaking,
+                  activeCard?.content.state.sentence == last else {
+                write("FAIL: the original card did not show the off-screen reply")
+                return
+            }
             model.prove(PhoneMessage(.speechEnd))
-            try? await Task.sleep(for: .milliseconds(400))
             model.prove(stateMessage("idle"))
-            write("idle-keeps \(model.liveProof) sentence=\(model.lastSentence)")
+            try? await Task.sleep(for: .milliseconds(400))
+            write("idle-keeps \(model.liveProof)")
+            guard activeCard?.id == id, activeCard?.content.state.phase == .idle,
+                  activeCard?.content.state.sentence == last else {
+                write("FAIL: the original card did not keep the last sentence at idle")
+                return
+            }
+            write("PASS: one activity showed Thinking, the off-screen reply, and the last sentence at idle")
+        }
+
+        private static var activeCard: Activity<CommsActivityAttributes>? {
+            let active = Activity<CommsActivityAttributes>.activities.filter { $0.activityState == .active }
+            return active.count == 1 ? active.first : nil
         }
 
         private static func stateMessage(_ state: String) -> PhoneMessage {
