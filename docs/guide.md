@@ -214,16 +214,20 @@ A reply or a voice note that arrives meanwhile takes the pill first; the questio
 
 ## iPhone handset
 
-Fleet Comms on the iPhone is a walkie-talkie handset for the Mac. The phone sends your voice to the Mac; the Mac
+Fleet Comms on the iPhone (iOS 26 or later) is a walkie-talkie handset for the Mac. The phone sends your voice to the Mac; the Mac
 transcribes it, runs the same Assistant and Firstmate path as the hotkey, and sends the spoken reply back with the
 radio effect and the reply text.
 
-1. Build `FleetCommsPhone.xcodeproj` (scheme `FleetCommsPhone`) to the phone from Xcode, with your team set in
-   `Config/Local.xcconfig`.
-2. On the Mac, turn on Settings › Advanced › Phone link and choose **Pair iPhone…**. Scan the one-time QR code
-   in the handset within five minutes to pair it with the Mac.
-3. Hold the button to talk and release to send, or tap once and pause. A second tap sends at once. The Action
+1. Connect the iPhone and Mac to the same home network or Tailscale. Build `FleetCommsPhone.xcodeproj` with
+   the `FleetCommsPhone` scheme in Xcode, set your team in `Config/Local.xcconfig`, and install Fleet Comms on an
+   iPhone running iOS 26 or later.
+2. In Fleet Comms on the Mac, open **Settings → Advanced → Phone link**, turn on **Allow the iPhone handset**,
+   then choose **Pair iPhone…**. The one-time QR code or copied link expires after five minutes.
+3. In Fleet Comms on the iPhone, tap the link icon and scan the QR code or paste the link. Pairing gives the phone
+   its own encrypted key. Pairing with a different Mac replaces the current Mac; use **Remove** in Phone link
+   settings to revoke only that phone.
+4. Hold the button to talk and release to send, or tap once and pause. A second tap sends at once. The Action
    button can run the "Talk to Firstmate" shortcut.
 
-While the phone is connected, replies play on the phone, not the Mac. The link is encrypted with a separate key
-for each paired phone. In Settings › Advanced › Phone link, remove a phone to unpair only that phone.
+While connected, replies play on the phone, not the Mac. After the Mac receives a voice note, the usual Assistant
+and provider privacy rules apply.
