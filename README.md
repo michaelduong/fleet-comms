@@ -37,12 +37,20 @@ Settings → Advanced → Phone link**, turn on **Allow the iPhone handset**, th
 the iPhone, tap the link icon and scan the Mac’s QR code or paste its one-time link. The link expires after five
 minutes. The connection is encrypted, and removing a phone in Mac settings revokes its key.
 
-<p align="center">
-  <img src="docs/images/phone-pairing.png" width="300" alt="Fleet Comms on iPhone showing Pair with your Mac, an empty link field, and Mac pairing instructions">
-  <br><em>Paste the Mac’s one-time link, or scan its QR code on a camera-capable iPhone.</em>
-</p>
+<table>
+  <tr>
+    <td align="center">
+      <img src="docs/images/phone-pairing.png" width="300" alt="Fleet Comms on iPhone showing Pair with your Mac, an empty link field, and Mac pairing instructions">
+      <br><em>Pairing</em>
+    </td>
+    <td align="center">
+      <img src="docs/images/phone-connected.png" width="300" alt="Fleet Comms on iPhone showing Connected and the microphone button">
+      <br><em>Connected</em>
+    </td>
+  </tr>
+</table>
 
-The simulator image shows the paste field; its camera is unavailable, so the Scan QR Code control is not shown. On a physical iPhone, tap the link icon to reconnect or pair with a different Mac; a new pairing replaces the existing one. Hold the microphone button to talk; a tap followed by a pause also works.
+Enter the Mac’s one-time link or scan its QR code on a camera-capable iPhone. The pairing image is from a simulator without a camera, so it has no Scan QR Code control. On a connected iPhone, tap the link icon to pair with a different Mac; a new pairing replaces the existing one. Hold the microphone button to talk; a tap followed by a pause also works.
 
 ## Features
 

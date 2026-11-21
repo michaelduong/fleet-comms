@@ -13,6 +13,7 @@ The installed app and its preferences were left unchanged.
 - `side-placement.png`: the listening card and round buttons in the side-dock placement.
 - `ask-user-question.png`: a neutral three-option Claude question, with the recommended choice selected.
 - `phone-pairing.png`: the real Fleet Comms iPhone app on a pooled simulator, unpaired with an empty link field. No pairing link or code is shown; the simulator has no camera, so the Scan QR Code control is unavailable. The top status-bar strip is cropped to remove its live clock.
+- `phone-connected.png`: the real Fleet Comms app on an iPhone, showing Connected and the microphone control. The clock, signal and battery status bar is cropped out. The image is cropped to 1320 × 2640 and scaled to 600 × 1200 to match the pairing image; no app text or controls are retouched.
 
 The existing `--capture-ui` / `--capture-reply-text` developer switches set the listening and reply demo
 states. The question image uses `--question-proof` and `--question-proof-script` with the real
@@ -26,7 +27,7 @@ only the isolated app’s windows. The pill captures were cropped and placed ove
 at 1120 × 320 pixels. The settings and question images are 1560 × 1184 pixels. These are close-ups of the
 app surfaces; the desktop and Dock are omitted. PNGs are losslessly optimized; no text, controls, or app
 content was retouched. Capture scripts, raw frames, and logs stay outside the repository. Temporary
-DerivedData is removed after capture. The six macOS captures and one iPhone simulator capture are the seven selected images checked in. The phone screenshot is cropped above the live clock and scaled from the full-resolution capture to 600 pixels wide for a 300-pixel README display; no app text or controls are retouched.
+DerivedData is removed after capture. The six macOS captures, one iPhone simulator pairing screen, and one Connected iPhone screen are the eight selected images checked in. Both iPhone images are 600 × 1200 and displayed at 300 pixels wide. The pairing image is cropped above the live clock; the Connected image removes the clock, signal and battery. No app text or controls are retouched.
 
 For reproduction, use a separate bundle ID, scratch `HOME` / `CFFIXED_USER_HOME`, `-modelsRoot`, event log,
 and an empty `-firstmateHome` (a scratch home for the question hook). Disable the assistant and unsolicited
